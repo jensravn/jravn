@@ -42,7 +42,7 @@ jobs:
         uses: google-github-actions/deploy-appengine@main
         with:
           credentials: ${{ secrets.GCP_SA_KEY  }}
-          deliverables: "movielist/src/main/appengine/app.yaml"
+          deliverables: movielist/src/main/appengine/app.yaml
 
       # Example of using the output
       - id: test
