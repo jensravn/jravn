@@ -30,7 +30,7 @@ jobs:
       - uses: actions/upload-artifact@master
         with:
           name: movielist-domain-model
-          path: staging
+          path: staging/
 
   build-api:
     runs-on: ubuntu-latest
