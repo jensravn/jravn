@@ -28,6 +28,13 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>movielist</groupId>
+      <artifactId>movielist-domain-model</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
 
   <build>
