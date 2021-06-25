@@ -28,9 +28,12 @@ jobs:
       - run: mvn --batch-mode --update-snapshots verify
       - run: mkdir staging && cp target/*.jar staging
       - uses: actions/upload-artifact@master
+        id: upload
         with:
           name: movielist-domain-model
           path: staging/
+      - name: "Echo upload path"
+        run: echo ${{steps.upload.outputs.upload-path}}
 
   build-api:
     runs-on: ubuntu-latest
@@ -48,9 +51,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - uses: actions/download-artifact@master
+        id: download
         with:
           name: movielist-domain-model
           path: ~/.m2/repository
+      - name: "Echo download path"
+        run: echo ${{steps.download.outputs.download-path}}
       - uses: actions/setup-java@v2
         with:
           java-version: "11"
