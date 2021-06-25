@@ -68,4 +68,4 @@ jobs:
         run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/movielist-website --project ${{ secrets.project_id }}
 
       - name: Deploy movielist-website to Cloud Run
-        run: gcloud run deploy --image gcr.io/${{ secrets.project_id }}/movielist-website --project ${{ secrets.project_id }} --platform managed
+        run: gcloud run deploy movielist-website --image gcr.io/${{ secrets.project_id }}/movielist-website --project ${{ secrets.project_id }} --platform managed
