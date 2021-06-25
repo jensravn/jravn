@@ -38,17 +38,33 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: "11"
+          distribution: "adopt"
+      - run: mvn --batch-mode --update-snapshots verify
+      - run: mkdir staging && cp target/*.jar staging
+      - uses: actions/upload-artifact@v2
+        with:
+          name: movielist-appengine
+          path: staging
+
       - uses: google-github-actions/setup-gcloud@master
         with:
           version: "290.0.1"
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
-      # With storage.objects.viewer + creater
-      - id: Deploy
-        uses: google-github-actions/deploy-appengine@main
-        with:
-          deliverables: movielist/src/main/appengine/app.yaml
           project_id: ${{ secrets.project_id }}
+
+      - name: Deploy to App Engine
+        run: gcloud app deploy staging/movielist-0.0.1-SNAPSHOT.jar
+
+      # - id: Deploy
+      #   uses: google-github-actions/deploy-appengine@main
+      #   with:
+      #     deliverables: movielist/src/main/appengine/app.yaml
+      #     project_id: ${{ secrets.project_id }}
 
       # Example of using the output
       - id: test
