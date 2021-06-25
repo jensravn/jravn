@@ -8,10 +8,9 @@ import {
   InputGroup,
   Spinner,
 } from "react-bootstrap";
-import { Movie, OpenapitestApplicationApi } from "./auto-generated-client";
 
 export default function MovieList() {
-  const [movies, setMovies] = useState<Movie[]>();
+  const [movies, setMovies] = useState<any>();
   const [genreInput, setGenreInput] = useState("");
 
   useEffect(() => {
@@ -51,7 +50,7 @@ export default function MovieList() {
   ) : (
     <div style={{ padding: 100 }}>
       <Row xs={1} md={4} className="g-4">
-        {movies.map((movie) => (
+        {movies.map((movie: any) => (
           <Col key={movie.id}>
             <Card>
               <Card.Img variant="top" src={movie?.image} height={300} />
