@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build-and-deploy-api:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -34,5 +34,29 @@ jobs:
           export_default_credentials: true
           project_id: ${{ secrets.project_id }}
 
-      - name: Deploy to App Engine
+      - name: Deploy movielist-api to App Engine
         run: gcloud app deploy staging/movielist-0.0.1-SNAPSHOT.jar
+
+  build-and-deploy-website:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: movielist-website
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build movielist-website Docker image
+        run: docker build -t movielist-website .
+
+      - uses: google-github-actions/setup-gcloud@master
+        with:
+          version: "290.0.1"
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+          project_id: ${{ secrets.project_id }}
+
+      - name: Upload movielist-website image to Container Registry
+        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/movielist-website --project ${{ secrets.project_id }}
+
+      - name: Deploy movielist-website to Cloud Run
+        run: gcloud run deploy --image gcr.io/${{ secrets.project_id }}/movielist-website --project ${{ secrets.project_id }} --platform managed
