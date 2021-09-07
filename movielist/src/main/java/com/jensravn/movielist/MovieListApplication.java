@@ -45,7 +45,8 @@ public class MovieListApplication {
     for (QueryDocumentSnapshot document : documents) {
       movieList
           .add(new Movie(1, document.getString("title"), document.getString("description"),
-              document.getString("imageFilename"), (List<String>) document.get("genre")));
+              "https://storage.googleapis.com/gcp-playground-jens.appspot.com/"
+                  + document.getString("imageFilename"), (List<String>) document.get("genre")));
     }
     return movieList;
   }
