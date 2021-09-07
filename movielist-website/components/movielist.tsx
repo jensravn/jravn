@@ -57,7 +57,7 @@ export default function MovieList() {
               <Card.Body>
                 <Card.Title>{movie.title}</Card.Title>
                 <Card.Text>{movie.description}</Card.Text>
-                <Card.Footer>{movie.genre}</Card.Footer>
+                <Card.Footer>{movie.genre.join(", ")}</Card.Footer>
               </Card.Body>
             </Card>
           </Col>
