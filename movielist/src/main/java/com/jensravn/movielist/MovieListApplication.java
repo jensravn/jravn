@@ -87,5 +87,4 @@ public class MovieListApplication {
       return genre;
     }
   }
-
 }
