@@ -1,13 +1,11 @@
-package com.jensravn.movielist;
+package com.jensravn.springapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MovieListApplicationTests {
+class SpringApiApplicationTests {
 
   @Test
-  void contextLoads() {
-  }
-
+  void contextLoads() {}
 }
