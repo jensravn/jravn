@@ -32,15 +32,15 @@ jobs:
       - name: "Build with Maven"
         run: mvn --batch-mode --update-snapshots verify
 
-  build-movielist-website:
+  build-nextjs-website:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: movielist-website
+        working-directory: nextjs-website
     steps:
       - uses: actions/checkout@v2
-      - name: Build movielist-website Docker image
-        run: docker build -t movielist-website .
+      - name: Build nextjs-website Docker image
+        run: docker build -t nextjs-website .
 
   build-graphql-server:
     runs-on: ubuntu-latest

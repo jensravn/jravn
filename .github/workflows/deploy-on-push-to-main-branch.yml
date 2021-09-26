@@ -51,12 +51,12 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: movielist-website
+        working-directory: nextjs-website
 
     steps:
       - uses: actions/checkout@v2
-      - name: Build movielist-website Docker image
-        run: docker build -t movielist-website .
+      - name: Build nextjs-website Docker image
+        run: docker build -t nextjs-website .
 
       - uses: google-github-actions/setup-gcloud@master
         with:
@@ -65,11 +65,11 @@ jobs:
           export_default_credentials: true
           project_id: ${{ secrets.project_id }}
 
-      - name: Upload movielist-website image to Container Registry
-        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/movielist-website --project ${{ secrets.project_id }}
+      - name: Upload nextjs-website image to Container Registry
+        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/nextjs-website --project ${{ secrets.project_id }}
 
-      - name: Deploy movielist-website to Cloud Run
-        run: gcloud run deploy movielist-website --image gcr.io/${{ secrets.project_id }}/movielist-website --project ${{ secrets.project_id }} --platform managed --region europe-west1
+      - name: Deploy nextjs-website to Cloud Run
+        run: gcloud run deploy nextjs-website --image gcr.io/${{ secrets.project_id }}/nextjs-website --project ${{ secrets.project_id }} --platform managed --region europe-west1
   
   build-and-deploy-qraphql-server:
     runs-on: ubuntu-latest
@@ -87,7 +87,7 @@ jobs:
           export_default_credentials: true
           project_id: ${{ secrets.project_id }}
 
-      - name: Upload movielist-website image to Container Registry
+      - name: Upload graphql-server image to Container Registry
         run: gcloud builds submit --config=../cloudbuild-graphql-server.yaml --substitutions=_LOCATION="europe-west1",_REPOSITORY="docker-repository",_IMAGE="graphql-server" .
         
       - name: Deploy graphql-server to Cloud Run
