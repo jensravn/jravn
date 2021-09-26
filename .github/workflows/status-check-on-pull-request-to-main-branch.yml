@@ -32,12 +32,22 @@ jobs:
       - name: "Build with Maven"
         run: mvn --batch-mode --update-snapshots verify
 
-  build-website:
+  build-movielist-website:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: movielist-website
     steps:
       - uses: actions/checkout@v2
-      - name: Build Docker image
+      - name: Build movielist-website Docker image
         run: docker build -t movielist-website .
+
+  build-graphql-server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: graphql-server
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build graphql-server Docker image
+        run: docker build -t graphql-server .

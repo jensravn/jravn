@@ -70,3 +70,25 @@ jobs:
 
       - name: Deploy movielist-website to Cloud Run
         run: gcloud run deploy movielist-website --image gcr.io/${{ secrets.project_id }}/movielist-website --project ${{ secrets.project_id }} --platform managed --region europe-west1
+  
+  build-and-deploy-qraphql-server:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: graphql-server
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: google-github-actions/setup-gcloud@master
+        with:
+          version: "290.0.1"
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+          project_id: ${{ secrets.project_id }}
+
+      - name: Upload movielist-website image to Container Registry
+        run: gcloud builds submit --config=../cloudbuild-graphql-server.yaml --substitutions=_LOCATION="europe-west1",_REPOSITORY="docker-repository",_IMAGE="graphql-server" .
+        
+      - name: Deploy graphql-server to Cloud Run
+        run: gcloud run deploy graphql-server --image europe-west1-docker.pkg.dev/${{ secrets.project_id }}/docker-repository/graphql-server --platform managed --region europe-west1
