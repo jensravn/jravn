@@ -17,17 +17,17 @@ docker run -p 49160:4000 -d graphql-server
 gcloud auth configure-docker europe-west1-docker.pkg.dev
 
 # Build image with tag used in Artifact Registry
-docker build -t europe-west1-docker.pkg.dev/gcp-playground-jens/docker-repository/graphql-server:v1 .
+docker build -t europe-west1-docker.pkg.dev/gcp-playground-jens/docker-repository/graphql-server .
 
 # Push image to Artifact Registry
-docker push europe-west1-docker.pkg.dev/gcp-playground-jens/docker-repository/graphql-server:v1
+docker push europe-west1-docker.pkg.dev/gcp-playground-jens/docker-repository/graphql-server
 ```
 
 ## Deploy to Cloud Run
 
 ```bash
 # Deploy command
-gcloud run deploy graphql-server --image europe-west1-docker.pkg.dev/gcp-playground-jens/docker-repository/graphql-server:v1 --platform managed --region europe-west1
+gcloud run deploy graphql-server --image europe-west1-docker.pkg.dev/gcp-playground-jens/docker-repository/graphql-server --platform managed --region europe-west1
 ```
 
 ## Deploy to GKE
