@@ -7,7 +7,7 @@
     "start": "next start -p ${PORT:=3000}"
   },
   "dependencies": {
-    "@google-cloud/storage": "5.15.3",
+    "@google-cloud/storage": "5.16.0",
     "@types/node": "16.11.6",
     "@types/react": "17.0.33",
     "bootstrap": "5.1.3",
