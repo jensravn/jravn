@@ -10,8 +10,9 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      backend: ${{ steps.filter.outputs.backend }}
-      frontend: ${{ steps.filter.outputs.frontend }}
+      domain: ${{ steps.filter.outputs.domain }}
+      springapi: ${{ steps.filter.outputs.springapi }}
+      nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
     steps:
       - uses: actions/checkout@v2
       - uses: dorny/paths-filter@v2
