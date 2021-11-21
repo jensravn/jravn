@@ -63,7 +63,7 @@ jobs:
 
   build-and-deploy-api:
     needs: [changes, build-and-deploy-domain-module]
-    if: ${{ needs.changes.outputs.springapi == 'true' }}
+    if: ${{ always() && needs.changes.outputs.springapi == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
