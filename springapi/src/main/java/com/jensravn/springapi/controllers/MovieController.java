@@ -6,7 +6,7 @@ import com.google.cloud.firestore.Firestore;
 import com.google.cloud.firestore.FirestoreOptions;
 import com.google.cloud.firestore.QueryDocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
-import com.jensravn.springapi.models.Movie;
+import com.jensravn.domain.models.Movie;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
