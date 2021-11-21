@@ -31,6 +31,12 @@
   <dependencies>
 
     <dependency>
+      <groupId>com.jensravn</groupId>
+      <artifactId>domain</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+
+    <dependency>
       <artifactId>spring-boot-starter-web</artifactId>
       <groupId>org.springframework.boot</groupId>
     </dependency>

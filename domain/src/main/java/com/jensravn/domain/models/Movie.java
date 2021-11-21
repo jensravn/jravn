@@ -1,4 +1,4 @@
-package com.jensravn.springapi.models;
+package com.jensravn.domain.models;
 
 import java.util.List;
 
