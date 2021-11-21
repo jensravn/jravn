@@ -7,7 +7,26 @@ on:
   workflow_dispatch:
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            domain:
+              - 'domain/**'
+            springapi:
+              - 'springapi/**'
+            nextjs-website:
+              - 'nextjs-website/**'
+
   build-and-deploy-domain-module:
+    needs: changes
+    if: ${{ needs.changes.outputs.domain == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -41,7 +60,8 @@ jobs:
         run: mvn --batch-mode --update-snapshots deploy
 
   build-and-deploy-api:
-    needs: build-and-deploy-domain-module
+    needs: [changes, build-and-deploy-domain-module]
+    if: ${{ needs.changes.outputs.springapi == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -82,6 +102,8 @@ jobs:
         run: gcloud app deploy staging/springapi-0.0.1-SNAPSHOT.jar
 
   build-and-deploy-website:
+    needs: changes
+    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
