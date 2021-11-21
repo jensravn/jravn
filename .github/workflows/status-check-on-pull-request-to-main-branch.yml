@@ -38,7 +38,7 @@ jobs:
           distribution: "adopt"
 
       - name: "Build with Maven"
-        run: mvn --batch-mode --update-snapshots install
+        run: mvn --batch-mode --update-snapshots deploy
 
   build-api:
     needs: domain
