@@ -41,7 +41,7 @@ jobs:
         run: mvn --batch-mode --update-snapshots deploy
 
   build-and-deploy-api:
-    needs: domain
+    needs: build-and-deploy-domain-module
     runs-on: ubuntu-latest
     defaults:
       run:
