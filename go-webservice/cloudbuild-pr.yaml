@@ -1,0 +1,10 @@
+steps:
+  # Run tests
+  - id: "go-test"
+    name: golang
+    entrypoint: /bin/bash
+    args:
+      - -c
+      - |
+        go test ./...
+    dir: "go-webservice"
