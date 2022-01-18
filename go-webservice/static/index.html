@@ -9,7 +9,9 @@
     <div id="chat"></div>
 
     <script>
-      let socket = new WebSocket("ws://localhost:8080/ws");
+      let socket = new WebSocket(
+        "ws://go-webservice-cg7lqxhiua-ew.a.run.app/ws"
+      );
       console.log("Attempting Websocket Connection");
 
       socket.onopen = () => {
