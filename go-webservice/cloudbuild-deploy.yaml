@@ -21,7 +21,8 @@ steps:
         gcloud run deploy go-webservice \
         --image=eu.gcr.io/$PROJECT_ID/go-webservice:$SHORT_SHA \
         --region europe-west1 \
-        --platform managed
+        --platform managed \
+        --allow-unauthenticated
     dir: "go-webservice"
 
 images:
