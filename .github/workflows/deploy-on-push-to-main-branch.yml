@@ -11,8 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       domain: ${{ steps.filter.outputs.domain }}
-      springapi: ${{ steps.filter.outputs.springapi }}
+      go-webservice: ${{ steps.filter.outputs.go-webservice }}
       nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
+      springapi: ${{ steps.filter.outputs.springapi }}
     steps:
       - uses: actions/checkout@v2
       - uses: dorny/paths-filter@v2
@@ -21,10 +22,12 @@ jobs:
           filters: |
             domain:
               - 'domain/**'
-            springapi:
-              - 'springapi/**'
+            go-webservice:
+              - 'go-webservice/**'
             nextjs-website:
               - 'nextjs-website/**'
+            springapi:
+              - 'springapi/**'
 
   build-and-deploy-domain-module:
     needs: changes
@@ -61,6 +64,74 @@ jobs:
 
       - name: "Build with Maven"
         run: mvn --batch-mode --update-snapshots deploy
+
+  build-and-deploy-go-webservice:
+    needs: changes
+    if: ${{ needs.changes.outputs.go-webservice == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go-webservice
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build go-webservice Docker image
+        run: docker build -t go-webservice .
+
+      - id: auth
+        uses: google-github-actions/auth@v0
+        with:
+          # TODO: Change to workload_identity_provider
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.3.0
+
+      - name: Upload go-webservice image to Container Registry
+        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/go-webservice --project ${{ secrets.project_id }}
+
+      - name: Deploy go-webservice to Cloud Run
+        run: |
+          gcloud run deploy go-webservice \
+          --image gcr.io/${{ secrets.project_id }}/go-webservice \
+          --project ${{ secrets.project_id }} \
+          --platform managed \
+          --region europe-west1 \
+          --allow-unauthenticated
+
+  build-and-deploy-website:
+    needs: changes
+    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nextjs-website
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build nextjs-website Docker image
+        run: docker build -t nextjs-website .
+
+      - id: auth
+        uses: google-github-actions/auth@v0
+        with:
+          # TODO: Change to workload_identity_provider
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.3.0
+
+      - name: Upload nextjs-website image to Container Registry
+        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/nextjs-website --project ${{ secrets.project_id }}
+
+      - name: Deploy nextjs-website to Cloud Run
+        run: |
+          gcloud run deploy nextjs-website \
+          --image gcr.io/${{ secrets.project_id }}/nextjs-website \
+          --project ${{ secrets.project_id }} \
+          --platform managed \
+          --region europe-west1 \
+          --allow-unauthenticated
 
   build-and-deploy-api:
     needs: [changes, build-and-deploy-domain-module]
@@ -104,37 +175,3 @@ jobs:
 
       - name: Deploy JAR to App Engine
         run: gcloud app deploy staging/springapi-0.0.1-SNAPSHOT.jar
-
-  build-and-deploy-website:
-    needs: changes
-    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: nextjs-website
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build nextjs-website Docker image
-        run: docker build -t nextjs-website .
-
-      - id: auth
-        uses: google-github-actions/auth@v0
-        with:
-          # TODO: Change to workload_identity_provider
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.3.0
-
-      - name: Upload nextjs-website image to Container Registry
-        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/nextjs-website --project ${{ secrets.project_id }}
-
-      - name: Deploy nextjs-website to Cloud Run
-        run: |
-          gcloud run deploy nextjs-website \
-          --image gcr.io/${{ secrets.project_id }}/nextjs-website \
-          --project ${{ secrets.project_id }} \
-          --platform managed \
-          --region europe-west1 \
-          --allow-unauthenticated

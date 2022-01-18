@@ -11,8 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       domain: ${{ steps.filter.outputs.domain }}
-      springapi: ${{ steps.filter.outputs.springapi }}
+      go-webservice: ${{ steps.filter.outputs.go-webservice }}
       nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
+      springapi: ${{ steps.filter.outputs.springapi }}
     steps:
       - uses: dorny/paths-filter@v2
         id: filter
@@ -20,10 +21,10 @@ jobs:
           filters: |
             domain:
               - 'domain/**'
-            springapi:
-              - 'springapi/**'
             nextjs-website:
               - 'nextjs-website/**'
+            springapi:
+              - 'springapi/**'
 
   domain:
     needs: changes
@@ -61,6 +62,30 @@ jobs:
       - name: "Build with Maven"
         run: mvn --batch-mode --update-snapshots install
 
+  build-go-webservice:
+    needs: changes
+    if: ${{ needs.changes.outputs.go-webservice == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go-webservice
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build go-webservice Docker image
+        run: docker build -t go-webservice .
+
+  build-nextjs-website:
+    needs: changes
+    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nextjs-website
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build nextjs-website Docker image
+        run: docker build -t nextjs-website .
+
   build-api:
     needs: [changes, domain]
     if: ${{ always() && needs.changes.outputs.springapi == 'true' }}
@@ -96,15 +121,3 @@ jobs:
 
       - name: "Build with Maven"
         run: mvn --batch-mode --update-snapshots verify
-
-  build-nextjs-website:
-    needs: changes
-    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: nextjs-website
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build nextjs-website Docker image
-        run: docker build -t nextjs-website .
