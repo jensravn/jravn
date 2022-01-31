@@ -1,0 +1,20 @@
+steps:
+  # TF INIT
+  - id: "tf init"
+    name: "hashicorp/terraform:1.1.4"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform init
+    dir: "terraform"
+
+  # TF APPLY
+  - id: "tf apply"
+    name: "hashicorp/terraform:1.1.4"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        terraform apply -auto-approve
+    dir: "terraform"
