@@ -1,17 +1,17 @@
 steps:
   # TF VALIDATE
   - id: "tf validate"
-    name: "hashicorp/terraform:1.0.0"
+    name: "hashicorp/terraform:1.1.4"
     entrypoint: "sh"
     args:
       - "-c"
       - |
-        terraform init
+        terraform validate
     dir: "terraform"
 
   # TF INIT
   - id: "tf init"
-    name: "hashicorp/terraform:1.0.0"
+    name: "hashicorp/terraform:1.1.4"
     entrypoint: "sh"
     args:
       - "-c"
@@ -19,9 +19,9 @@ steps:
         terraform init
     dir: "terraform"
 
-  # TF PLAN.
+  # TF PLAN
   - id: "tf plan"
-    name: "hashicorp/terraform:1.0.0"
+    name: "hashicorp/terraform:1.1.4"
     entrypoint: "sh"
     args:
       - "-c"
