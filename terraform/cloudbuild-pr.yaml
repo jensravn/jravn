@@ -19,7 +19,7 @@ steps:
         terraform init
     dir: "terraform"
 
-  # TF PLAN
+  # TF PLAN.
   - id: "tf plan"
     name: "hashicorp/terraform:1.0.0"
     entrypoint: "sh"
