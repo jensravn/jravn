@@ -8,8 +8,6 @@ terraform {
 }
 
 provider "google" {
-    credentials = file("terraform-key.json")
-
     project = "gcp-playground-jens"
     region = "europe-west1"
     zone = "europe-west1-b"
