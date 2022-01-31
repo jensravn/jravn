@@ -23,9 +23,9 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location = google_cloud_run_service.run_go_webservice
-  project  = google_cloud_run_service.run_go_webservice
-  service  = google_cloud_run_service.run_go_webservice
+  location = google_cloud_run_service.run_go_webservice.location
+  project  = google_cloud_run_service.run_go_webservice.project
+  service  = google_cloud_run_service.run_go_webservice.name
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }
