@@ -37,6 +37,5 @@ terraform {
     backend "gcs" {
       bucket = "gcp-playground-jens-terraform"
       prefix = "state"
-      credentials = "terraform-key.json"
     }
 }
