@@ -1,20 +1,20 @@
 terraform {
   required_providers {
     google = {
-      source = "hashicorp/google"
+      source  = "hashicorp/google"
       version = "4.6.0"
     }
   }
 }
 
 provider "google" {
-    project = "gcp-playground-jens"
-    region = "europe-west1"
-    zone = "europe-west1-b"
+  project = "gcp-playground-jens"
+  region  = "europe-west1"
+  zone    = "europe-west1-b"
 }
 
 resource "google_cloud_run_service" "run_go_webservice" {
-  name = "go-webservice"
+  name     = "go-webservice"
   location = "europe-west1"
 
   template {
@@ -32,8 +32,8 @@ resource "google_cloud_run_service" "run_go_webservice" {
 }
 
 terraform {
-    backend "gcs" {
-      bucket = "gcp-playground-jens-terraform"
-      prefix = "state"
-    }
+  backend "gcs" {
+    bucket = "gcp-playground-jens-terraform"
+    prefix = "state"
+  }
 }
