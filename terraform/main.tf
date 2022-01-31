@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "4.6.0"
+    }
+  }
+}
+
 provider "google" {
     credentials = file("terraform-key.json")
 
@@ -6,16 +15,22 @@ provider "google" {
     zone = "europe-west1-b"
 }
 
-resource "google_cloud_run_service" "run1" {
-  // nextjs-website
-}
+resource "google_cloud_run_service" "run_go_webservice" {
+  name = "go-webservice"
+  location = "europe-west1"
 
-resource "google_cloud_run_service" "run1" {
-  // go-webservice 
-}
+  template {
+    spec {
+      containers {
+        image = "eu.gcr.io/gcp-playground-jens/go-webservice"
+      }
+    }
+  }
 
-resource "google_app_engine_application" "app1" {
-  // springapi
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
 }
 
 terraform {
