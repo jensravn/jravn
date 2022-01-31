@@ -7,6 +7,7 @@ steps:
       - "-c"
       - |
         terraform init
+    dir: "terraform"
 
   # TF APPLY
   - id: "tf apply"
@@ -16,3 +17,4 @@ steps:
       - "-c"
       - |
         terraform apply -auto-approve
+    dir: "terraform"
