@@ -25,7 +25,7 @@ export default function Home() {
       <main className={styles.main}>
         <h1 className={styles.title}>Product</h1>
         {products.map((product) => (
-          <Row product={product} />
+          <Row key={product.id} product={product} />
         ))}
       </main>
 
