@@ -1,4 +1,4 @@
-name: Deploy on push to main branch
+name: pull request merge
 
 on:
   push:
@@ -10,7 +10,6 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      domain: ${{ steps.filter.outputs.domain }}
       springapi: ${{ steps.filter.outputs.springapi }}
       nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
     steps:
@@ -24,8 +23,8 @@ jobs:
             nextjs-website:
               - 'nextjs-website/**'
 
-  build-and-deploy-api:
-    needs: [changes, build-and-deploy-domain-module]
+  staging-api:
+    needs: [changes]
     if: ${{ always() && needs.changes.outputs.springapi == 'true' }}
     runs-on: ubuntu-latest
     defaults:
@@ -67,7 +66,7 @@ jobs:
       - name: Deploy JAR to App Engine
         run: gcloud app deploy staging/springapi-0.0.1-SNAPSHOT.jar
 
-  build-and-deploy-website:
+  staging-website:
     needs: changes
     if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
     runs-on: ubuntu-latest

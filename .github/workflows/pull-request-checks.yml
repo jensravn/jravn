@@ -1,4 +1,4 @@
-name: Status check on pull request to main branch
+name: pull request checks
 
 on:
   pull_request:
@@ -10,7 +10,6 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      domain: ${{ steps.filter.outputs.domain }}
       springapi: ${{ steps.filter.outputs.springapi }}
       nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
     steps:
@@ -23,8 +22,8 @@ jobs:
             nextjs-website:
               - 'nextjs-website/**'
 
-  build-api:
-    needs: [changes, domain]
+  check-api:
+    needs: [changes]
     if: ${{ always() && needs.changes.outputs.springapi == 'true' }}
     runs-on: ubuntu-latest
     defaults:
@@ -59,7 +58,7 @@ jobs:
       - name: "Build with Maven"
         run: mvn --batch-mode --update-snapshots verify
 
-  build-nextjs-website:
+  check-nextjs-website:
     needs: changes
     if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
     runs-on: ubuntu-latest
