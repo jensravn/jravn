@@ -1,25 +1,21 @@
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
+import MovieList from "../components/movielist";
 import styles from "../styles/Home.module.css";
 
 export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>jensravn playground</title>
+        <title>jensravn playground | Movie</title>
         <meta name="description" content="Fun fun fun" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
-        <Link href="/product">
-          <a>Product</a>
-        </Link>
-        <br />
-        <Link href="/movie">
-          <a>Movie</a>
-        </Link>
+        <h1 className={styles.title}>Movie</h1>
+
+        <MovieList />
       </main>
 
       <footer className={styles.footer}>
