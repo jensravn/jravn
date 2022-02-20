@@ -1,6 +1,6 @@
 package com.jensravn.springapi.repository;
 
-import com.jensravn.domain.models.Movie;
+import com.jensravn.springapi.models.Movie;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.jensravn.springapi.service;
 
-import com.jensravn.domain.models.Movie;
+import com.jensravn.springapi.models.Movie;
 import java.util.List;
 
 public interface MovieService {
