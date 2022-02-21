@@ -3,7 +3,7 @@ import Image from "next/image";
 import MovieList from "../components/movielist";
 import styles from "../styles/Home.module.css";
 
-export default function Home() {
+export default function Movies() {
   return (
     <div className={styles.container}>
       <Head>

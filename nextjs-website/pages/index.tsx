@@ -13,12 +13,12 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <Link href="/product">
-          <a>Product</a>
+        <Link href="/products">
+          <a>Products</a>
         </Link>
         <br />
-        <Link href="/movie">
-          <a>Movie</a>
+        <Link href="/movies">
+          <a>Movies</a>
         </Link>
       </main>
 
