@@ -30,7 +30,7 @@ jobs:
       run:
         working-directory: springapi
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - id: auth
         uses: google-github-actions/auth@v0
@@ -66,6 +66,6 @@ jobs:
       run:
         working-directory: nextjs-website
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build nextjs-website Docker image
         run: docker build -t nextjs-website .

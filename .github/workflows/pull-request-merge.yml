@@ -13,7 +13,7 @@ jobs:
       springapi: ${{ steps.filter.outputs.springapi }}
       nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:
@@ -32,7 +32,7 @@ jobs:
         working-directory: springapi
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache local Maven repository
         uses: actions/cache@v2
@@ -75,7 +75,7 @@ jobs:
         working-directory: nextjs-website
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Build nextjs-website Docker image
         run: docker build -t nextjs-website .
 
