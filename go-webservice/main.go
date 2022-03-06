@@ -1,12 +1,15 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"io"
 	"log"
 	"math/rand"
 	"net/http"
 	"time"
 
+	"cloud.google.com/go/pubsub"
 	"golang.org/x/net/websocket"
 	"jensravn.com/web/domain"
 	"jensravn.com/web/repository"
@@ -83,6 +86,12 @@ func main() {
 
 			/***** PURE 🦄 -> 💀 I/O *****/
 
+			// Pub/Sub
+			projectID := "gcp-playground-jens"
+			topicID := "go-webservice-product-topic"
+			publish(w, projectID, topicID, name)
+
+			// Firestore
 			updateTime := repository.Save(product)
 			w.Write(updateTime)
 		}
@@ -91,4 +100,27 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func publish(w io.Writer, projectID, topicID, msg string) error {
+
+	ctx := context.Background()
+	client, err := pubsub.NewClient(ctx, projectID)
+	if err != nil {
+		return fmt.Errorf("pubsub.NewClient: %v", err)
+	}
+	defer client.Close()
+
+	t := client.Topic(topicID)
+	result := t.Publish(ctx, &pubsub.Message{
+		Data: []byte(msg),
+	})
+	// Block until the result is returned and a server-generated
+	// ID is returned for the published message.
+	id, err := result.Get(ctx)
+	if err != nil {
+		return fmt.Errorf("Get: %v", err)
+	}
+	fmt.Fprintf(w, "Published a message; msg ID: %v\n", id)
+	return nil
 }
