@@ -10,6 +10,7 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
+      go-pubsub-service: ${{ steps.filter.outputs.go-pubsub-service }}
       springapi: ${{ steps.filter.outputs.springapi }}
       nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
     steps:
@@ -17,10 +18,35 @@ jobs:
         id: filter
         with:
           filters: |
-            springapi:
-              - 'springapi/**'
+            go-pubsub-service:
+              - 'go-pubsub-service/**'
             nextjs-website:
               - 'nextjs-website/**'
+            springapi:
+              - 'springapi/**'
+
+  check-go-pubsub-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.go-pubsub-service == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go-pubsub-service
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: '1.16.1' # The Go version to download (if necessary) and use.
+      - run: go test ./...
+
+      - id: auth
+        uses: google-github-actions/auth@v0
+        with:
+          # TODO: Change to workload_identity_provider
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.5.1
 
   check-nextjs-website:
     needs: changes
