@@ -22,7 +22,19 @@ jobs:
             nextjs-website:
               - 'nextjs-website/**'
 
-  check-api:
+  check-nextjs-website:
+    needs: changes
+    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nextjs-website
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build nextjs-website Docker image
+        run: docker build -t nextjs-website .
+
+  check-springapi:
     needs: [changes]
     if: ${{ always() && needs.changes.outputs.springapi == 'true' }}
     runs-on: ubuntu-latest
@@ -57,15 +69,3 @@ jobs:
 
       - name: "Build with Maven"
         run: mvn --batch-mode --update-snapshots verify
-
-  check-nextjs-website:
-    needs: changes
-    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: nextjs-website
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build nextjs-website Docker image
-        run: docker build -t nextjs-website .
