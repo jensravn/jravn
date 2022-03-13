@@ -33,20 +33,37 @@ jobs:
       run:
         working-directory: go-pubsub-service
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
-        with:
-          go-version: '1.16.1' # The Go version to download (if necessary) and use.
-      - run: go test ./...
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - id: auth
-        uses: google-github-actions/auth@v0
+      - name: Setup Go
+        uses: actions/setup-go@v2
         with:
-          # TODO: Change to workload_identity_provider
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          go-version: '1.17'
+      
+      - name: Verify dependencies
+        run: go mod verify
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.5.1
+      - name: Build
+        run: go build -v ./...
+
+      - name: Run go vet
+        run: go vet ./...
+
+      - name: Install staticcheck
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      - name: Run staticcheck
+        run: staticcheck ./...
+
+      - name: Install golint
+        run: go install golang.org/x/lint/golint@latest
+
+      - name: Run golint
+        run: golint ./...
+
+      - name: Run tests
+        run: go test ./...
 
   check-nextjs-website:
     needs: changes
