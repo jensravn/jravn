@@ -44,7 +44,7 @@ jobs:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Set up gcloud
-        uses: google-github-actions/setup-gcloud@v0.5.1
+        uses: google-github-actions/setup-gcloud@v0.6.0
 
       - name: Build docker image
         run: docker build -t go-pubsub-service .
@@ -80,7 +80,7 @@ jobs:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.5.1
+        uses: google-github-actions/setup-gcloud@v0.6.0
 
       - name: Upload nextjs-website image to Container Registry
         run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/nextjs-website --project ${{ secrets.project_id }}
