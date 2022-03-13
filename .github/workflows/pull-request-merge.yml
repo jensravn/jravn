@@ -10,18 +10,89 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      springapi: ${{ steps.filter.outputs.springapi }}
+      go-pubsub-service: ${{ steps.filter.outputs.go-pubsub-service }}
       nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
+      springapi: ${{ steps.filter.outputs.springapi }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:
           filters: |
-            springapi:
-              - 'springapi/**'
+            go-pubsub-service:
+              - 'go-pubsub-service/**'
             nextjs-website:
               - 'nextjs-website/**'
+            springapi:
+              - 'springapi/**'
+
+  go-pubsub-service:
+    needs: changes
+    if: ${{ needs.changes.outputs.go-pubsub-service == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go-pubsub-service
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: auth
+        uses: google-github-actions/auth@v0
+        with:
+          # TODO: Change to workload_identity_provider
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v0.5.1
+
+      - name: Build docker image
+        run: docker build -t go-pubsub-service .
+
+      - name: Push image to Container Registry
+        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/go-pubsub-service --project ${{ secrets.project_id }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy go-pubsub-service \
+            --image gcr.io/${{ secrets.project_id }}/go-pubsub-service \
+            --project ${{ secrets.project_id }} \
+            --platform managed \
+            --region europe-west1 
+
+  nextjs-website:
+    needs: changes
+    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nextjs-website
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build nextjs-website Docker image
+        run: docker build -t nextjs-website .
+
+      - id: auth
+        uses: google-github-actions/auth@v0
+        with:
+          # TODO: Change to workload_identity_provider
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.5.1
+
+      - name: Upload nextjs-website image to Container Registry
+        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/nextjs-website --project ${{ secrets.project_id }}
+
+      - name: Deploy nextjs-website to Cloud Run
+        run: |
+          gcloud run deploy nextjs-website \
+          --image gcr.io/${{ secrets.project_id }}/nextjs-website \
+          --project ${{ secrets.project_id }} \
+          --platform managed \
+          --region europe-west1 \
+          --allow-unauthenticated
 
   staging-api:
     needs: [changes]
@@ -65,37 +136,3 @@ jobs:
 
       - name: Deploy JAR to App Engine
         run: gcloud app deploy staging/springapi-0.0.1-SNAPSHOT.jar
-
-  staging-website:
-    needs: changes
-    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: nextjs-website
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build nextjs-website Docker image
-        run: docker build -t nextjs-website .
-
-      - id: auth
-        uses: google-github-actions/auth@v0
-        with:
-          # TODO: Change to workload_identity_provider
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.5.1
-
-      - name: Upload nextjs-website image to Container Registry
-        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/nextjs-website --project ${{ secrets.project_id }}
-
-      - name: Deploy nextjs-website to Cloud Run
-        run: |
-          gcloud run deploy nextjs-website \
-          --image gcr.io/${{ secrets.project_id }}/nextjs-website \
-          --project ${{ secrets.project_id }} \
-          --platform managed \
-          --region europe-west1 \
-          --allow-unauthenticated
