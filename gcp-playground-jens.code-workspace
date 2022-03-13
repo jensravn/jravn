@@ -14,7 +14,10 @@
     },
     {
       "path": "terraform"
-    },
+    }
   ],
-  "settings": {}
+  "settings": {
+    "go.lintTool": "golangci-lint",
+    "go.lintFlags": ["--fast"]
+  }
 }

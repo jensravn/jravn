@@ -49,4 +49,3 @@ func HelloPubSub(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("Hello %s!", name)
 }
-
