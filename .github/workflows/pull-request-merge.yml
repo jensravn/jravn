@@ -33,21 +33,21 @@ jobs:
     defaults:
       run:
         working-directory: go-pubsub-service
-
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: auth
+      - name: Build docker image
+        run: docker build -t go-pubsub-service .
+
+      - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
         with:
           # TODO: Change to workload_identity_provider
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Set up gcloud
+      - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v0.6.0
-
-      - name: Build docker image
-        run: docker build -t go-pubsub-service .
 
       - name: Push image to Container Registry
         run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/go-pubsub-service --project ${{ secrets.project_id }}
@@ -58,7 +58,7 @@ jobs:
             --image gcr.io/${{ secrets.project_id }}/go-pubsub-service \
             --project ${{ secrets.project_id }} \
             --platform managed \
-            --region europe-west1 
+            --region europe-west1
 
   nextjs-website:
     needs: changes
@@ -67,25 +67,26 @@ jobs:
     defaults:
       run:
         working-directory: nextjs-website
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Build nextjs-website Docker image
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build docker image
         run: docker build -t nextjs-website .
 
-      - id: auth
+      - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
         with:
           # TODO: Change to workload_identity_provider
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Set up Cloud SDK
+      - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v0.6.0
 
-      - name: Upload nextjs-website image to Container Registry
+      - name: Push image to Container Registry
         run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/nextjs-website --project ${{ secrets.project_id }}
 
-      - name: Deploy nextjs-website to Cloud Run
+      - name: Deploy to Cloud Run
         run: |
           gcloud run deploy nextjs-website \
           --image gcr.io/${{ secrets.project_id }}/nextjs-website \
@@ -94,16 +95,16 @@ jobs:
           --region europe-west1 \
           --allow-unauthenticated
 
-  staging-api:
+  springapi:
     needs: [changes]
     if: ${{ always() && needs.changes.outputs.springapi == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: springapi
-
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
       - name: Cache local Maven repository
         uses: actions/cache@v2
@@ -125,13 +126,13 @@ jobs:
       - name: "Copy JAR to staging folder"
         run: mkdir staging && cp target/*.jar staging
 
-      - id: auth
+      - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
         with:
           # TODO: Change to workload_identity_provider
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Set up Cloud SDK
+      - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v0.5.1
 
       - name: Deploy JAR to App Engine
