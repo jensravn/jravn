@@ -2,7 +2,7 @@ name: pull request merge
 
 on:
   push:
-    branches: [main, go-pubsub-service] # TODO Remove
+    branches: [main]
 
   workflow_dispatch:
 
@@ -95,7 +95,7 @@ jobs:
             --image gcr.io/${{ secrets.project_id }}/go-webservice \
             --project ${{ secrets.project_id }} \
             --platform managed \
-            --region europe-west1
+            --region europe-west1 \
             --allow-unauthenticated
 
   nextjs-website:
