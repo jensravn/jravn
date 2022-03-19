@@ -2,7 +2,7 @@ name: pull request merge
 
 on:
   push:
-    branches: [main]
+    branches: [main, go-pubsub-service] # TODO Remove
 
   workflow_dispatch:
 
@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       go-pubsub-service: ${{ steps.filter.outputs.go-pubsub-service }}
+      go-webservice: ${{ steps.filter.outputs.go-webservice }}
       nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
       springapi: ${{ steps.filter.outputs.springapi }}
     steps:
@@ -21,6 +22,8 @@ jobs:
           filters: |
             go-pubsub-service:
               - 'go-pubsub-service/**'
+            go-webservice:
+              - 'go-webservice/**'
             nextjs-website:
               - 'nextjs-website/**'
             springapi:
@@ -59,6 +62,41 @@ jobs:
             --project ${{ secrets.project_id }} \
             --platform managed \
             --region europe-west1
+
+  go-webservice:
+    needs: changes
+    if: ${{ needs.changes.outputs.go-webservice == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go-webservice
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Build docker image
+        run: docker build -t go-webservice .
+
+      - name: Google Cloud Auth
+        uses: google-github-actions/auth@v0
+        with:
+          # TODO: Change to workload_identity_provider
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v0.6.0
+
+      - name: Push image to Container Registry
+        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/go-webservice --project ${{ secrets.project_id }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy go-webservice \
+            --image gcr.io/${{ secrets.project_id }}/go-webservice \
+            --project ${{ secrets.project_id }} \
+            --platform managed \
+            --region europe-west1
+            --allow-unauthenticated
 
   nextjs-website:
     needs: changes
