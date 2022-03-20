@@ -2,6 +2,8 @@ name: pull request checks
 
 on:
   pull_request:
+    tags:
+      - v*
     branches:
       - main
 
