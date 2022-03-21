@@ -117,7 +117,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.6.0
 
       - name: Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
