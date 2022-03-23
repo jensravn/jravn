@@ -1,0 +1,8 @@
+.dateRange > div:nth-child(1) > code {
+  line-height: 9rem;
+  font-weight: bolder;
+}
+
+.dateRange > div > code {
+  line-height: 3rem;
+}
