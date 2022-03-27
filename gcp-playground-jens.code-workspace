@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "path": ".github"
+    },
+    {
+      "path": "go-pubsub-service"
+    },
+    {
+      "path": "go-webservice"
+    },
+    {
+      "path": "nextjs-website"
+    },
+    {
+      "path": "terraform"
+    }
+  ],
+  "settings": {
+    "go.lintTool": "golangci-lint",
+    "go.lintFlags": ["--fast"]
+  }
+}
