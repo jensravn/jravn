@@ -13,6 +13,7 @@
   "author": "Jens Ravn Jensen",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^13.5.2"
+    "express": "4.17.3",
+    "puppeteer": "13.5.2"
   }
 }
