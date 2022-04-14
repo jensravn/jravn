@@ -14,7 +14,9 @@ exports.screenshot = async (req, res) => {
   });
   const page = await browser.newPage();
   await page.goto(url);
-  const imageBuffer = await page.screenshot();
+  const imageBuffer = await page.screenshot({
+    clip: { x: 0, y: 1000, height: 400, width: 800 },
+  });
   browser.close();
 
   res.set("Content-Type", "image/png");
