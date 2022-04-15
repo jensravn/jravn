@@ -17,9 +17,17 @@ RUN npm run build
 FROM node:lts-alpine AS runner
 WORKDIR /app
 
+ENV CHROME_BIN="/usr/bin/chromium-browser"
+RUN set -x \
+    && apk update \
+    && apk upgrade \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" > /etc/apk/repositories \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
+    && apk add --no-cache g++ chromium 
+
 ENV NODE_ENV production
 
-RUN apk add --no-cache chromium
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
