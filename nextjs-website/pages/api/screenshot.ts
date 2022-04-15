@@ -20,8 +20,10 @@ export default async function handler(
 }
 
 const getScreenshot = async (url: string) => {
+  console.log(process.env.CHROME_BIN);
   const browser = await puppeteer.launch({
     args: ["--no-sandbox"],
+    executablePath: process.env.CHROME_BIN,
   });
   const page = await browser.newPage();
   await page.goto("https://www.pricerunner.dk/t/2/Computer-Software");
