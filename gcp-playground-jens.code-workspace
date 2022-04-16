@@ -4,6 +4,9 @@
       "path": ".github"
     },
     {
+      "path": "go-pubsub-schemas"
+    },
+    {
       "path": "go-pubsub-service"
     },
     {
