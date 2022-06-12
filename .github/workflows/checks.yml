@@ -19,6 +19,7 @@ jobs:
     outputs:
       go: ${{ steps.filter.outputs.go }}
       nextjs: ${{ steps.filter.outputs.nextjs }}
+      terraform: ${{ steps.filter.outputs.terraform }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -29,6 +30,9 @@ jobs:
               - 'go/**'
             nextjs:
               - 'nextjs/**'
+            terraform:
+              - 'terraform/**'
+
   nextjs:
     needs: changes
     if: ${{ needs.changes.outputs.go == 'true' }}
@@ -68,3 +72,42 @@ jobs:
 
       - name: go test
         run: go test -v ./...
+
+  terraform:
+    needs: changes
+    if: ${{ needs.changes.outputs.terraform == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v3
+      # TF INIT
+      # - id: "tf init"
+      #   name: "hashicorp/terraform:1.1.4"
+      #   entrypoint: "sh"
+      #   args:
+      #     - "-c"
+      #     - |
+      #       terraform init
+      #   dir: "terraform"
+
+      # # TF VALIDATE
+      # - id: "tf validate"
+      #   name: "hashicorp/terraform:1.1.4"
+      #   entrypoint: "sh"
+      #   args:
+      #     - "-c"
+      #     - |
+      #       terraform validate
+      #   dir: "terraform"
+
+      # # TF PLAN
+      # - id: "tf plan"
+      #   name: "hashicorp/terraform:1.1.4"
+      #   entrypoint: "sh"
+      #   args:
+      #     - "-c"
+      #     - |
+      #       terraform plan
+      #   dir: "terraform"

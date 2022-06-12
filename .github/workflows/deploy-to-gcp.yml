@@ -12,6 +12,7 @@ jobs:
     outputs:
       go: ${{ steps.filter.outputs.go }}
       nextjs: ${{ steps.filter.outputs.nextjs }}
+      terraform: ${{ steps.filter.outputs.terraform }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
@@ -22,6 +23,8 @@ jobs:
               - 'go/**'
             nextjs:
               - 'nextjs/**'
+            terraform:
+              - 'terraform/**'
 
   go-cmd-pubsub:
     needs: changes
@@ -120,3 +123,32 @@ jobs:
           --platform managed \
           --region europe-west1 \
           --allow-unauthenticated
+
+  terraform:
+    needs: changes
+    if: ${{ needs.changes.outputs.terraform == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    steps:
+      - uses: actions/checkout@v3
+      # # TF INIT
+      # - id: "tf init"
+      #   name: "hashicorp/terraform:1.1.4"
+      #   entrypoint: "sh"
+      #   args:
+      #     - "-c"
+      #     - |
+      #       terraform init
+      #   dir: "terraform"
+
+      # # TF APPLY
+      # - id: "tf apply"
+      #   name: "hashicorp/terraform:1.1.4"
+      #   entrypoint: "sh"
+      #   args:
+      #     - "-c"
+      #     - |
+      #       terraform apply -auto-approve
+      #   dir: "terraform"
