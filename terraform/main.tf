@@ -31,13 +31,13 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service" "run_web_service" {
-  name     = "run-web-service"
+  name     = "go-cmd-web"
   location = "europe-west1"
 
   template {
     spec {
       containers {
-        image = "eu.gcr.io/gcp-playground-jens/run-web-service"
+        image = "eu.gcr.io/gcp-playground-jens/go-cmd-web"
       }
     }
   }
