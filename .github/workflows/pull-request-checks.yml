@@ -26,7 +26,7 @@ jobs:
           node-version: 16
       - run: npm ci
       - run: npm run prettier
-      - run: npm run eslint
+      - run: npm run lint
       - run: npm run cspell
 
   changes:
