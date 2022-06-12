@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start -p ${PORT:=3000}",
     "prettier": "prettier ../../. --check",
-    "eslint": "eslint **/*.{js,jsx,ts,tsx}",
+    "lint": "next lint",
     "cspell": "cspell ../../**/*"
   },
   "dependencies": {
