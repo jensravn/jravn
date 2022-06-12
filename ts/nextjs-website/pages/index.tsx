@@ -17,10 +17,6 @@ export default function Home() {
           <a>Dates</a>
         </Link>
         <br />
-        <Link href="/movies">
-          <a>Movies</a>
-        </Link>
-        <br />
         <Link href="/products">
           <a>Products</a>
         </Link>

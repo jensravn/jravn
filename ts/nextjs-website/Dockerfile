@@ -3,7 +3,6 @@ FROM node:lts AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 WORKDIR /app
 COPY package.json package-lock.json ./
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 RUN npm ci
 
 # Rebuild the source code only when needed
@@ -16,15 +15,6 @@ RUN npm run build
 # Production image, copy all the files and run next
 FROM node:lts-alpine AS runner
 WORKDIR /app
-
-ENV CHROME_BIN="/usr/bin/chromium-browser"
-RUN set -x \
-    && apk update \
-    && apk upgrade \
-    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" > /etc/apk/repositories \
-    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
-    && echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
-    && apk add --no-cache g++ chromium 
 
 ENV NODE_ENV production
 

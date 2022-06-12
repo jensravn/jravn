@@ -37,9 +37,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Build docker image
-        run: docker build -t go-run-pubsub-service .
-
       - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
         with:
@@ -70,9 +67,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
-      - name: Build docker image
-        run: docker build -t go-run-web-service .
 
       - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
