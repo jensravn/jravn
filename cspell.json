@@ -1,0 +1,41 @@
+{
+  "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+  "version": "0.2",
+  "ignorePaths": [
+    "go/lib/pubsub-schemas",
+    "**/*.svg",
+    "**/go.mod",
+    "**/go.sum"
+  ],
+  "dictionaryDefinitions": [],
+  "dictionaries": [],
+  "words": [
+    "addgroup",
+    "adduser",
+    "alovelace",
+    "Bitstream",
+    "compat",
+    "deps",
+    "dorny",
+    "drawio",
+    "firestore",
+    "gcloud",
+    "golangci",
+    "hashicorp",
+    "helloworld",
+    "jens",
+    "jensravn",
+    "libc",
+    "lqxhiua",
+    "mkdir",
+    "nextjs",
+    "noauth",
+    "noninteractive",
+    "protobuf",
+    "webservice"
+  ],
+  "ignoreWords": [],
+  "import": [],
+  "enabledLanguageIds": ["*"],
+  "enableFiletypes": ["*"]
+}

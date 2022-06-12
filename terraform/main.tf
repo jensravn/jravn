@@ -23,21 +23,21 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location = google_cloud_run_service.run_go_webservice.location
-  project  = google_cloud_run_service.run_go_webservice.project
-  service  = google_cloud_run_service.run_go_webservice.name
+  location = google_cloud_run_service.run_web_service.location
+  project  = google_cloud_run_service.run_web_service.project
+  service  = google_cloud_run_service.run_web_service.name
 
   policy_data = data.google_iam_policy.noauth.policy_data
 }
 
-resource "google_cloud_run_service" "run_go_webservice" {
-  name     = "go-webservice"
+resource "google_cloud_run_service" "run_web_service" {
+  name     = "run-web-service"
   location = "europe-west1"
 
   template {
     spec {
       containers {
-        image = "eu.gcr.io/gcp-playground-jens/go-webservice"
+        image = "eu.gcr.io/gcp-playground-jens/run-web-service"
       }
     }
   }

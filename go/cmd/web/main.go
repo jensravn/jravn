@@ -32,7 +32,7 @@ func MessageWebSocket(ws *websocket.Conn) {
 				log.Println(err)
 				break
 			}
-			fmt.Printf("recieved message %s\n", msg.Data)
+			fmt.Printf("received message %s\n", msg.Data)
 		}
 		close(done)
 	}(ws)
@@ -46,8 +46,8 @@ loop:
 		default:
 			fmt.Println("sending message")
 			message := []message{{
-				Data: "datadata",
-				Type: "typetype",
+				Data: "data-data",
+				Type: "type-type",
 			}}
 			if err := websocket.JSON.Send(ws, message); err != nil {
 				log.Println(err)
