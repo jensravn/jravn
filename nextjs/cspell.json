@@ -1,10 +1,15 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
-  "ignorePaths": ["**/*.svg", "**/go.sum"],
+  "ignorePaths": [],
   "dictionaryDefinitions": [],
   "dictionaries": [],
   "words": [
+    "addgroup",
+    "adduser",
+    "Bitstream",
+    "compat",
+    "deps",
     "dorny",
     "firestore",
     "gcloud",
@@ -13,10 +18,14 @@
     "helloworld",
     "jens",
     "jensravn",
+    "libc",
     "nextjs",
     "noauth",
     "protobuf"
   ],
   "ignoreWords": [],
-  "import": []
+  "import": [],
+  "enabledLanguageIds": [
+    "*"
+  ]
 }
