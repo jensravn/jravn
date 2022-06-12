@@ -14,7 +14,24 @@ permissions:
   pull-requests: read
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      go: ${{ steps.filter.outputs.go }}
+      nextjs: ${{ steps.filter.outputs.nextjs }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            go:
+              - 'go/**'
+            nextjs:
+              - 'nextjs/**'
   nextjs:
+    needs: changes
+    if: ${{ needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -31,6 +48,8 @@ jobs:
       - run: npm run build
 
   go:
+    needs: changes
+    if: ${{ needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
