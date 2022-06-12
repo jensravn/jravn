@@ -73,13 +73,6 @@ jobs:
           gcloud builds submit \
           --tag eu.gcr.io/${{ secrets.project_id }}/go-cmd-web \
           --project ${{ secrets.project_id }}
-      # - run: |
-      #     gcloud run deploy go-cmd-web \
-      #       --image eu.gcr.io/${{ secrets.project_id }}/go-cmd-web \
-      #       --project ${{ secrets.project_id }} \
-      #       --platform managed \
-      #       --region europe-west1 \
-      #       --allow-unauthenticated
 
   nextjs:
     needs: changes
@@ -107,7 +100,7 @@ jobs:
           --allow-unauthenticated
 
   terraform:
-    # needs: [go-cmd-pubsub]
+    needs: [go-cmd-web]
     runs-on: ubuntu-latest
     defaults:
       run:
