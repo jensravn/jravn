@@ -7,10 +7,10 @@
       "path": "go"
     },
     {
-      "path": "terraform"
+      "path": "nextjs"
     },
     {
-      "path": "ts"
+      "path": "terraform"
     },
     { "name": "root", "path": "./" }
   ],
