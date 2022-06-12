@@ -45,7 +45,7 @@ jobs:
             go-run-web-service:
               - 'go/run-web-service/**'
             ts-nextjs-website:
-              - 'ts-nextjs-website/**'
+              - 'ts/nextjs-website/**'
 
   check-go-run-pubsub-service:
     needs: changes
