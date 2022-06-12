@@ -131,6 +131,8 @@ jobs:
     defaults:
       run:
         working-directory: terraform
+    env:
+      GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
