@@ -14,6 +14,21 @@ permissions:
   pull-requests: read
 
 jobs:
+  check-formatting-linting-and-spelling:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ts/nextjs-website
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm run prettier
+      - run: npm run eslint
+      - run: npm run cspell
+
   changes:
     runs-on: ubuntu-latest
     outputs:

@@ -1,16 +1,21 @@
 {
   "$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
   "version": "0.2",
-  "ignorePaths": [],
+  "ignorePaths": ["**/*.svg", "**/go.sum"],
   "dictionaryDefinitions": [],
   "dictionaries": [],
   "words": [
     "dorny",
+    "firestore",
     "gcloud",
     "golangci",
+    "hashicorp",
     "helloworld",
     "jens",
-    "nextjs"
+    "jensravn",
+    "nextjs",
+    "noauth",
+    "protobuf"
   ],
   "ignoreWords": [],
   "import": []
