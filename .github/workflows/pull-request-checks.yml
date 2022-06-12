@@ -38,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: go-run-pubsub-service
+        working-directory: go/run-pubsub-service
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: go-run-web-service
+        working-directory: go/run-web-service
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ts-nextjs-website
+        working-directory: ts/nextjs-website
     steps:
       - uses: actions/checkout@v3
       - name: Build ts-nextjs-website Docker image
