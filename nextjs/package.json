@@ -7,7 +7,7 @@
     "start": "next start -p ${PORT:=3000}",
     "prettier": "prettier ../. --check",
     "lint": "next lint",
-    "cspell": "cspell **/*"
+    "cspell": "cspell ../"
   },
   "dependencies": {
     "@google-cloud/firestore": "5.0.2",
