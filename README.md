@@ -2,8 +2,8 @@
 
 ## Links
 
-- https://nextjs-cg7lqxhiua-ew.a.run.app
-- https://go-cmd-web-cg7lqxhiua-ew.a.run.app/product
+- [nextjs](https://nextjs-cg7lqxhiua-ew.a.run.app)
+- [go-cmd-web/product](https://go-cmd-web-cg7lqxhiua-ew.a.run.app/product)
 
 ## Architecture
 
