@@ -59,19 +59,12 @@ jobs:
       run:
         working-directory: go
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Setup Go
-        uses: actions/setup-go@v3
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v3
         with:
           go-version: "1.18"
-
-      - name: go build
-        run: go build -v ./...
-
-      - name: go test
-        run: go test -v ./...
+      - run: go build -v ./...
+      - run: go test -v ./...
 
   terraform:
     needs: changes
@@ -83,21 +76,9 @@ jobs:
     env:
       GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1
-
-      - name: Terraform Format
-        id: fmt
-        run: terraform fmt -check
-
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Terraform Validate
-        run: terraform validate -no-color
-
-      - name: Terraform Plan
-        run: terraform plan -no-color -input=false
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v1
+      - run: terraform fmt -check
+      - run: terraform init
+      - run: terraform validate -no-color
+      - run: terraform plan -no-color -input=false
