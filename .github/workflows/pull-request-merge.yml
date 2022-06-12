@@ -10,38 +10,35 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      go-pubsub-service: ${{ steps.filter.outputs.go-pubsub-service }}
-      go-webservice: ${{ steps.filter.outputs.go-webservice }}
-      nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
-      springapi: ${{ steps.filter.outputs.springapi }}
+      go-run-pubsub-service: ${{ steps.filter.outputs.go-run-pubsub-service }}
+      go-run-web-service: ${{ steps.filter.outputs.go-run-web-service }}
+      ts-nextjs-website: ${{ steps.filter.outputs.ts-nextjs-website }}
     steps:
       - uses: actions/checkout@v3
       - uses: dorny/paths-filter@v2
         id: filter
         with:
           filters: |
-            go-pubsub-service:
-              - 'go-pubsub-service/**'
-            go-webservice:
-              - 'go-webservice/**'
-            nextjs-website:
-              - 'nextjs-website/**'
-            springapi:
-              - 'springapi/**'
+            go-run-pubsub-service:
+              - 'go-run-pubsub-service/**'
+            go-run-web-service:
+              - 'go/run-web-service/**'
+            ts-nextjs-website:
+              - 'ts-nextjs-website/**'
 
-  go-pubsub-service:
+  go-run-pubsub-service:
     needs: changes
-    if: ${{ needs.changes.outputs.go-pubsub-service == 'true' }}
+    if: ${{ needs.changes.outputs.go-run-pubsub-service == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: go-pubsub-service
+        working-directory: go-run-pubsub-service
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Build docker image
-        run: docker build -t go-pubsub-service .
+        run: docker build -t go-run-pubsub-service .
 
       - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
@@ -53,29 +50,29 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.6.0
 
       - name: Push image to Container Registry
-        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/go-pubsub-service --project ${{ secrets.project_id }}
+        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/go-run-pubsub-service --project ${{ secrets.project_id }}
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy go-pubsub-service \
-            --image gcr.io/${{ secrets.project_id }}/go-pubsub-service \
+          gcloud run deploy go-run-pubsub-service \
+            --image gcr.io/${{ secrets.project_id }}/go-run-pubsub-service \
             --project ${{ secrets.project_id }} \
             --platform managed \
             --region europe-west1
 
-  go-webservice:
+  go-run-web-service:
     needs: changes
-    if: ${{ needs.changes.outputs.go-webservice == 'true' }}
+    if: ${{ needs.changes.outputs.go-run-web-service == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: go-webservice
+        working-directory: go-run-web-service
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Build docker image
-        run: docker build -t go-webservice .
+        run: docker build -t go-run-web-service .
 
       - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
@@ -87,30 +84,30 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.6.0
 
       - name: Push image to Container Registry
-        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/go-webservice --project ${{ secrets.project_id }}
+        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/go-run-web-service --project ${{ secrets.project_id }}
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy go-webservice \
-            --image gcr.io/${{ secrets.project_id }}/go-webservice \
+          gcloud run deploy go-run-web-service \
+            --image gcr.io/${{ secrets.project_id }}/go-run-web-service \
             --project ${{ secrets.project_id }} \
             --platform managed \
             --region europe-west1 \
             --allow-unauthenticated
 
-  nextjs-website:
+  ts-nextjs-website:
     needs: changes
-    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
+    if: ${{ needs.changes.outputs.ts-nextjs-website == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: nextjs-website
+        working-directory: ts-nextjs-website
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Build docker image
-        run: docker build -t nextjs-website .
+        run: docker build -t ts-nextjs-website .
 
       - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
@@ -122,12 +119,12 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0.6.0
 
       - name: Push image to Container Registry
-        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/nextjs-website --project ${{ secrets.project_id }}
+        run: gcloud builds submit --tag gcr.io/${{ secrets.project_id }}/ts-nextjs-website --project ${{ secrets.project_id }}
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy nextjs-website \
-          --image gcr.io/${{ secrets.project_id }}/nextjs-website \
+          gcloud run deploy ts-nextjs-website \
+          --image gcr.io/${{ secrets.project_id }}/ts-nextjs-website \
           --project ${{ secrets.project_id }} \
           --platform managed \
           --region europe-west1 \

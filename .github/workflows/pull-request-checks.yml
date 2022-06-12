@@ -17,31 +17,28 @@ jobs:
   changes:
     runs-on: ubuntu-latest
     outputs:
-      go-pubsub-service: ${{ steps.filter.outputs.go-pubsub-service }}
-      go-webservice: ${{ steps.filter.outputs.go-webservice }}
-      nextjs-website: ${{ steps.filter.outputs.nextjs-website }}
-      springapi: ${{ steps.filter.outputs.springapi }}
+      go-run-pubsub-service: ${{ steps.filter.outputs.go-run-pubsub-service }}
+      go-run-web-service: ${{ steps.filter.outputs.go-run-web-service }}
+      ts-nextjs-website: ${{ steps.filter.outputs.ts-nextjs-website }}
     steps:
       - uses: dorny/paths-filter@v2
         id: filter
         with:
           filters: |
-            go-pubsub-service:
-              - 'go-pubsub-service/**'
-            go-webservice:
-              - 'go-webservice/**'
-            nextjs-website:
-              - 'nextjs-website/**'
-            springapi:
-              - 'springapi/**'
+            go-run-pubsub-service:
+              - 'go/run-pubsub-service/**'
+            go-run-web-service:
+              - 'go/run-web-service/**'
+            ts-nextjs-website:
+              - 'ts-nextjs-website/**'
 
-  check-go-pubsub-service:
+  check-go-run-pubsub-service:
     needs: changes
-    if: ${{ needs.changes.outputs.go-pubsub-service == 'true' }}
+    if: ${{ needs.changes.outputs.go-run-pubsub-service == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: go-pubsub-service
+        working-directory: go-run-pubsub-service
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -57,13 +54,13 @@ jobs:
       - name: Run tests
         run: go test ./...
 
-  check-go-webservice:
+  check-go-run-web-service:
     needs: changes
-    if: ${{ needs.changes.outputs.go-webservice == 'true' }}
+    if: ${{ needs.changes.outputs.go-run-web-service == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: go-webservice
+        working-directory: go-run-web-service
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -79,14 +76,14 @@ jobs:
       - name: Run tests
         run: go test ./...
 
-  check-nextjs-website:
+  check-ts-nextjs-website:
     needs: changes
-    if: ${{ needs.changes.outputs.nextjs-website == 'true' }}
+    if: ${{ needs.changes.outputs.ts-nextjs-website == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: nextjs-website
+        working-directory: ts-nextjs-website
     steps:
       - uses: actions/checkout@v3
-      - name: Build nextjs-website Docker image
-        run: docker build -t nextjs-website .
+      - name: Build ts-nextjs-website Docker image
+        run: docker build -t ts-nextjs-website .

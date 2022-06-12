@@ -4,20 +4,15 @@
       "path": ".github"
     },
     {
-      "path": "go-pubsub-schemas"
-    },
-    {
-      "path": "go-pubsub-service"
-    },
-    {
-      "path": "go-webservice"
-    },
-    {
-      "path": "nextjs-website"
+      "path": "go"
     },
     {
       "path": "terraform"
-    }
+    },
+    {
+      "path": "ts"
+    },
+    { "name": "root", "path": "./" }
   ],
   "settings": {
     "go.lintTool": "golangci-lint",

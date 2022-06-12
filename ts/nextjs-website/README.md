@@ -22,7 +22,7 @@ You can view your images created with `docker images`.
 
 ## Deploying to Google Cloud Run
 
-The `start` script in `package.json` has been modified to accept a `PORT` environment variable (for compatability with Google Cloud Run).
+The `start` script in `package.json` has been modified to accept a `PORT` environment variable (for compatibility with Google Cloud Run).
 
 1. Install the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) so you can use `gcloud` on the command line.
 1. Run `gcloud auth login` to log in to your account.
@@ -44,8 +44,6 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
