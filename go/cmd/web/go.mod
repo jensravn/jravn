@@ -5,7 +5,7 @@ go 1.17
 require (
 	cloud.google.com/go/firestore v1.6.1
 	cloud.google.com/go/pubsub v1.22.2
-	golang.org/x/net v0.0.0-20220520000938-2e3eb7b945c2
+	golang.org/x/net v0.0.0-20220607020251-c690dde0001d
 )
 
 require (
