@@ -73,7 +73,7 @@ jobs:
 
   go-cmd-web:
     needs: [changes, terraform]
-    if: always() && ${{ needs.changes.outputs.go == 'true' }}
+    if: ${{ always() && needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
