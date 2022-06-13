@@ -109,6 +109,6 @@ jobs:
       GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
     steps:
       - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v1
+      - uses: hashicorp/setup-terraform@v2
       - run: terraform init
       - run: terraform apply -auto-approve -input=false
