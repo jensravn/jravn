@@ -33,6 +33,23 @@ jobs:
             terraform:
               - 'terraform/**'
 
+  terraform:
+    needs: changes
+    if: ${{ needs.changes.outputs.terraform == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    env:
+      GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - run: terraform fmt -check
+      - run: terraform init
+      - run: terraform validate -no-color
+      - run: terraform plan -no-color -input=false
+
   nextjs:
     needs: changes
     if: ${{ needs.changes.outputs.go == 'true' }}
@@ -65,20 +82,3 @@ jobs:
           go-version: "1.18"
       - run: go build -v ./...
       - run: go test -v ./...
-
-  terraform:
-    needs: changes
-    if: ${{ needs.changes.outputs.terraform == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: terraform
-    env:
-      GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-      - run: terraform fmt -check
-      - run: terraform init
-      - run: terraform validate -no-color
-      - run: terraform plan -no-color -input=false
