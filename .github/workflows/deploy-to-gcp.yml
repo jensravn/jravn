@@ -73,7 +73,7 @@ jobs:
 
   go-cmd-web:
     needs: [changes, terraform]
-    if: ${{ needs.changes.outputs.go == 'true' }}
+    if: ${{ always() && needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -90,7 +90,7 @@ jobs:
           --project ${{ secrets.project_id }}
       - run: |
           gcloud run deploy go-cmd-web \
-          --image gcr.io/${{ secrets.project_id }}/go-cmd-web \
+          --image eu.gcr.io/${{ secrets.project_id }}/go-cmd-web \
           --project ${{ secrets.project_id }} \
           --platform managed \
           --region europe-west1 \
