@@ -6,7 +6,6 @@
 - The extension will prompt you to download and install the Go language and tools
 - Open gcp-playground-jens.code-workspace with VS Code
 - Run `cd go/`
-- Run `go mod tidy`
 - Run `go build ./...`
 
 ## Run cmd in terminal
