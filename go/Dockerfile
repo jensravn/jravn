@@ -6,7 +6,7 @@ WORKDIR /src/app/
 
 COPY . .
 
-COPY */cmd/"${CMD}"/resources/ /app/resources/
+COPY /cmd/web/product-form.html /app/resources/
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build \
@@ -17,7 +17,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 
 FROM gcr.io/distroless/static-debian11:latest
 
-COPY --from=builder */app/resources/ /app/resources/
+COPY --from=builder /app/resources/ /app/resources/
 COPY --from=builder /app/cmd /app/cmd
 
 WORKDIR /app
