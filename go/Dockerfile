@@ -6,6 +6,8 @@ WORKDIR /src/app/
 
 COPY . .
 
+COPY /cmd/"${CMD}"/resource[s]/ /app/resources/
+
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build \
     -ldflags='-w -s -extldflags "-static"' \
@@ -13,12 +15,10 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     -o /app/cmd \
     ./cmd/${CMD}
 
-COPY ./cmd/"${CMD}"/resource[s]/ /app/resources/
-
 FROM gcr.io/distroless/static-debian11:latest
 
-COPY --from=builder /app/cmd /app/cmd
 COPY --from=builder /app/resource[s]/ /app/resources/
+COPY --from=builder /app/cmd /app/cmd
 
 WORKDIR /app
 
