@@ -21,7 +21,7 @@ export default function Products() {
       <main className={styles.main}>
         <h1 className={styles.title}>Product</h1>
         <br />
-        <a href="https://go-webservice-cg7lqxhiua-ew.a.run.app/product">
+        <a href="https://go-cmd-web-cg7lqxhiua-ew.a.run.app/product">
           Add Product
         </a>
         <br />
