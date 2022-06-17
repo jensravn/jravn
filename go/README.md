@@ -32,3 +32,12 @@
 
 - Open a test file in VS Code
 - Click `debug test` on top of the test function
+
+## Build cmd image
+
+- Run `cd go/`
+- Run `docker build --tag <CMD> --build-arg CMD=<CMD> .`
+
+## Run cmd container
+
+- Run `docker run -d -p 8080:8080 <IMAGE_NAME>`

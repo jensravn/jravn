@@ -24,7 +24,7 @@ func main() {
 	http.HandleFunc("/product", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case "GET":
-			http.ServeFile(w, r, "product-form.html")
+			http.ServeFile(w, r, "resources/product-form.html")
 		case "POST":
 			if err := r.ParseForm(); err != nil {
 				fmt.Printf("ParseForm() err: %v", err)
@@ -51,10 +51,9 @@ func main() {
 			w.Write(updateTime)
 		}
 	})
+	log.Println("Listening on port 8080")
 	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	log.Fatalf("Web server, err: %v", err)
 }
 
 func publish(w io.Writer, projectID, topicID, msg string) error {
