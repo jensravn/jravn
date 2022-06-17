@@ -4,7 +4,11 @@
       "path": ".github"
     },
     {
-      "path": "go"
+      "path": "go",
+      "settings": {
+        "go.lintTool": "golangci-lint",
+        "go.lintFlags": ["--fast"]
+      }
     },
     {
       "path": "nextjs"
@@ -12,10 +16,9 @@
     {
       "path": "terraform"
     },
-    { "name": "root", "path": "./" }
-  ],
-  "settings": {
-    "go.lintTool": "golangci-lint",
-    "go.lintFlags": ["--fast"]
-  }
+    {
+      "path": "./",
+      "name": "root"
+    }
+  ]
 }

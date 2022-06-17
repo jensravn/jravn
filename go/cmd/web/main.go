@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"math/rand"
 	"net/http"
+	"time"
 
 	"cloud.google.com/go/pubsub"
 	"jensravn.com/web/domain"
@@ -34,11 +34,12 @@ func main() {
 			start := r.PostFormValue("startDate")
 			end := r.PostFormValue("endDate")
 
-			id := fmt.Sprintf("%04d", rand.Intn(1000))
+			id := fmt.Sprintf("%04d", int(time.Now().Unix()))
+			timestamp := fmt.Sprintf("%v", time.Now().Format("2006-01-02 15:04:05"))
 
 			/***** I/O 💀 -> 🦄 PURE  *****/
 
-			product := domain.NewProduct(id, name, start, end)
+			product := domain.NewProduct(id, timestamp, name, start, end)
 
 			/***** PURE 🦄 -> 💀 I/O *****/
 
