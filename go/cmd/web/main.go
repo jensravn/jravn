@@ -33,13 +33,11 @@ func main() {
 			name := r.PostFormValue("name")
 			start := r.PostFormValue("startDate")
 			end := r.PostFormValue("endDate")
-
-			id := fmt.Sprintf("%04d", int(time.Now().Unix()))
-			timestamp := fmt.Sprintf("%v", time.Now().Format("2006-01-02 15:04:05"))
+			now := time.Now()
 
 			/***** I/O 💀 -> 🦄 PURE  *****/
 
-			product := domain.NewProduct(id, timestamp, name, start, end)
+			product := domain.NewProduct(now, name, start, end)
 
 			/***** PURE 🦄 -> 💀 I/O *****/
 
