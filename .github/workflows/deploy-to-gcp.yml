@@ -60,11 +60,14 @@ jobs:
       - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v0.6.0
 
-      - name: Build and push image
+      - name: Build image
         run: |
           docker build \
             --tag eu.gcr.io/${{ secrets.project_id }}/go-cmd-pubsub \
             --build-arg CMD=pubsub .
+
+      - name: Push image
+        run: docker push eu.gcr.io/${{ secrets.project_id }}/go-cmd-pubsub
 
       - name: Deploy to Cloud Run
         run: |
