@@ -22,6 +22,7 @@
     "extldflags",
     "firestore",
     "gcloud",
+    "GOARCH",
     "golangci",
     "hashicorp",
     "helloworld",
@@ -39,6 +40,10 @@
   ],
   "ignoreWords": [],
   "import": [],
-  "enabledLanguageIds": ["*"],
-  "enableFiletypes": ["*"]
+  "enabledLanguageIds": [
+    "*"
+  ],
+  "enableFiletypes": [
+    "*"
+  ]
 }
