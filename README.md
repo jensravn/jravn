@@ -16,3 +16,4 @@
 - [ ] Move resources to Terraform
 - [ ] Setup golangci-lint
 - [ ] Setup a server push from nextjs
+- [ ] Run project local with docker-compose.yml
