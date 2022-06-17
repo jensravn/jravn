@@ -17,7 +17,7 @@ export default function Dates() {
     },
     {
       name: "From child dates",
-      start: new Date("2022-01-01"),
+      start: new Date("2022-01-02"),
       end: new Date("2022-09-01"),
     },
     {
