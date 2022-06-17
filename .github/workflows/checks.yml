@@ -33,6 +33,39 @@ jobs:
             terraform:
               - 'terraform/**'
 
+  go:
+    needs: changes
+    if: ${{ needs.changes.outputs.go == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: "1.18"
+      - run: go build -v ./...
+      - run: go test -v ./...
+
+  nextjs:
+    needs: changes
+    if: ${{ needs.changes.outputs.nextjs == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: nextjs
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm run prettier
+      - run: npm run lint
+      - run: npm run cspell
+      - run: npm run build
+
   terraform:
     needs: changes
     if: ${{ needs.changes.outputs.terraform == 'true' }}
@@ -49,36 +82,3 @@ jobs:
       - run: terraform init
       - run: terraform validate -no-color
       - run: terraform plan -no-color -input=false
-
-  nextjs:
-    needs: changes
-    if: ${{ needs.changes.outputs.go == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: nextjs
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-      - run: npm run prettier
-      - run: npm run lint
-      - run: npm run cspell
-      - run: npm run build
-
-  go:
-    needs: changes
-    if: ${{ needs.changes.outputs.go == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: go
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
-        with:
-          go-version: "1.18"
-      - run: go build -v ./...
-      - run: go test -v ./...
