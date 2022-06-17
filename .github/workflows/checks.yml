@@ -82,4 +82,3 @@ jobs:
       - run: terraform init
       - run: terraform validate -no-color
       - run: terraform plan -no-color -input=false
-      
