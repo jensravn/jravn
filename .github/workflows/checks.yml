@@ -52,7 +52,7 @@ jobs:
 
   nextjs:
     needs: changes
-    if: ${{ needs.changes.outputs.go == 'true' }}
+    if: ${{ needs.changes.outputs.nextjs == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:
