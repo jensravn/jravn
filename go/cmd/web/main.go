@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"cloud.google.com/go/pubsub"
-	"jensravn.com/web/domain"
-	"jensravn.com/web/repository"
+	"github.com/jensravn/gcp-playground-jens/go/cmd/web/domain"
+	"github.com/jensravn/gcp-playground-jens/go/cmd/web/repository"
 )
 
 type message struct {

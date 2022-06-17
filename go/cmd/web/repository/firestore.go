@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
-	"jensravn.com/web/domain"
+	"github.com/jensravn/gcp-playground-jens/go/cmd/web/domain"
 )
 
 type Product struct {
