@@ -19,7 +19,9 @@ type Product struct {
 	EndDate   time.Time
 }
 
-func NewProduct(timestamp, id, name, startDate, endDate string) *Product {
+func NewProduct(now time.Time, name, startDate, endDate string) *Product {
+	id := fmt.Sprintf("%04d", int(now.Unix()))
+	timestamp := fmt.Sprintf("%v", now.Format("2006-01-02 15:04:05"))
 	start, err := time.Parse("2006-01-02", startDate)
 	if err != nil {
 		fmt.Printf("Could not parse startDate")
