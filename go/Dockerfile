@@ -13,7 +13,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     -o /app/cmd \
     ./cmd/${CMD}
 
-COPY ./cmd/${CMD}/resource[s]/ /app/resources/
+COPY ./cmd/"${CMD}"/resource[s]/ /app/resources/
 
 FROM gcr.io/distroless/static-debian11:latest
 
