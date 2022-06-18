@@ -6,6 +6,7 @@
     "build": "next build",
     "start": "next start -p ${PORT:=3000}",
     "prettier": "prettier ../. --check",
+    "format": "prettier ../. --write",
     "lint": "next lint",
     "cspell": "cspell ../"
   },

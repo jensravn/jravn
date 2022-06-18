@@ -41,10 +41,6 @@
   ],
   "ignoreWords": [],
   "import": [],
-  "enabledLanguageIds": [
-    "*"
-  ],
-  "enableFiletypes": [
-    "*"
-  ]
+  "enabledLanguageIds": ["*"],
+  "enableFiletypes": ["*"]
 }
