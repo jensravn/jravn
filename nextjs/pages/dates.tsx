@@ -1,36 +1,24 @@
 import Head from "next/head";
 import Image from "next/image";
+import useSWR from "swr";
+import dateRanges from "../components/dateRanges/dateRanges";
 import DateRanges, { DateRangeType } from "../components/dateRanges/dateRanges";
+import { fetcher } from "../helpers/fetcher";
 import styles from "../styles/Home.module.css";
+import { Product } from "../types/types";
 
 export default function Dates() {
-  const dateRanges: DateRangeType[] = [
-    {
-      name: "Effective",
-      start: new Date("2022-01-01"),
-      end: new Date("2022-09-01"),
-    },
-    {
-      name: "Set by user",
-      start: undefined,
-      end: undefined,
-    },
-    {
-      name: "From child dates",
-      start: new Date("2022-01-02"),
-      end: new Date("2022-09-01"),
-    },
-    {
-      name: "Restriction rule",
-      start: undefined,
-      end: new Date("2022-12-01"),
-    },
-    {
-      name: "Base system",
-      start: new Date("2022-02-01"),
-      end: undefined,
-    },
-  ];
+  const { data, error } = useSWR<Product[]>("/api/product", fetcher);
+
+  const dateRanges: DateRangeType[] =
+    data?.map(
+      (x) =>
+        ({
+          name: x.name,
+          start: new Date(x.startDate),
+          end: new Date(x.endDate),
+        } as DateRangeType)
+    ) ?? [];
 
   return (
     <div className={styles.container}>

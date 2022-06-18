@@ -36,10 +36,15 @@
     "noauth",
     "noninteractive",
     "protobuf",
+    "tailwindcss",
     "webservice"
   ],
   "ignoreWords": [],
   "import": [],
-  "enabledLanguageIds": ["*"],
-  "enableFiletypes": ["*"]
+  "enabledLanguageIds": [
+    "*"
+  ],
+  "enableFiletypes": [
+    "*"
+  ]
 }
