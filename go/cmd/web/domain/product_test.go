@@ -1,8 +1,10 @@
-package domain
+package domain_test
 
 import (
 	"testing"
 	"time"
+
+	"github.com/jensravn/gcp-playground-jens/go/cmd/web/domain"
 )
 
 func TestNewProduct(t *testing.T) {
@@ -14,7 +16,7 @@ func TestNewProduct(t *testing.T) {
 		name      string
 		startDate string
 		endDate   string
-		want      Product
+		want      domain.Product
 	}{
 		{
 			test:      "Test 1",
@@ -22,7 +24,7 @@ func TestNewProduct(t *testing.T) {
 			name:      "Name 1",
 			startDate: "2000-01-01",
 			endDate:   "2000-02-01",
-			want: Product{
+			want: domain.Product{
 				Id:        "0336616735",
 				Created:   time.Date(2006, time.January, 2, 0, 0, 0, 0, time.UTC),
 				Name:      "Name 1",

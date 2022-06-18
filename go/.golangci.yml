@@ -1,9 +1,6 @@
 linters:
   enable-all: true
   disable:
-    - revive
-    - stylecheck
-    - testpackage
     - unused
     - varnamelen
     - whitespace
