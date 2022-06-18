@@ -28,6 +28,13 @@ const DateRanges = ({ dateRanges }: Props) => {
 
   return (
     <div className={styles.dateRange}>
+      <br />
+      <b>
+        {/* prettier-ignore */}
+        <code>name --------------- start -------------------------------------------------------------------------------------------------------------- end ------</code>
+      </b>
+      <br />
+      <br />
       {dateRanges.map((dateRange, i) => (
         <div key={i}>
           <DateRange

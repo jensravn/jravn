@@ -2,10 +2,10 @@ import Head from "next/head";
 import Image from "next/image";
 import useSWR from "swr";
 import Row from "../components/row/row";
+import { isoFormat } from "../helpers/date";
+import { fetcher } from "../helpers/fetcher";
 import styles from "../styles/Home.module.css";
 import { Product } from "../types/types";
-
-const fetcher = () => fetch("/api/product").then((res) => res.json());
 
 export default function Products() {
   const { data: products, error } = useSWR<Product[]>("/api/product", fetcher);
@@ -25,15 +25,36 @@ export default function Products() {
           Add Product
         </a>
         <br />
-        {error ? (
-          <div>Failed to load</div>
-        ) : !products ? (
-          <div>Loading...</div>
-        ) : (
-          products.map((product: Product) => (
-            <Row key={product.id} product={product} />
-          ))
-        )}
+        <div className="table w-full">
+          <div className="table-header-group">
+            <div className="table-row">
+              <div className="table-cell text-left">id</div>
+              <div className="table-cell text-left">name</div>
+              <div className="table-cell text-left">start</div>
+              <div className="table-cell text-left">end</div>
+            </div>
+          </div>
+          <div className="table-row-group">
+            {error ? (
+              <div>Failed to load</div>
+            ) : !products ? (
+              <div>Loading...</div>
+            ) : (
+              products.map((product: Product) => (
+                <div key={product.id} className="table-row">
+                  <div className="table-cell">{product.id}</div>
+                  <div className="table-cell">{product.name}</div>
+                  <div className="table-cell">
+                    {isoFormat(new Date(product.startDate))}
+                  </div>
+                  <div className="table-cell">
+                    {isoFormat(new Date(product.endDate))}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </main>
 
       <footer className={styles.footer}>

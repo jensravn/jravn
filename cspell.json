@@ -36,6 +36,7 @@
     "noauth",
     "noninteractive",
     "protobuf",
+    "tailwindcss",
     "webservice"
   ],
   "ignoreWords": [],

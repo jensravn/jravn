@@ -11,7 +11,10 @@
       }
     },
     {
-      "path": "nextjs"
+      "path": "nextjs",
+      "settings": {
+        "typescript.tsdk": "nextjs/node_modules/typescript/lib"
+      }
     },
     {
       "path": "terraform"
