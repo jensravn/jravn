@@ -1,5 +1,7 @@
 # gcp-playground-jens
 
+[![Deploy](https://github.com/jensravn/gcp-playground-jens/actions/workflows/deploy.yml/badge.svg)](https://github.com/jensravn/gcp-playground-jens/actions/workflows/deploy.yml)
+
 ## Links
 
 - [nextjs](https://nextjs-cg7lqxhiua-ew.a.run.app)
