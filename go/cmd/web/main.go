@@ -27,7 +27,7 @@ func main() {
 			http.ServeFile(w, r, "resources/product-form.html")
 		case "POST":
 			if err := r.ParseForm(); err != nil {
-				fmt.Printf("ParseForm() err: %v", err)
+				log.Printf("ParseForm() err: %v", err)
 				return
 			}
 			name := r.PostFormValue("name")
