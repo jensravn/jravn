@@ -4,12 +4,7 @@
       "path": ".github"
     },
     {
-      "path": "go",
-      "settings": {
-        "go.lintFlags": ["--fast"],
-        "go.lintOnSave": "workspace",
-        "go.lintTool": "golangci-lint"
-      }
+      "path": "go"
     },
     {
       "path": "nextjs",
@@ -27,7 +22,7 @@
   ],
   "settings": {
     "go.lintFlags": ["--fast"],
-    "go.lintOnSave": "workspace",
+    "go.lintOnSave": "package",
     "go.lintTool": "golangci-lint"
   }
 }

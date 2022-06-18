@@ -15,10 +15,12 @@
     "alovelace",
     "Bitstream",
     "compat",
+    "deadcode",
     "deps",
     "distroless",
     "dorny",
     "drawio",
+    "errcheck",
     "extldflags",
     "firestore",
     "gcloud",
@@ -34,6 +36,7 @@
     "mkdir",
     "nextjs",
     "noauth",
+    "nolint",
     "noninteractive",
     "protobuf",
     "tailwindcss",
@@ -41,6 +44,10 @@
   ],
   "ignoreWords": [],
   "import": [],
-  "enabledLanguageIds": ["*"],
-  "enableFiletypes": ["*"]
+  "enabledLanguageIds": [
+    "*"
+  ],
+  "enableFiletypes": [
+    "*"
+  ]
 }
