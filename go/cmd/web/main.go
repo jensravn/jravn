@@ -57,7 +57,6 @@ func main() {
 }
 
 func publish(w io.Writer, projectID, topicID, msg string) error {
-
 	ctx := context.Background()
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
