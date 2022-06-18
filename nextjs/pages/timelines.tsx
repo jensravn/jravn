@@ -11,26 +11,29 @@ export default function Dates() {
   const { data, error } = useSWR<Product[]>("/api/product", fetcher);
 
   const dateRanges: DateRangeType[] =
-    data?.map(
-      (x) =>
-        ({
-          name: x.name,
-          start: new Date(x.startDate),
-          end: new Date(x.endDate),
-        } as DateRangeType)
-    ) ?? [];
+    data?.map((x) => ({
+      name: x.name,
+      start: new Date(x.startDate),
+      end: new Date(x.endDate),
+    })) ?? [];
 
   return (
     <div className={styles.container}>
       <Head>
-        <title>jensravn playground | Dates </title>
+        <title>jensravn playground | Timelines </title>
         <meta name="description" content="Fun fun fun" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>Dates</h1>
-        <DateRanges dateRanges={dateRanges} />
+        <h1 className={styles.title}>Timelines</h1>
+        {error ? (
+          <div>Failed to load</div>
+        ) : !data ? (
+          <div>Loading...</div>
+        ) : (
+          <DateRanges dateRanges={dateRanges} />
+        )}
       </main>
 
       <footer className={styles.footer}>
