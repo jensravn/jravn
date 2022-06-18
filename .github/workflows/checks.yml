@@ -37,7 +37,7 @@ jobs:
               - 'terraform/**'
 
   golangci:
-    name: lint
+    name: golangci-lint
     needs: changes
     if: ${{ needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
