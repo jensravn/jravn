@@ -20,10 +20,12 @@ func Save(p *domain.Product) []byte {
 	ctx := context.Background()
 	client := createClient(ctx)
 	productDto := toFsDto(p)
+
 	_, wr, err := client.Collection("product").Add(ctx, productDto)
 	if err != nil {
 		log.Fatalf("Failed adding alovelace: %v", err)
 	}
+
 	updateTime, err := wr.UpdateTime.MarshalText()
 	if err != nil {
 		log.Fatalf("Failed to get update time")
@@ -47,6 +49,7 @@ func toFsDto(p *domain.Product) map[string]interface{} {
 func createClient(ctx context.Context) *firestore.Client {
 	// Sets your Google Cloud Platform project ID.
 	projectID := "gcp-playground-jens"
+
 	client, err := firestore.NewClient(ctx, projectID)
 	if err != nil {
 		log.Fatalf("Failed to create client: %v", err)

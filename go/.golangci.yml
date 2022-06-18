@@ -1,10 +1,6 @@
 linters:
   enable-all: true
   disable:
-    - unused
-    - varnamelen
-    - whitespace
-    - wsl
     # deprecated linters
     - interfacer
     - maligned

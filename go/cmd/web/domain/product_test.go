@@ -9,7 +9,9 @@ import (
 
 func TestNewProduct(t *testing.T) {
 	t.Parallel()
+
 	now, _ := time.Parse("2006-01-02", "2006-01-02")
+
 	tests := []struct {
 		test      string
 		id        string
@@ -37,7 +39,7 @@ func TestNewProduct(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			t.Parallel()
-			if got := NewProduct(now, tc.name, tc.startDate, tc.endDate); *got != tc.want {
+			if got := domain.NewProduct(now, tc.name, tc.startDate, tc.endDate); *got != tc.want {
 				t.Errorf(
 					"AddBorder(%s, %s, %s) = \"%s\", want \"%s\"",
 					tc.name,
