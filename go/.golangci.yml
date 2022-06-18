@@ -2,10 +2,10 @@ linters:
   enable-all: true
   disable:
     - deadcode
-    - errorlint
     - errcheck
-    - exhaustruct
+    - errorlint
     - exhaustivestruct
+    - exhaustruct
     - forbidigo
     - goerr113
     - gofumpt
