@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"cloud.google.com/go/pubsub"
@@ -27,7 +28,8 @@ func main() {
 			http.ServeFile(w, r, "resources/product-form.html")
 		case "POST":
 			if err := r.ParseForm(); err != nil {
-				fmt.Printf("ParseForm() err: %v", err)
+				log.Printf("ParseForm() err: %v", err)
+
 				return
 			}
 			name := r.PostFormValue("name")
@@ -51,14 +53,22 @@ func main() {
 			w.Write(updateTime)
 		}
 	})
-	log.Println("Listening on port 8080")
-	err := http.ListenAndServe(":8080", nil)
+
+	port, exists := os.LookupEnv("PORT")
+	if !exists {
+		port = "8080"
+		log.Printf("Defaulting to port %s", port)
+	}
+
+	log.Printf("Listening on port %s", port)
+
+	err := http.ListenAndServe(":"+port, nil)
 	log.Fatalf("Web server, err: %v", err)
 }
 
 func publish(w io.Writer, projectID, topicID, msg string) error {
-
 	ctx := context.Background()
+
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
 		return fmt.Errorf("pubsub.NewClient: %v", err)
@@ -75,6 +85,8 @@ func publish(w io.Writer, projectID, topicID, msg string) error {
 	if err != nil {
 		return fmt.Errorf("Get: %v", err)
 	}
+
 	fmt.Fprintf(w, "Published a message; msg ID: %v\n", id)
+
 	return nil
 }

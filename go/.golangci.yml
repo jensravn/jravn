@@ -1,25 +1,8 @@
 linters:
   enable-all: true
   disable:
-    - deadcode
-    - errcheck
-    - errorlint
-    - exhaustivestruct
-    - exhaustruct
-    - forbidigo
-    - goerr113
-    - gofumpt
-    - golint
-    - nlreturn
-    - paralleltest
-    - revive
-    - stylecheck
-    - testpackage
-    - unused
-    - varnamelen
-    - whitespace
-    - wsl
     # deprecated linters
     - interfacer
     - maligned
     - scopelint
+  fast: true
