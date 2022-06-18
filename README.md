@@ -16,8 +16,10 @@
 - [ ] Move resources to Terraform
 - [ ] Setup a server push from nextjs
 - [ ] Run project local with docker-compose.yml
-- [ ] Logging in Cloud Run
+- [ ] [Logging](https://cloud.google.com/run/docs/logging) `Cloud Run`, `Go`
 
-- [x] Setup golangci-lint `GitHub Actions`+`Go`
+---
+
+- [x] Setup golangci-lint `GitHub Actions`, `Go`
 - [x] Combine products and dates view to timelines `Next.js`
-- [x] Use a single go.mod `Docker`+`Go`
+- [x] Use a single go.mod `Docker`, `Go`

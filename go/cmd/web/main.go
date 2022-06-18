@@ -71,7 +71,7 @@ func publish(w io.Writer, projectID, topicID, msg string) error {
 
 	client, err := pubsub.NewClient(ctx, projectID)
 	if err != nil {
-		return fmt.Errorf("pubsub.NewClient: %v", err)
+		log.Fatalf("pubsub.NewClient: %v", err)
 	}
 	defer client.Close()
 
