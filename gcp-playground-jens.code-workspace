@@ -4,11 +4,7 @@
       "path": ".github"
     },
     {
-      "path": "go",
-      "settings": {
-        "go.lintTool": "golangci-lint",
-        "go.lintFlags": ["--fast"]
-      }
+      "path": "go"
     },
     {
       "path": "nextjs",
@@ -23,5 +19,10 @@
       "path": "./",
       "name": "root"
     }
-  ]
+  ],
+  "settings": {
+    "go.lintFlags": ["--fast"],
+    "go.lintOnSave": "package",
+    "go.lintTool": "golangci-lint"
+  }
 }
