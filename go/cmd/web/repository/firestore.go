@@ -28,6 +28,7 @@ func Save(p *domain.Product) []byte {
 	if err != nil {
 		log.Fatalf("Failed to get update time")
 	}
+
 	return updateTime
 }
 
@@ -39,6 +40,7 @@ func toFsDto(p *domain.Product) map[string]interface{} {
 		"startDate": p.StartDate,
 		"endDate":   p.EndDate,
 	}
+
 	return fsDto
 }
 

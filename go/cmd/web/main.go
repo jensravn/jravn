@@ -28,6 +28,7 @@ func main() {
 		case "POST":
 			if err := r.ParseForm(); err != nil {
 				log.Printf("ParseForm() err: %v", err)
+
 				return
 			}
 			name := r.PostFormValue("name")
@@ -75,5 +76,6 @@ func publish(w io.Writer, projectID, topicID, msg string) error {
 		return fmt.Errorf("Get: %v", err)
 	}
 	fmt.Fprintf(w, "Published a message; msg ID: %v\n", id)
+
 	return nil
 }

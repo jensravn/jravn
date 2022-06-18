@@ -31,6 +31,7 @@ func NewProduct(now time.Time, name, startDate, endDate string) *Product {
 	if err != nil {
 		log.Println("Could not parse endDate")
 	}
+
 	return &Product{
 		Id:        ProductId(id),
 		Created:   now,

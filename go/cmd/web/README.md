@@ -1,3 +1,1 @@
 # go-cmd-pubsub
-
-## Setup

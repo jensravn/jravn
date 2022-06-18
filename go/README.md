@@ -1,5 +1,7 @@
 # go
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/jensravn/gcp-playground-jens/go)](https://goreportcard.com/report/github.com/jensravn/gcp-playground-jens/go)
+
 ## Setup go project
 
 - Install the Go extension in VS Code

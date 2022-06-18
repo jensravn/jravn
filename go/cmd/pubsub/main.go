@@ -35,11 +35,13 @@ func HelloPubSub(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Printf("ioutil.ReadAll: %v", err)
 		http.Error(w, "Bad Request", http.StatusBadRequest)
+
 		return
 	}
 	if err := json.Unmarshal(body, &m); err != nil {
 		log.Printf("json.Unmarshal: %v", err)
 		http.Error(w, "Bad Request", http.StatusBadRequest)
+
 		return
 	}
 
