@@ -21,7 +21,7 @@ type Product struct {
 func NewProduct(now time.Time, name, startDate, endDate string) *Product {
 	rand.Seed(now.UnixNano())
 	idMax := 10000000000
-	id := fmt.Sprintf("%d", rand.Intn(idMax))
+	id := fmt.Sprintf("%010d", rand.Intn(idMax))
 	start, err := time.Parse("2006-01-02", startDate)
 	if err != nil {
 		fmt.Printf("Could not parse startDate")
