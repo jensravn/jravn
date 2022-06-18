@@ -34,6 +34,7 @@ func Save(p *domain.Product) []byte {
 func toFsDto(p *domain.Product) map[string]interface{} {
 	fsDto := map[string]interface{}{
 		"id":        p.Id,
+		"created":   p.Created,
 		"name":      p.Name,
 		"startDate": p.StartDate,
 		"endDate":   p.EndDate,

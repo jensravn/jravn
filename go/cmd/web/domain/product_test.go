@@ -22,8 +22,8 @@ func TestNewProduct(t *testing.T) {
 			startDate: "2000-01-01",
 			endDate:   "2000-02-01",
 			want: Product{
-				Id:        "1136160000",
-				Timestamp: "2006-01-02 00:00:00",
+				Id:        "3241620620336616735",
+				Created:   time.Date(2006, time.January, 2, 0, 0, 0, 0, time.UTC),
 				Name:      "Name 1",
 				StartDate: time.Date(2000, time.January, 1, 0, 0, 0, 0, time.UTC),
 				EndDate:   time.Date(2000, time.February, 1, 0, 0, 0, 0, time.UTC),
