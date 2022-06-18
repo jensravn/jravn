@@ -5,7 +5,7 @@
 - Install the Go extension in VS Code
 - The extension will prompt you to download and install the Go language and tools
 - Open gcp-playground-jens.code-workspace with VS Code
-- Run `cd go/`
+- Navigate to `cd go/`
 - Run `go build ./...`
 
 ## Run cmd in terminal
@@ -21,6 +21,7 @@
 
 ## Run tests in terminal
 
+- Navigate to `cd go/`
 - Run `go test ./...`
 
 ## Run tests in VS Code
@@ -35,9 +36,15 @@
 
 ## Build cmd image
 
-- Run `cd go/`
+- Navigate to `cd go/`
 - Run `docker build --tag <CMD> --build-arg CMD=<CMD> .`
 
 ## Run cmd container
 
 - Run `docker run -d -p 8080:8080 <IMAGE_NAME>`
+
+## Run golangci-lint
+
+- Navigate to `cd go/`
+
+- Run `golangci-lint run`

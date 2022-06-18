@@ -21,13 +21,21 @@
     "dorny",
     "drawio",
     "errcheck",
+    "errorlint",
+    "exhaustivestruct",
+    "exhaustruct",
     "extldflags",
     "firestore",
+    "forbidigo",
     "gcloud",
     "GOARCH",
+    "goerr",
+    "gofumpt",
     "golangci",
+    "golint",
     "hashicorp",
     "helloworld",
+    "interfacer",
     "jens",
     "jensravn",
     "ldflags",
@@ -35,19 +43,21 @@
     "lqxhiua",
     "mkdir",
     "nextjs",
+    "nlreturn",
     "noauth",
     "nolint",
     "noninteractive",
+    "paralleltest",
     "protobuf",
+    "scopelint",
+    "stylecheck",
     "tailwindcss",
+    "testpackage",
+    "varnamelen",
     "webservice"
   ],
   "ignoreWords": [],
   "import": [],
-  "enabledLanguageIds": [
-    "*"
-  ],
-  "enableFiletypes": [
-    "*"
-  ]
+  "enabledLanguageIds": ["*"],
+  "enableFiletypes": ["*"]
 }

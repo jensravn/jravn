@@ -1,14 +1,25 @@
 linters:
-  enable:
-    - asciicheck
+  enable-all: true
+  disable:
     - deadcode
+    - errorlint
     - errcheck
-    - gosimple
-    - govet
-    - ineffassign
-    - staticcheck
-    - structcheck
-    - typecheck
+    - exhaustruct
+    - exhaustivestruct
+    - forbidigo
+    - goerr113
+    - gofumpt
+    - golint
+    - nlreturn
+    - paralleltest
+    - revive
+    - stylecheck
+    - testpackage
     - unused
-    - varcheck
-  enable-all: false
+    - varnamelen
+    - whitespace
+    - wsl
+    # deprecated linters
+    - interfacer
+    - maligned
+    - scopelint
