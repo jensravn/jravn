@@ -6,6 +6,7 @@ import (
 )
 
 func TestNewProduct(t *testing.T) {
+	t.Parallel()
 	now, _ := time.Parse("2006-01-02", "2006-01-02")
 	tests := []struct {
 		test      string
@@ -30,16 +31,18 @@ func TestNewProduct(t *testing.T) {
 			},
 		},
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := NewProduct(now, tt.name, tt.startDate, tt.endDate); *got != tt.want {
+	for _, tc := range tests {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			if got := NewProduct(now, tc.name, tc.startDate, tc.endDate); *got != tc.want {
 				t.Errorf(
 					"AddBorder(%s, %s, %s) = \"%s\", want \"%s\"",
-					tt.name,
-					tt.startDate,
-					tt.endDate,
+					tc.name,
+					tc.startDate,
+					tc.endDate,
 					got,
-					tt.want)
+					tc.want)
 			}
 		})
 	}
