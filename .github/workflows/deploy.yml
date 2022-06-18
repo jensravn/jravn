@@ -26,21 +26,6 @@ jobs:
             terraform:
               - 'terraform/**'
 
-  terraform:
-    needs: changes
-    if: ${{ needs.changes.outputs.terraform == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: terraform
-    env:
-      GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: hashicorp/setup-terraform@v2
-      - run: terraform init
-      - run: terraform apply -auto-approve -input=false
-
   go-cmd-pubsub:
     needs: changes
     if: ${{ needs.changes.outputs.go == 'true' }}
@@ -144,3 +129,18 @@ jobs:
           --platform managed \
           --region europe-west1 \
           --allow-unauthenticated
+
+  terraform:
+    needs: changes
+    if: ${{ needs.changes.outputs.terraform == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    env:
+      GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - run: terraform init
+      - run: terraform apply -auto-approve -input=false
