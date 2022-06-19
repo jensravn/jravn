@@ -27,8 +27,8 @@ jobs:
               - 'terraform/**'
 
   go-cmd-pubsub:
-    needs: changes
-    if: ${{ needs.changes.outputs.go == 'true' }}
+    needs: [changes, terraform]
+    if: ${{ always() && needs.changes.outputs.go == 'true' }}
     runs-on: ubuntu-latest
     defaults:
       run:

@@ -2,3 +2,6 @@
 node_modules/
 
 .$architecture.drawio.svg.bkp
+
+terraform/.terraform
+terraform/.terraform.lock.hcl
