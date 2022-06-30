@@ -27,6 +27,7 @@
     "extldflags",
     "firestore",
     "forbidigo",
+    "fullname",
     "gcloud",
     "GOARCH",
     "goerr",
@@ -58,6 +59,10 @@
   ],
   "ignoreWords": [],
   "import": [],
-  "enabledLanguageIds": ["*"],
-  "enableFiletypes": ["*"]
+  "enabledLanguageIds": [
+    "*"
+  ],
+  "enableFiletypes": [
+    "*"
+  ]
 }
