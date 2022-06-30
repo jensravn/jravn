@@ -27,6 +27,7 @@
     "extldflags",
     "firestore",
     "forbidigo",
+    "fullname",
     "gcloud",
     "GOARCH",
     "goerr",
