@@ -22,6 +22,11 @@ data "google_iam_policy" "noauth" {
   }
 }
 
+resource "google_app_engine_application" "docs" {
+  project     = "gcp-playground-jens"
+  location_id = "europe-west"
+}
+
 resource "google_cloud_run_service_iam_policy" "noauth" {
   location = google_cloud_run_service.run_web_service.location
   project  = google_cloud_run_service.run_web_service.project
