@@ -5,8 +5,8 @@ service: docs
 
 handlers:
   - url: /
-    static_files: index\.html
-    upload: index\.html
+    static_files: static/index.html
+    upload: static/index.html
 
   - url: /(.*\.md)$
     static_files: \1
