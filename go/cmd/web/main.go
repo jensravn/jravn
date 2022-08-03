@@ -1,17 +1,11 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"os"
-	"time"
 
-	"cloud.google.com/go/pubsub"
-	"github.com/jensravn/gcp-playground-jens/go/cmd/web/domain"
-	"github.com/jensravn/gcp-playground-jens/go/cmd/web/repository"
+	"github.com/jensravn/gcp-playground-jens/go/cmd/web/handler"
 )
 
 type message struct {
@@ -20,73 +14,13 @@ type message struct {
 }
 
 func main() {
-	fs := http.FileServer(http.Dir("./static"))
-	http.Handle("/websocket", fs)
-	http.HandleFunc("/product", func(w http.ResponseWriter, r *http.Request) {
-		switch r.Method {
-		case "GET":
-			http.ServeFile(w, r, "resources/product-form.html")
-		case "POST":
-			if err := r.ParseForm(); err != nil {
-				log.Printf("ParseForm() err: %v", err)
-
-				return
-			}
-			name := r.PostFormValue("name")
-			start := r.PostFormValue("startDate")
-			end := r.PostFormValue("endDate")
-			now := time.Now()
-
-			/***** I/O 💀 -> 🦄 PURE  *****/
-
-			product := domain.NewProduct(now, name, start, end)
-
-			/***** PURE 🦄 -> 💀 I/O *****/
-
-			// Pub/Sub
-			projectID := "gcp-playground-jens"
-			topicID := "go-webservice-product-topic"
-			publish(w, projectID, topicID, name)
-
-			// Firestore
-			updateTime := repository.Save(product)
-			w.Write(updateTime)
-		}
-	})
-
+	http.HandleFunc("/product", handler.Product)
 	port, exists := os.LookupEnv("PORT")
 	if !exists {
 		port = "8080"
 		log.Printf("Defaulting to port %s", port)
 	}
-
 	log.Printf("Listening on port %s", port)
-
 	err := http.ListenAndServe(":"+port, nil)
 	log.Fatalf("Web server, err: %v", err)
-}
-
-func publish(w io.Writer, projectID, topicID, msg string) error {
-	ctx := context.Background()
-
-	client, err := pubsub.NewClient(ctx, projectID)
-	if err != nil {
-		log.Fatalf("pubsub.NewClient: %v", err)
-	}
-	defer client.Close()
-
-	t := client.Topic(topicID)
-	result := t.Publish(ctx, &pubsub.Message{
-		Data: []byte(msg),
-	})
-	// Block until the result is returned and a server-generated
-	// ID is returned for the published message.
-	id, err := result.Get(ctx)
-	if err != nil {
-		return fmt.Errorf("Get: %v", err)
-	}
-
-	fmt.Fprintf(w, "Published a message; msg ID: %v\n", id)
-
-	return nil
 }
