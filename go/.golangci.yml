@@ -5,4 +5,7 @@ linters:
     - interfacer
     - maligned
     - scopelint
+    # annoying linters (complains about formatting but does not have auto fix)
+    - nlreturn
+    - wsl
   fast: true
