@@ -10,16 +10,3 @@
 ## Architecture
 
 ![Architecture diagram](architecture.drawio.svg)
-
-## Explore
-
-- [ ] Move resources to Terraform
-- [ ] Setup a server push from nextjs
-- [ ] Run project local with docker-compose.yml
-- [ ] [Logging](https://cloud.google.com/run/docs/logging) `Cloud Run`, `Go`
-
----
-
-- [x] Setup golangci-lint `GitHub Actions`, `Go`
-- [x] Combine products and dates view to timelines `Next.js`
-- [x] Use a single go.mod `Docker`, `Go`

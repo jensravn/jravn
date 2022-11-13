@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
 import useSWR from "swr";
-import Row from "../components/row/row";
 import { isoFormat } from "../helpers/date";
 import { fetcher } from "../helpers/fetcher";
 import styles from "../styles/Home.module.css";
