@@ -23,6 +23,7 @@
     "drawio",
     "errcheck",
     "errorlint",
+    "esbenp",
     "exhaustivestruct",
     "exhaustruct",
     "extldflags",
@@ -60,10 +61,6 @@
   ],
   "ignoreWords": [],
   "import": [],
-  "enabledLanguageIds": [
-    "*"
-  ],
-  "enableFiletypes": [
-    "*"
-  ]
+  "enabledLanguageIds": ["*"],
+  "enableFiletypes": ["*"]
 }

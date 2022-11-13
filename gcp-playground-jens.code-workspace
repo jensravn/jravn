@@ -4,7 +4,13 @@
       "path": ".github"
     },
     {
-      "path": "go"
+      "path": "go",
+      "settings": {
+        "go.lintFlags": ["--fast"],
+        "go.lintOnSave": "package",
+        "go.lintTool": "golangci-lint",
+        "[go]": { "editor.defaultFormatter": "golang.go" }
+      }
     },
     {
       "path": "nextjs",
@@ -21,8 +27,11 @@
     }
   ],
   "settings": {
-    "go.lintFlags": ["--fast"],
-    "go.lintOnSave": "package",
-    "go.lintTool": "golangci-lint"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true
+    }
   }
 }
