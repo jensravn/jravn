@@ -1,5 +1,5 @@
+import { Product } from "../../business/product";
 import { isoFormat } from "../../helpers/date";
-import { Product } from "../../types/types";
 import styles from "./row.module.css";
 
 type Props = { product: Product };

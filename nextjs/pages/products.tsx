@@ -1,13 +1,16 @@
 import Head from "next/head";
 import Image from "next/image";
 import useSWR from "swr";
+import { Product } from "../business/product";
 import { isoFormat } from "../helpers/date";
 import { fetcher } from "../helpers/fetcher";
 import styles from "../styles/Home.module.css";
-import { Product } from "../types/types";
 
 export default function Products() {
-  const { data: products, error } = useSWR<Product[]>("/api/product", fetcher);
+  const { data: products, error } = useSWR<Product[], Error>(
+    "/api/product",
+    fetcher
+  );
 
   return (
     <div className={styles.container}>
