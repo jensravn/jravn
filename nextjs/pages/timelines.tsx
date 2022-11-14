@@ -1,14 +1,13 @@
 import Head from "next/head";
 import Image from "next/image";
 import useSWR from "swr";
-import dateRanges from "../components/dateRanges/dateRanges";
+import { Product } from "../business/product";
 import DateRanges, { DateRangeType } from "../components/dateRanges/dateRanges";
 import { fetcher } from "../helpers/fetcher";
 import styles from "../styles/Home.module.css";
-import { Product } from "../types/types";
 
 export default function Dates() {
-  const { data, error } = useSWR<Product[]>("/api/product", fetcher);
+  const { data, error } = useSWR<Product[], Error>("/api/product", fetcher);
 
   const dateRanges: DateRangeType[] =
     data?.map((x) => ({
