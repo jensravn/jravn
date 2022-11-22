@@ -13,9 +13,9 @@ import (
 
 func Product(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
-	case "GET":
+	case http.MethodGet:
 		http.ServeFile(w, r, "resources/product-form.html")
-	case "POST":
+	case http.MethodPost:
 		if err := r.ParseForm(); err != nil {
 			log.Printf("ParseForm() err: %v", err)
 			return
