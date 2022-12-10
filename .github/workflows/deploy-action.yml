@@ -141,7 +141,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
-      - run: terraform fmt -check
+      - run: |
+          terraform fmt -check -recursive
       - run: |
           terraform init \
             -backend-config="bucket=gcp-playground-jens-${{ needs.env.outputs.env }}-terraform" \
@@ -152,5 +153,5 @@ jobs:
           terraform apply \
             -auto-approve \
             -input=false \ 
-            -var-file="common.tfvars" \
-            -var-file="env_${{ needs.env.outputs.env }}.tfvars"
+            -var-file="./common.tfvars" \
+            -var-file="./env_${{ needs.env.outputs.env }}.tfvars"
