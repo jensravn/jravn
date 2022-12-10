@@ -52,3 +52,9 @@ resource "google_cloud_run_service" "run_web_service" {
   }
 }
 
+resource "google_project_service" "enable_google_apis" {
+  count                      = length(var.gc_services_list)
+  service                    = var.gc_services_list[count.index]
+  disable_dependent_services = true
+  disable_on_destroy         = true
+}

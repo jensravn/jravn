@@ -13,3 +13,8 @@ variable "region" {
 variable "zone" {
   type = string
 }
+
+variable "gc_services_list" {
+  description = "List of Google Cloud APIs & Services used by project"
+  type        = list(string)
+}
