@@ -146,6 +146,10 @@ jobs:
           terraform init \
             -backend-config="bucket=gcp-playground-jens-${{ needs.env.outputs.env }}-terraform" \
             -backend-config="prefix=${{ github.ref_name }}"
-      - run: terraform validate
-      - run: terraform plan -lock=false
-      - run: terraform apply -auto-approve -input=false
+      - run: |
+          terraform validate
+      - run: |
+          terraform apply \
+            -auto-approve \
+            -input=false \
+            -var="image_go_cmd_web=eu.gcr.io/gcp-playground-jens-${{ needs.env.outputs.env }}/${{ github.ref_name }}/go-cmd-web"

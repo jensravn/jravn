@@ -40,7 +40,7 @@ resource "google_cloud_run_service" "run_web_service" {
   template {
     spec {
       containers {
-        image = "eu.gcr.io/gcp-playground-jens/go-cmd-web"
+        image = var.image_go_cmd_web
       }
     }
   }
