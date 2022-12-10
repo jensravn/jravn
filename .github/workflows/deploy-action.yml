@@ -153,4 +153,4 @@ jobs:
             -auto-approve \
             -input=false \ 
             -var-file="common.tfvars" \
-            -var-file="env_{{ needs.env.outputs.env }}.tfvars"
+            -var-file="env_${{ needs.env.outputs.env }}.tfvars"
