@@ -10,25 +10,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      go: ${{ steps.filter.outputs.go }}
-      nextjs: ${{ steps.filter.outputs.nextjs }}
-      terraform: ${{ steps.filter.outputs.terraform }}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: dorny/paths-filter@v2
-        id: filter
-        with:
-          filters: |
-            go:
-              - 'go/**'
-            nextjs:
-              - 'nextjs/**'
-            terraform:
-              - 'terraform/**'
-
   env:
     runs-on: ubuntu-latest
     outputs:
@@ -43,8 +24,7 @@ jobs:
           fi
 
   go-cmd-pubsub:
-    needs: [changes, env]
-    if: ${{ needs.changes.outputs.go == 'true' }}
+    needs: [env]
     environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
     defaults:
@@ -83,8 +63,7 @@ jobs:
           --region europe-west1
 
   go-cmd-web:
-    needs: [changes, env, terraform]
-    if: ${{ always() && needs.changes.outputs.go == 'true' }}
+    needs: [env, terraform]
     environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
     defaults:
@@ -124,8 +103,7 @@ jobs:
           --allow-unauthenticated
 
   nextjs:
-    needs: [changes, env]
-    if: ${{ needs.changes.outputs.nextjs == 'true' }}
+    needs: [env]
     environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
     defaults:
@@ -150,8 +128,7 @@ jobs:
           --allow-unauthenticated
 
   terraform:
-    needs: [changes, env]
-    if: ${{ needs.changes.outputs.terraform == 'true' }}
+    needs: [env]
     environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
     defaults:
