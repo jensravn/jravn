@@ -151,5 +151,4 @@ jobs:
       - run: |
           terraform apply \
             -auto-approve \
-            -input=false \
-            -var="image_go_cmd_web=eu.gcr.io/gcp-playground-jens-${{ needs.env.outputs.env }}/${{ github.ref_name }}/go-cmd-web"
+            -input=false

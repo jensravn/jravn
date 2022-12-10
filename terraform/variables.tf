@@ -18,7 +18,3 @@ variable "gc_services_list" {
   description = "List of Google Cloud APIs & Services used by project"
   type        = list(string)
 }
-
-variable "image_go_cmd_web" {
-  type = string
-}
