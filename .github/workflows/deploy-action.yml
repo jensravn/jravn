@@ -34,8 +34,7 @@ jobs:
     outputs:
       env: ${{ steps.step1.outputs.env }}
     steps:
-      - uses: actions/checkout@v3
-        id: step1
+      - id: step1
         run: |
           if [[ ${{ github.ref_name }} == main ]]; then
             echo "env=prod" >> $GITHUB_OUTPUT
