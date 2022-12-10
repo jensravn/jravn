@@ -1,7 +1,6 @@
 terraform {
   backend "gcs" {
-    # bucket is being set through backend-config
-    prefix = "state"
+    # bucket and prefix is being set through backend-config
   }
   required_providers {
     google = {
