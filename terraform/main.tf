@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket = var.bucket
+    # bucket is being set through backend-config
     prefix = "state"
   }
   required_providers {
