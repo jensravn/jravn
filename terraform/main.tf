@@ -1,4 +1,8 @@
 terraform {
+  backend "gcs" {
+    bucket = var.bucket
+    prefix = "state"
+  }
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -8,9 +12,9 @@ terraform {
 }
 
 provider "google" {
-  project = "gcp-playground-jens"
-  region  = "europe-west1"
-  zone    = "europe-west1-b"
+  project = var.project
+  region  = var.region
+  zone    = var.zone
 }
 
 data "google_iam_policy" "noauth" {
@@ -48,9 +52,3 @@ resource "google_cloud_run_service" "run_web_service" {
   }
 }
 
-terraform {
-  backend "gcs" {
-    bucket = "gcp-playground-jens-terraform"
-    prefix = "state"
-  }
-}

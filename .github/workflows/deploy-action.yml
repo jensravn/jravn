@@ -139,5 +139,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: hashicorp/setup-terraform@v2
+      - run: terraform fmt -check
       - run: terraform init
+      - run: terraform validate
+      - run: terraform plan
       - run: terraform apply -auto-approve -input=false
