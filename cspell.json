@@ -58,6 +58,7 @@
     "stylecheck",
     "tailwindcss",
     "testpackage",
+    "tfvars",
     "varnamelen",
     "webservice"
   ],
