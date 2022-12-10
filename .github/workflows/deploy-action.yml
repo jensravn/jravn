@@ -23,7 +23,7 @@ jobs:
             echo "env=dev" >> $GITHUB_OUTPUT
           fi
 
-  go-cmd-pubsub:
+  go-cmd-pubsub-processor:
     needs: [env]
     environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
@@ -52,12 +52,12 @@ jobs:
           --build-arg CMD=pubsub-processor .
 
       - name: Push image
-        run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub
+        run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub-processor
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy go-cmd-pubsub \
-          --image eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub \
+          gcloud run deploy go-cmd-pubsub-processor \
+          --image eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub-processor \
           --project ${{ secrets.PROJECT_ID }} \
           --platform managed \
           --region europe-west1
