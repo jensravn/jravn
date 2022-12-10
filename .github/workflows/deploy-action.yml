@@ -48,8 +48,8 @@ jobs:
       - name: Build image
         run: |
           docker build \
-          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub \
-          --build-arg CMD=pubsub .
+          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub-processor \
+          --build-arg CMD=pubsub-processor .
 
       - name: Push image
         run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub
