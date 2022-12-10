@@ -2,8 +2,11 @@ name: Deploy
 
 on:
   push:
-    branches: [main]
-
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -26,9 +29,24 @@ jobs:
             terraform:
               - 'terraform/**'
 
+  env:
+    runs-on: ubuntu-latest
+    outputs:
+      env: ${{ steps.step1.outputs.env }}
+    steps:
+      - uses: actions/checkout@v3
+        id: step1
+        run: |
+          if [[ ${{ github.ref_name }} == main ]]; then
+            echo "env=prod" >> $GITHUB_OUTPUT
+          else
+            echo "env=dev" >> $GITHUB_OUTPUT
+          fi
+
   go-cmd-pubsub:
-    needs: changes
+    needs: [changes, env]
     if: ${{ needs.changes.outputs.go == 'true' }}
+    environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -51,23 +69,24 @@ jobs:
       - name: Build image
         run: |
           docker build \
-          --tag eu.gcr.io/${{ secrets.project_id }}/go-cmd-pubsub \
+          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub \
           --build-arg CMD=pubsub .
 
       - name: Push image
-        run: docker push eu.gcr.io/${{ secrets.project_id }}/go-cmd-pubsub
+        run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy go-cmd-pubsub \
-          --image eu.gcr.io/${{ secrets.project_id }}/go-cmd-pubsub \
-          --project ${{ secrets.project_id }} \
+          --image eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub \
+          --project ${{ secrets.PROJECT_ID }} \
           --platform managed \
           --region europe-west1
 
   go-cmd-web:
-    needs: [changes, terraform]
+    needs: [changes, env, terraform]
     if: ${{ always() && needs.changes.outputs.go == 'true' }}
+    environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -90,24 +109,25 @@ jobs:
       - name: Build image
         run: |
           docker build \
-          --tag eu.gcr.io/${{ secrets.project_id }}/go-cmd-web \
+          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web \
           --build-arg CMD=web .
 
       - name: Push image
-        run: docker push eu.gcr.io/${{ secrets.project_id }}/go-cmd-web
+        run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy go-cmd-web \
-          --image eu.gcr.io/${{ secrets.project_id }}/go-cmd-web \
-          --project ${{ secrets.project_id }} \
+          --image eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web \
+          --project ${{ secrets.PROJECT_ID }} \
           --platform managed \
           --region europe-west1 \
           --allow-unauthenticated
 
   nextjs:
-    needs: changes
+    needs: [changes, env]
     if: ${{ needs.changes.outputs.nextjs == 'true' }}
+    environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -120,19 +140,20 @@ jobs:
       - uses: google-github-actions/setup-gcloud@v0.6.0
       - run: |
           gcloud builds submit \
-          --tag eu.gcr.io/${{ secrets.project_id }}/nextjs \
-          --project ${{ secrets.project_id }}
+          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/nextjs \
+          --project ${{ secrets.PROJECT_ID }}
       - run: |
           gcloud run deploy nextjs \
-          --image eu.gcr.io/${{ secrets.project_id }}/nextjs \
-          --project ${{ secrets.project_id }} \
+          --image eu.gcr.io/${{ secrets.PROJECT_ID }}/nextjs \
+          --project ${{ secrets.PROJECT_ID }} \
           --platform managed \
           --region europe-west1 \
           --allow-unauthenticated
 
   terraform:
-    needs: changes
+    needs: [changes, env]
     if: ${{ needs.changes.outputs.terraform == 'true' }}
+    environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
     defaults:
       run:
