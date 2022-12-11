@@ -11,8 +11,8 @@ terraform {
 }
 
 locals {
-  zone   = "europe-west1"
-  region = "europe-west1-b"
+  region = "europe-west1"
+  zone   = "europe-west1-b"
   google_apis = [
     "cloudbuild.googleapis.com",
     "run.googleapis.com"
