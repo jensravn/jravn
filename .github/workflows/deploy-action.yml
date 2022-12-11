@@ -152,5 +152,5 @@ jobs:
       - run: |
           terraform apply \
             -auto-approve \
-            -input=false \ 
+            -input=false \
             -var-file="./env_${{ needs.env.outputs.env }}.tfvars"
