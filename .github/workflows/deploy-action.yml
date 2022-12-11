@@ -64,8 +64,8 @@ jobs:
           --platform managed \
           --region europe-west1
 
-  go-cmd-web:
-    needs: [env, terraform]
+  build-and-push:
+    needs: [env]
     environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
     defaults:
@@ -95,15 +95,6 @@ jobs:
       - name: Push image
         run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web
 
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy go-cmd-web \
-          --image eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web \
-          --project ${{ secrets.PROJECT_ID }} \
-          --platform managed \
-          --region europe-west1 \
-          --allow-unauthenticated
-
   nextjs:
     needs: [env]
     environment: ${{ needs.env.outputs.env }}
@@ -130,7 +121,7 @@ jobs:
           --allow-unauthenticated
 
   terraform:
-    needs: [env]
+    needs: [env, build-and-push]
     environment: ${{ needs.env.outputs.env }}
     runs-on: ubuntu-latest
     defaults:
