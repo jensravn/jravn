@@ -15,6 +15,7 @@
     "alovelace",
     "automerge",
     "Bitstream",
+    "cloudbuild",
     "compat",
     "deadcode",
     "deps",
@@ -36,6 +37,7 @@
     "gofumpt",
     "golangci",
     "golint",
+    "googleapis",
     "hashicorp",
     "helloworld",
     "interfacer",
@@ -56,6 +58,7 @@
     "stylecheck",
     "tailwindcss",
     "testpackage",
+    "tfvars",
     "varnamelen",
     "webservice"
   ],

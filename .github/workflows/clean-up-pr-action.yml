@@ -1,0 +1,50 @@
+name: Clean Up PR
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency: ci-${{ github.ref_name }}
+
+jobs:
+  env:
+    runs-on: ubuntu-latest
+    outputs:
+      env: ${{ steps.step1.outputs.env }}
+      version: ${{ steps.step1.outputs.version }}
+    steps:
+      - id: step1
+        run: |
+          echo "env=dev" >> $GITHUB_OUTPUT
+          pr=`echo "${{ github.ref_name }}" | grep -o "[0-9.]\+"`
+          echo "version=pr-$pr" >> $GITHUB_OUTPUT
+          echo $env
+          echo $version
+
+  terraform:
+    needs: [env]
+    environment: ${{ needs.env.outputs.env }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    env:
+      GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hashicorp/setup-terraform@v2
+      - run: |
+          terraform init \
+            -backend-config="bucket=gcp-playground-jens-${{ needs.env.outputs.env }}-terraform" \
+            -backend-config="prefix=${{ needs.env.outputs.version }}"
+      - run: |
+          terraform apply \
+            -destroy \
+            -auto-approve \
+            -input=false \
+            -var-file="./env_${{ needs.env.outputs.env }}.tfvars" \
+            -var image_version_tag="${{ needs.env.outputs.version }}"
