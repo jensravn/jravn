@@ -8,8 +8,6 @@ on:
       - main
   workflow_dispatch:
 
-concurrency: ci-${{ github.ref_name }}
-
 jobs:
   env:
     runs-on: ubuntu-latest
@@ -22,6 +20,8 @@ jobs:
           echo "env=dev" >> $GITHUB_OUTPUT
           pr=`echo "${{ github.ref_name }}" | grep -o "[0-9.]\+"`
           echo "version=pr-$pr" >> $GITHUB_OUTPUT
+          echo "$env"
+          echo "$version"
 
   terraform:
     needs: [env]
