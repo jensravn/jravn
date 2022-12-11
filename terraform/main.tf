@@ -12,8 +12,8 @@ terraform {
 
 provider "google" {
   project = var.project
-  region  = var.region
-  zone    = var.zone
+  region  = "europe-west1"
+  zone    = "europe-west1-b"
 }
 
 data "google_iam_policy" "noauth" {
@@ -26,10 +26,9 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location = google_cloud_run_service.run_web_service.location
-  project  = google_cloud_run_service.run_web_service.project
-  service  = google_cloud_run_service.run_web_service.name
-
+  location    = google_cloud_run_service.run_web_service.location
+  project     = google_cloud_run_service.run_web_service.project
+  service     = google_cloud_run_service.run_web_service.name
   policy_data = data.google_iam_policy.noauth.policy_data
 }
 
@@ -51,9 +50,14 @@ resource "google_cloud_run_service" "run_web_service" {
   }
 }
 
+google_apis = [
+  "cloudbuild.googleapis.com ",
+  "run.googleapis.com"
+]
+
 resource "google_project_service" "enable_google_apis" {
-  count                      = length(var.gc_services_list)
-  service                    = var.gc_services_list[count.index]
+  count                      = length(google_apis)
+  service                    = google_apis[count.index]
   disable_dependent_services = true
   disable_on_destroy         = true
 }
