@@ -49,13 +49,13 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service" "go_cmd_web" {
-  name     = "go-cmd-web"
+  name     = "${var.image_version_tag}-go-cmd-web"
   location = local.region
 
   template {
     spec {
       containers {
-        image = "eu.gcr.io/gcp-playground-jens-dev/go-cmd-web"
+        image = "eu.gcr.io/gcp-playground-jens-dev/go-cmd-web:${var.image_version_tag}"
       }
     }
   }

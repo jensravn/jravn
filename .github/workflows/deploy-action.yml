@@ -9,7 +9,7 @@ on:
       - main
   workflow_dispatch:
 
-concurrency: ci-${{ github.ref }}
+concurrency: ci-${{ github.ref_name }}
 
 jobs:
   env:
@@ -25,36 +25,36 @@ jobs:
             echo "env=dev" >> $GITHUB_OUTPUT
           fi
 
-  go-cmd-pubsub-processor:
-    needs: [env]
-    environment: ${{ needs.env.outputs.env }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: go
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+  # go-cmd-pubsub-processor:
+  #   needs: [env]
+  #   environment: ${{ needs.env.outputs.env }}
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: go
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v3
 
-      - name: Google Cloud Auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+  #     - name: Google Cloud Auth
+  #       uses: google-github-actions/auth@v0
+  #       with:
+  #         credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Setup gcloud
-        uses: google-github-actions/setup-gcloud@v0.6.0
+  #     - name: Setup gcloud
+  #       uses: google-github-actions/setup-gcloud@v0.6.0
 
-      - name: Configure docker
-        run: gcloud auth configure-docker
+  #     - name: Configure docker
+  #       run: gcloud auth configure-docker
 
-      - name: Build image
-        run: |
-          docker build \
-          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub-processor \
-          --build-arg CMD=pubsub-processor .
+  #     - name: Build image
+  #       run: |
+  #         docker build \
+  #         --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub-processor \
+  #         --build-arg CMD=pubsub-processor .
 
-      - name: Push image
-        run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub-processor
+  #     - name: Push image
+  #       run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub-processor
 
   build-and-push:
     needs: [env]
@@ -81,36 +81,36 @@ jobs:
       - name: Build image
         run: |
           docker build \
-          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web \
+          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web:${{ github.ref_name }} \
           --build-arg CMD=web .
 
       - name: Push image
         run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web
 
-  nextjs:
-    needs: [env]
-    environment: ${{ needs.env.outputs.env }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: nextjs
-    steps:
-      - uses: actions/checkout@v3
-      - uses: google-github-actions/auth@v0
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-      - uses: google-github-actions/setup-gcloud@v0.6.0
-      - run: |
-          gcloud builds submit \
-          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/nextjs \
-          --project ${{ secrets.PROJECT_ID }}
-      - run: |
-          gcloud run deploy nextjs \
-          --image eu.gcr.io/${{ secrets.PROJECT_ID }}/nextjs \
-          --project ${{ secrets.PROJECT_ID }} \
-          --platform managed \
-          --region europe-west1 \
-          --allow-unauthenticated
+  # nextjs:
+  #   needs: [env]
+  #   environment: ${{ needs.env.outputs.env }}
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: nextjs
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: google-github-actions/auth@v0
+  #       with:
+  #         credentials_json: ${{ secrets.GCP_SA_KEY }}
+  #     - uses: google-github-actions/setup-gcloud@v0.6.0
+  #     - run: |
+  #         gcloud builds submit \
+  #         --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/nextjs \
+  #         --project ${{ secrets.PROJECT_ID }}
+  #     - run: |
+  #         gcloud run deploy nextjs \
+  #         --image eu.gcr.io/${{ secrets.PROJECT_ID }}/nextjs \
+  #         --project ${{ secrets.PROJECT_ID }} \
+  #         --platform managed \
+  #         --region europe-west1 \
+  #         --allow-unauthenticated
 
   terraform:
     needs: [env, build-and-push]
@@ -136,4 +136,5 @@ jobs:
           terraform apply \
             -auto-approve \
             -input=false \
-            -var-file="./env_${{ needs.env.outputs.env }}.tfvars"
+            -var-file="./env_${{ needs.env.outputs.env }}.tfvars" \
+            -var image_version_tag="${{ github.ref_name }}"
