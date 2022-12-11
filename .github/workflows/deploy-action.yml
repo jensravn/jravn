@@ -26,7 +26,7 @@ jobs:
           else
             echo "env=dev" >> $GITHUB_OUTPUT
             pr=`echo "${{ github.ref_name }}" | grep -o "[0-9.]\+"`
-            echo "version=$pr" >> $GITHUB_OUTPUT
+            echo "version=pr-$pr" >> $GITHUB_OUTPUT
           fi
 
   # go-cmd-pubsub-processor:
