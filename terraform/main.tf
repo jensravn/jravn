@@ -50,14 +50,17 @@ resource "google_cloud_run_service" "run_web_service" {
   }
 }
 
-google_apis = [
-  "cloudbuild.googleapis.com ",
-  "run.googleapis.com"
-]
+locals {
+  google_apis = [
+    "cloudbuild.googleapis.com ",
+    "run.googleapis.com"
+  ]
+}
 
 resource "google_project_service" "enable_google_apis" {
-  count                      = length(google_apis)
-  service                    = google_apis[count.index]
+  count                      = length(local.google_apis)
+  service                    = local.google_apis[count.index]
   disable_dependent_services = true
   disable_on_destroy         = true
 }
+
