@@ -20,14 +20,14 @@ jobs:
     steps:
       - id: step1
         run: |
-          # if [[ ${{ github.ref_name }} == main ]]; then
+          if [[ ${{ github.ref_name }} == main ]]; then
             echo "env=stag" >> $GITHUB_OUTPUT
             echo "version=stag" >> $GITHUB_OUTPUT
-          # else
-          #   echo "env=dev" >> $GITHUB_OUTPUT
-          #   pr=`echo "${{ github.ref_name }}" | grep -o "[0-9.]\+"`
-          #   echo "version=pr-$pr" >> $GITHUB_OUTPUT
-          # fi
+          else
+            echo "env=dev" >> $GITHUB_OUTPUT
+            pr=`echo "${{ github.ref_name }}" | grep -o "[0-9.]\+"`
+            echo "version=pr-$pr" >> $GITHUB_OUTPUT
+          fi
 
   build-and-push-1:
     needs: [env]
