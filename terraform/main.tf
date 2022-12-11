@@ -28,8 +28,8 @@ provider "google" {
 resource "google_project_service" "enable_google_apis" {
   count                      = length(local.google_apis)
   service                    = local.google_apis[count.index]
-  disable_dependent_services = true
-  disable_on_destroy         = true
+  disable_dependent_services = false
+  disable_on_destroy         = false
 }
 
 data "google_iam_policy" "noauth" {
