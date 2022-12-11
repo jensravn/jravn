@@ -89,7 +89,7 @@ jobs:
           --build-arg CMD=web .
 
       - name: Push image
-        run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web
+        run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web:${{ needs.env.outputs.version }}
 
   # nextjs:
   #   needs: [env]
