@@ -42,13 +42,13 @@ data "google_iam_policy" "noauth" {
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth" {
-  location    = google_cloud_run_service.run_web_service.location
-  project     = google_cloud_run_service.run_web_service.project
-  service     = google_cloud_run_service.run_web_service.name
+  location    = google_cloud_run_service.go_cmd_web.location
+  project     = google_cloud_run_service.go_cmd_web.project
+  service     = google_cloud_run_service.go_cmd_web.name
   policy_data = data.google_iam_policy.noauth.policy_data
 }
 
-resource "google_cloud_run_service" "run_web_service" {
+resource "google_cloud_run_service" "go_cmd_web" {
   name     = "go-cmd-web"
   location = local.region
 
@@ -66,7 +66,7 @@ resource "google_cloud_run_service" "run_web_service" {
   }
 }
 
-resource "google_cloud_run_service" "run_web_service" {
+resource "google_cloud_run_service" "go_cmd_pubsub_processor" {
   name     = "go-cmd-pubsub-processor"
   location = local.region
 
