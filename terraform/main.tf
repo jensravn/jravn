@@ -68,6 +68,10 @@ resource "google_cloud_run_service_iam_policy" "noauth_go_cmd_web" {
   project     = google_cloud_run_service.go_cmd_web.project
   service     = google_cloud_run_service.go_cmd_web.name
   policy_data = data.google_iam_policy.noauth.policy_data
+
+  depends_on = [
+    google_project_service.enable_google_apis
+  ]
 }
 
 resource "google_cloud_run_service" "go_cmd_web" {
