@@ -48,9 +48,9 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
   policy_data = data.google_iam_policy.noauth.policy_data
 }
 
-resource "google_cloud_run_service" "go_cmd_web" {
-  name     = "go-cmd-web"
-  location = local.region
+resource "google_cloud_run_service" "default" {
+  name     = "cloudrun-srv"
+  location = "us-central1"
 
   template {
     spec {
@@ -65,22 +65,3 @@ resource "google_cloud_run_service" "go_cmd_web" {
     latest_revision = true
   }
 }
-
-resource "google_cloud_run_service" "go_cmd_pubsub_processor" {
-  name     = "go-cmd-pubsub-processor"
-  location = local.region
-
-  template {
-    spec {
-      containers {
-        image = "eu.gcr.io/gcp-playground-jens-dev/go-cmd-pubsub-processor"
-      }
-    }
-  }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
-}
-
