@@ -16,13 +16,17 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       env: ${{ steps.step1.outputs.env }}
+      version: ${{ steps.step1.outputs.version }}
     steps:
       - id: step1
         run: |
           if [[ ${{ github.ref_name }} == main ]]; then
             echo "env=prod" >> $GITHUB_OUTPUT
+            echo "version=main" >> $GITHUB_OUTPUT
           else
             echo "env=dev" >> $GITHUB_OUTPUT
+            pr=`echo "${{ github.ref_name }}" | grep -o "[0-9.]\+"`
+            echo "version=$pr" >> $GITHUB_OUTPUT
           fi
 
   # go-cmd-pubsub-processor:
@@ -81,7 +85,7 @@ jobs:
       - name: Build image
         run: |
           docker build \
-          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web:${{ github.ref_name }} \
+          --tag eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-web:${{ needs.env.outputs.version }} \
           --build-arg CMD=web .
 
       - name: Push image
@@ -129,7 +133,7 @@ jobs:
       - run: |
           terraform init \
             -backend-config="bucket=gcp-playground-jens-${{ needs.env.outputs.env }}-terraform" \
-            -backend-config="prefix=${{ github.ref_name }}"
+            -backend-config="prefix=${{ needs.env.outputs.version }}"
       - run: |
           terraform validate
       - run: |
@@ -137,4 +141,4 @@ jobs:
             -auto-approve \
             -input=false \
             -var-file="./env_${{ needs.env.outputs.env }}.tfvars" \
-            -var image_version_tag="${{ github.ref_name }}"
+            -var image_version_tag="${{ needs.env.outputs.version }}"
