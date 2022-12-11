@@ -41,7 +41,25 @@ data "google_iam_policy" "noauth" {
   }
 }
 
-resource "google_cloud_run_service_iam_policy" "noauth" {
+resource "google_cloud_run_service" "go_cmd_pubsub_processor" {
+  name     = "${var.image_version_tag}-go-cmd-pubsub-processor"
+  location = local.region
+
+  template {
+    spec {
+      containers {
+        image = "eu.gcr.io/${var.project}/go-cmd-pubsub-processor:${var.image_version_tag}"
+      }
+    }
+  }
+
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
+}
+
+resource "google_cloud_run_service_iam_policy" "noauth_go_cmd_web" {
   location    = google_cloud_run_service.go_cmd_web.location
   project     = google_cloud_run_service.go_cmd_web.project
   service     = google_cloud_run_service.go_cmd_web.name
@@ -55,7 +73,32 @@ resource "google_cloud_run_service" "go_cmd_web" {
   template {
     spec {
       containers {
-        image = "eu.gcr.io/gcp-playground-jens-dev/go-cmd-web:${var.image_version_tag}"
+        image = "eu.gcr.io/${var.project}/go-cmd-web:${var.image_version_tag}"
+      }
+    }
+  }
+
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
+}
+
+resource "google_cloud_run_service_iam_policy" "noauth_nextjs" {
+  location    = google_cloud_run_service.nextjs.location
+  project     = google_cloud_run_service.nextjs.project
+  service     = google_cloud_run_service.nextjs.name
+  policy_data = data.google_iam_policy.noauth.policy_data
+}
+
+resource "google_cloud_run_service" "nextjs" {
+  name     = "${var.image_version_tag}-nextjs"
+  location = local.region
+
+  template {
+    spec {
+      containers {
+        image = "eu.gcr.io/${var.project}/nextjs:${var.image_version_tag}"
       }
     }
   }
