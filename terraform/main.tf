@@ -39,10 +39,6 @@ data "google_iam_policy" "noauth" {
       "allUsers",
     ]
   }
-
-  depends_on = [
-    google_project_service.enable_google_apis
-  ]
 }
 
 resource "google_cloud_run_service" "go_cmd_pubsub_processor" {
@@ -61,10 +57,6 @@ resource "google_cloud_run_service" "go_cmd_pubsub_processor" {
     percent         = 100
     latest_revision = true
   }
-
-  depends_on = [
-    google_project_service.enable_google_apis
-  ]
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth_go_cmd_web" {
@@ -90,10 +82,6 @@ resource "google_cloud_run_service" "go_cmd_web" {
     percent         = 100
     latest_revision = true
   }
-
-  depends_on = [
-    google_project_service.enable_google_apis
-  ]
 }
 
 resource "google_cloud_run_service_iam_policy" "noauth_nextjs" {
@@ -119,8 +107,4 @@ resource "google_cloud_run_service" "nextjs" {
     percent         = 100
     latest_revision = true
   }
-
-  depends_on = [
-    google_project_service.enable_google_apis
-  ]
 }
