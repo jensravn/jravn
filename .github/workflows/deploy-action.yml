@@ -56,14 +56,6 @@ jobs:
       - name: Push image
         run: docker push eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub-processor
 
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy go-cmd-pubsub-processor \
-          --image eu.gcr.io/${{ secrets.PROJECT_ID }}/go-cmd-pubsub-processor \
-          --project ${{ secrets.PROJECT_ID }} \
-          --platform managed \
-          --region europe-west1
-
   build-and-push:
     needs: [env]
     environment: ${{ needs.env.outputs.env }}

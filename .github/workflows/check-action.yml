@@ -4,8 +4,8 @@ on:
   pull_request:
     tags:
       - v*
-    branches:
-      - main
+    # branches:
+    #   - main
   workflow_dispatch:
 permissions:
   contents: read

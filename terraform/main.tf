@@ -10,10 +10,26 @@ terraform {
   }
 }
 
+locals {
+  zone   = "europe-west1"
+  region = "europe-west1-b"
+  google_apis = [
+    "cloudbuild.googleapis.com",
+    "run.googleapis.com"
+  ]
+}
+
 provider "google" {
   project = var.project
-  region  = "europe-west1"
-  zone    = "europe-west1-b"
+  region  = local.region
+  zone    = local.zone
+}
+
+resource "google_project_service" "enable_google_apis" {
+  count                      = length(local.google_apis)
+  service                    = local.google_apis[count.index]
+  disable_dependent_services = true
+  disable_on_destroy         = true
 }
 
 data "google_iam_policy" "noauth" {
@@ -34,7 +50,7 @@ resource "google_cloud_run_service_iam_policy" "noauth" {
 
 resource "google_cloud_run_service" "run_web_service" {
   name     = "go-cmd-web"
-  location = "europe-west1"
+  location = local.region
 
   template {
     spec {
@@ -50,17 +66,21 @@ resource "google_cloud_run_service" "run_web_service" {
   }
 }
 
-locals {
-  google_apis = [
-    "cloudbuild.googleapis.com",
-    "run.googleapis.com"
-  ]
-}
+resource "google_cloud_run_service" "run_web_service" {
+  name     = "go-cmd-pubsub-processor"
+  location = local.region
 
-resource "google_project_service" "enable_google_apis" {
-  count                      = length(local.google_apis)
-  service                    = local.google_apis[count.index]
-  disable_dependent_services = true
-  disable_on_destroy         = true
+  template {
+    spec {
+      containers {
+        image = "eu.gcr.io/gcp-playground-jens-dev/go-cmd-pubsub-processor"
+      }
+    }
+  }
+
+  traffic {
+    percent         = 100
+    latest_revision = true
+  }
 }
 
