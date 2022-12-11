@@ -25,8 +25,7 @@ jobs:
             echo "version=stag" >> $GITHUB_OUTPUT
           else
             echo "env=dev" >> $GITHUB_OUTPUT
-            pr=`echo "${{ github.ref_name }}" | grep -o "[0-9.]\+"`
-            echo "version=pr-$pr" >> $GITHUB_OUTPUT
+            echo "version=pr-${{ github.event.number }}" >> $GITHUB_OUTPUT
           fi
 
   build-and-push-1:
