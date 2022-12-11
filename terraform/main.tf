@@ -52,7 +52,7 @@ resource "google_cloud_run_service" "run_web_service" {
 
 locals {
   google_apis = [
-    "cloudbuild.googleapis.com ",
+    "cloudbuild.googleapis.com",
     "run.googleapis.com"
   ]
 }
