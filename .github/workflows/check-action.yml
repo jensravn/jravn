@@ -38,6 +38,7 @@ jobs:
         with:
           go-version: 1.19
           cache: true
+          cache-dependency-path: go/go.sum
       - uses: actions/checkout@v3
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
@@ -58,6 +59,7 @@ jobs:
         with:
           go-version: 1.19
           cache: true
+          cache-dependency-path: go/go.sum
       - run: go build -v ./...
       - run: go test -v ./...
 
