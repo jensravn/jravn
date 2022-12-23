@@ -74,6 +74,7 @@ jobs:
         with:
           node-version: 16
           cache: "npm"
+          cache-dependency-path: nextjs/package-lock.json
       - run: npm ci
       - run: npm run prettier
       - run: npm run lint
