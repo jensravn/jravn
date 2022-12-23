@@ -2,8 +2,6 @@ name: Checks
 
 on:
   pull_request:
-    tags:
-      - v*
     branches:
       - main
   workflow_dispatch:
