@@ -23,7 +23,7 @@
 
 ## Run tests in terminal
 
-- Navigate to `cd go/`
+- Navigate into `cd go/`
 - Run `go test ./...`
 
 ## Run tests in VS Code
