@@ -2,8 +2,10 @@ linters:
   enable-all: true
   disable:
     # deprecated linters
+    - ifshort
     - interfacer
     - maligned
+    - nosnakecase
     - scopelint
     # annoying linters (complains about formatting but does not have auto fix)
     - nlreturn
