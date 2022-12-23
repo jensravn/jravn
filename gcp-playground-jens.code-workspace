@@ -6,10 +6,13 @@
     {
       "path": "go",
       "settings": {
+        "[go]": {
+          "editor.defaultFormatter": "golang.go"
+        },
         "go.lintFlags": ["--fast"],
         "go.lintOnSave": "package",
         "go.lintTool": "golangci-lint",
-        "[go]": { "editor.defaultFormatter": "golang.go" }
+        "go.useLanguageServer": true
       }
     },
     {
@@ -20,10 +23,6 @@
     },
     {
       "path": "terraform"
-    },
-    {
-      "path": "./",
-      "name": "root"
     }
   ],
   "settings": {
@@ -32,6 +31,9 @@
     "editor.codeActionsOnSave": {
       "source.fixAll": true,
       "source.organizeImports": true
+    },
+    "gopls": {
+      "formatting.gofumpt": true
     }
   }
 }

@@ -38,6 +38,7 @@
     "golangci",
     "golint",
     "googleapis",
+    "gopls",
     "hashicorp",
     "helloworld",
     "interfacer",
