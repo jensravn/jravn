@@ -1,6 +1,6 @@
 module github.com/jensravn/gcp-playground-jens/go
 
-go 1.19
+go 1.18
 
 require (
 	cloud.google.com/go/firestore v1.9.0
