@@ -15,7 +15,7 @@
     "@types/node": "18.13.0",
     "@types/react": "18.0.28",
     "bootstrap": "5.2.3",
-    "cspell": "6.26.1",
+    "cspell": "6.26.3",
     "date-fns": "2.29.3",
     "eslint-config-next": "13.1.6",
     "next": "13.1.6",
