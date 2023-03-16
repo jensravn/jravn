@@ -5,7 +5,7 @@ go 1.19
 require (
 	cloud.google.com/go/firestore v1.9.0
 	cloud.google.com/go/pubsub v1.29.0
-	google.golang.org/protobuf v1.29.1
+	google.golang.org/protobuf v1.30.0
 )
 
 require (
