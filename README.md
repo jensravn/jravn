@@ -7,3 +7,8 @@
 - Create a bucket for the terraform backend-config
 - Set the variables for terraform
 - Run the workflow terraform-apply.yml
+
+## Deploy
+
+- `cd go`
+- `gcloud run deploy`
