@@ -13,10 +13,6 @@ terraform {
 locals {
   region = "europe-west1"
   zone   = "europe-west1-b"
-  google_apis = [
-    "cloudbuild.googleapis.com",
-    "run.googleapis.com"
-  ]
 }
 
 provider "google" {
