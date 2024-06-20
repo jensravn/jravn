@@ -35,7 +35,7 @@ jobs:
         run: echo "label=${{ env.BRANCH_NAME }}-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
       - name: Build and export
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./go
           platforms: linux/amd64
