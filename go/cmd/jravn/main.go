@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"log/slog"
 	"net/http"
 
 	"github.com/jensravn/net/internal/dailycloudquestion"
@@ -13,8 +13,8 @@ func main() {
 	})
 	http.HandleFunc("GET /daily-cloud-question", func(w http.ResponseWriter, r *http.Request) {
 		url := dailycloudquestion.Today()
-		w.Write([]byte(url))
+		_, _ = w.Write([]byte(url))
 	})
 	err := http.ListenAndServe(":8080", nil)
-	log.Fatal(err)
+	slog.Error("web server error", "error", err)
 }
