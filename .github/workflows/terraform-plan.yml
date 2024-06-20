@@ -1,14 +1,13 @@
-name: terraform-apply
+name: terraform-plan
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   terraform:
     uses: ./.github/workflows/terraform.yml
     secrets: inherit
     with:
-      apply: true
+      apply: false

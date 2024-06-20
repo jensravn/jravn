@@ -1,0 +1,37 @@
+name: terraform
+
+on:
+  workflow_call:
+    inputs:
+      apply:
+        required: true
+        type: boolean
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform
+    env:
+      GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_GITHUB_ACTION_SERVICE_ACCOUNT }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - run: |
+          terraform fmt -check -recursive
+      - run: |
+          terraform init \
+            -backend-config="bucket=${{ vars.TERRAFORM_BUCKET }}"
+      - run: |
+          terraform validate
+
+      - if: ${{ !inputs.apply }}
+        run: terraform plan -var project_id="${{ vars.PROJECT_ID }}"
+
+      - if: ${{ inputs.apply }}
+        run: |
+          terraform apply \
+            -auto-approve \
+            -input=false \
+            -var project_id="${{ vars.PROJECT_ID }}"
