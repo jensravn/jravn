@@ -25,9 +25,8 @@ var exams = []struct {
 	{Exam: "professional-machine-learning-engineer", Questions: 285},
 }
 
-func Today() string {
-	t := time.Now()
-	seed := time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, time.UTC).UnixNano()
+func Date(year int, month time.Month, day int) string {
+	seed := time.Date(year, month, day, 0, 0, 0, 0, time.UTC).UnixNano()
 	r := rand.New(rand.NewPCG(uint64(seed), 2))
 	n := r.IntN(len(exams))
 	e := exams[n]

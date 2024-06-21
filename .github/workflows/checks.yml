@@ -95,7 +95,6 @@ jobs:
           deadcode -test ./...
           num=$(deadcode -test ./... | wc -l)
           if [ $num -gt 0 ]; then
-            echo "deadcode found"
             exit 1
           fi
 
