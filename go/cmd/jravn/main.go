@@ -16,7 +16,7 @@ func main() {
 	})
 	http.HandleFunc("GET /daily-cloud-question", func(w http.ResponseWriter, r *http.Request) {
 		t := time.Now()
-		path := fmt.Sprintf("/daily-cloud-question/%d/%d/%d", t.Year(), t.Month(), t.Day())
+		path := fmt.Sprintf("/daily-cloud-question/%04d/%02d/%02d", t.Year(), t.Month(), t.Day())
 		http.Redirect(w, r, path, http.StatusSeeOther)
 	})
 	http.HandleFunc("GET /daily-cloud-question/{year}/{month}/{day}", func(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +35,18 @@ func main() {
 			http.Error(w, "invalid day", http.StatusBadRequest)
 			return
 		}
-		url := dailycloudquestion.Date(year, time.Month(month), day)
+		dateString := fmt.Sprintf("%04d-%02d-%02d", year, month, day)
+		t, err := time.Parse(time.DateOnly, dateString)
+		if err != nil {
+			msg := fmt.Sprintf("invalid date: %s", dateString)
+			http.Error(w, msg, http.StatusBadRequest)
+			return
+		}
+		if t.After(time.Now()) {
+			http.Error(w, `cannot get future question`, http.StatusBadRequest)
+			return
+		}
+		url := dailycloudquestion.Date(t)
 		_, _ = w.Write([]byte(url))
 	})
 	err := http.ListenAndServe(":8080", nil)

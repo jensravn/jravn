@@ -25,17 +25,16 @@ var exams = []struct {
 	{Exam: "professional-machine-learning-engineer", Questions: 285},
 }
 
-func Date(year int, month time.Month, day int) string {
-	seed := time.Date(year, month, day, 0, 0, 0, 0, time.UTC).UnixNano()
+func Date(t time.Time) string {
+	seed := t.UnixNano()
 	r := rand.New(rand.NewPCG(uint64(seed), 2))
 	n := r.IntN(len(exams))
 	e := exams[n]
 	q := r.IntN(e.Questions) + 1
 	page := getPage(q, e.PageSize)
-	template := `<h1>%s: <a href="https://www.examtopics.com/exams/google/%s/view/%d">%s</a></h1>`
-	date := fmt.Sprintf("%d-%d-%d", year, month, day)
+	date := t.Format(time.DateOnly)
 	text := fmt.Sprintf("%s #%d\n", e.Exam, q)
-	url := fmt.Sprintf(template, date, e.Exam, page, text)
+	url := fmt.Sprintf(`<h1>%s: <a href="https://www.examtopics.com/exams/google/%s/view/%d">%s</a></h1>`, date, e.Exam, page, text)
 	return url
 }
 
