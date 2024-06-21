@@ -32,9 +32,10 @@ func Date(year int, month time.Month, day int) string {
 	e := exams[n]
 	q := r.IntN(e.Questions) + 1
 	page := getPage(q, e.PageSize)
-	template := `<a href="https://www.examtopics.com/exams/google/%s/view/%d">%s</a>`
+	template := `<h1>%s: <a href="https://www.examtopics.com/exams/google/%s/view/%d">%s</a></h1>`
+	date := fmt.Sprintf("%d-%d-%d", year, month, day)
 	text := fmt.Sprintf("%s #%d\n", e.Exam, q)
-	url := fmt.Sprintf(template, e.Exam, page, text)
+	url := fmt.Sprintf(template, date, e.Exam, page, text)
 	return url
 }
 
