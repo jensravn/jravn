@@ -63,6 +63,20 @@ jobs:
             -var project_id="${{ vars.PROJECT_ID }}" \
             -var label="${{ steps.vars.outputs.label }}"
 
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go/go.mod
+
+      - run: go test ./...
+
   deadcode:
     runs-on: ubuntu-latest
     defaults:
@@ -84,3 +98,19 @@ jobs:
             echo "deadcode found"
             exit 1
           fi
+
+  govulncheck:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go/go.mod
+
+      - run: go install golang.org/x/vuln/cmd/govulncheck@latest
+
+      - run: govulncheck ./...
