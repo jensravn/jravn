@@ -5,10 +5,6 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-  pull-requests: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -67,8 +63,11 @@ jobs:
             -var project_id="${{ vars.PROJECT_ID }}" \
             -var label="${{ steps.vars.outputs.label }}"
 
-  golangci-lint:
+  deadcode:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go
     steps:
       - uses: actions/checkout@v4
 
@@ -76,8 +75,12 @@ jobs:
         with:
           go-version-file: go/go.mod
 
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
-        with:
-          version: v1.58
-          working-directory: go
+      - run: go install golang.org/x/tools/cmd/deadcode@latest
+
+      - run: |
+          deadcode -test ./...
+          num=$(deadcode -test ./... | wc -l)
+          if [ $num -gt 0 ]; then
+            echo "deadcode found"
+            exit 1
+          fi
