@@ -1,9 +1,10 @@
 "use client";
 
-import { useSearchParams, redirect } from "next/navigation";
+import { useSearchParams, redirect, useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import { Suspense } from "react";
 import useSWR from "swr";
+import { Button } from "@repo/ui/button";
 
 type ApiQuestion = {
   exam: string;
@@ -25,6 +26,7 @@ export default function Question() {
 }
 
 function Inner() {
+  const { push } = useRouter();
   const date = useSearchParams().get("date");
   if (!date) {
     const d = new Date();
@@ -38,18 +40,43 @@ function Inner() {
     fetcher
   );
 
+  const handleBack = () => {
+    const d = new Date(date);
+    d.setDate(d.getDate() - 1);
+    const { year, month, day } = yearMonthDay(d);
+    push(`/question?date=${year}-${month}-${day}`);
+  };
+
+  const handleForward = () => {
+    const d = new Date(date);
+    d.setDate(d.getDate() + 1);
+    const { year, month, day } = yearMonthDay(d);
+    push(`/question?date=${year}-${month}-${day}`);
+  };
+
   if (error) return `Error: ${error.status} ${error.info}`;
   if (isLoading) return "Loading...";
   if (data)
     return (
-      <h1>
-        {data.date}:{" "}
-        <a
-          href={`https://www.examtopics.com/exams/google/${data.exam}/view/${data.page}`}
-        >
-          {data.exam} #{data.question}
-        </a>
-      </h1>
+      <div className={styles.inner}>
+        <h1>{data.date}</h1>
+        <h2>
+          <a
+            href={`https://www.examtopics.com/exams/google/${data.exam}/view/${data.page}`}
+          >
+            {data.exam} #{data.question}
+          </a>
+        </h2>
+        <div>
+          <Button onClick={handleBack}>👈</Button>
+          &nbsp;
+          {
+            <Button disabled={isAfterYesterday(date)} onClick={handleForward}>
+              👉
+            </Button>
+          }
+        </div>
+      </div>
     );
 }
 
@@ -71,3 +98,7 @@ const fetcher = async (url: any) => {
   }
   return res.json();
 };
+
+function isAfterYesterday(date: string) {
+  return new Date(date) >= new Date(new Date().toDateString());
+}

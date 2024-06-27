@@ -9,3 +9,8 @@
 .main {
   grid-row-start: 2;
 }
+
+.inner {
+  display: grid;
+  justify-items: center;
+}
