@@ -1,7 +1,6 @@
-package dailycloudquestion
+package question
 
 import (
-	"fmt"
 	"math/rand/v2"
 	"time"
 )
@@ -25,7 +24,14 @@ var exams = []struct {
 	{Exam: "professional-machine-learning-engineer", Questions: 285},
 }
 
-func Date(t time.Time) string {
+type Question struct {
+	Date     string `json:"date"`
+	Exam     string `json:"exam"`
+	Page     int    `json:"page"`
+	Question int    `json:"question"`
+}
+
+func Date(t time.Time) Question {
 	seed := t.UnixNano()
 	r := rand.New(rand.NewPCG(uint64(seed), 2))
 	n := r.IntN(len(exams))
@@ -33,9 +39,12 @@ func Date(t time.Time) string {
 	q := r.IntN(e.Questions) + 1
 	page := getPage(q, e.PageSize)
 	date := t.Format(time.DateOnly)
-	text := fmt.Sprintf("%s #%d\n", e.Exam, q)
-	url := fmt.Sprintf(`<h1>%s: <a href="https://www.examtopics.com/exams/google/%s/view/%d">%s</a></h1>`, date, e.Exam, page, text)
-	return url
+	return Question{
+		Date:     date,
+		Exam:     e.Exam,
+		Page:     page,
+		Question: q,
+	}
 }
 
 func getPage(question int, pageSize int) int {

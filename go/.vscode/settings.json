@@ -1,5 +1,8 @@
 {
   "go.lintOnSave": "package",
   "go.lintTool": "golangci-lint",
-  "cSpell.words": ["dailycloudquestion", "jensravn"]
+  "cSpell.words": [
+    "dailycloud",
+    "jensravn"
+  ]
 }

@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  go-build:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -35,49 +35,7 @@ jobs:
           platforms: linux/amd64
           push: false
 
-  terraform-plan:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: terraform
-    env:
-      GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_GITHUB_ACTION_SERVICE_ACCOUNT }}
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: hashicorp/setup-terraform@v3
-
-      - run: terraform fmt -check -recursive
-
-      - run: terraform init -backend-config="bucket=${{ vars.TERRAFORM_BUCKET }}"
-
-      - run: terraform validate
-
-      - id: vars
-        run: |
-          git fetch origin main
-          echo "label=main-$(git rev-parse --short origin/main)" >> $GITHUB_OUTPUT
-
-      - run: |
-          terraform plan \
-            -var project_id="${{ vars.PROJECT_ID }}" \
-            -var label="${{ steps.vars.outputs.label }}"
-
-  test:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: go
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go/go.mod
-
-      - run: go test ./...
-
-  deadcode:
+  go-deadcode:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -98,7 +56,21 @@ jobs:
             exit 1
           fi
 
-  govulncheck:
+  go-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: go
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go/go.mod
+
+      - run: go test ./...
+
+  go-vulncheck:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -113,3 +85,17 @@ jobs:
       - run: go install golang.org/x/vuln/cmd/govulncheck@latest
 
       - run: govulncheck ./...
+
+  typescript:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: typescript
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: "typescript/package.json"
+      - run: pnpm install
+      - run: pnpm run lint
+      - run: pnpm run build

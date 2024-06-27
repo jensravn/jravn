@@ -7,7 +7,25 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  typescript-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: typescript
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: "typescript/package.json"
+      - run: pnpm install
+      - run: pnpm run build
+      - uses: actions/upload-artifact@v2
+        with:
+          name: out
+          path: typescript/apps/web/out
+
+  go-build-and-push:
+    needs: [typescript-build]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -34,6 +52,11 @@ jobs:
       - id: vars
         run: echo "label=${{ env.BRANCH_NAME }}-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: out
+          path: go/static
+
       - name: Build and export
         uses: docker/build-push-action@v6
         with:
@@ -43,7 +66,7 @@ jobs:
           tags: europe-west1-docker.pkg.dev/jensravn/cloud-run/jravn:${{ steps.vars.outputs.label }},europe-west1-docker.pkg.dev/jensravn/cloud-run/jravn:latest
 
   terraform-apply:
-    needs: [build-and-push]
+    needs: [go-build-and-push]
     runs-on: ubuntu-latest
     defaults:
       run:

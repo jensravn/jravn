@@ -1,4 +1,4 @@
-package dailycloudquestion
+package question
 
 import "testing"
 

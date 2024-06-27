@@ -1,25 +1,20 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log/slog"
 	"net/http"
 	"strconv"
 	"time"
 
-	"github.com/jensravn/net/internal/dailycloudquestion"
+	"github.com/jensravn/net/internal/question"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Redirect(w, r, "/daily-cloud-question", http.StatusSeeOther)
-	})
-	http.HandleFunc("GET /daily-cloud-question", func(w http.ResponseWriter, r *http.Request) {
-		t := time.Now()
-		path := fmt.Sprintf("/daily-cloud-question/%04d/%02d/%02d", t.Year(), t.Month(), t.Day())
-		http.Redirect(w, r, path, http.StatusSeeOther)
-	})
-	http.HandleFunc("GET /daily-cloud-question/{year}/{month}/{day}", func(w http.ResponseWriter, r *http.Request) {
+
+	// api
+	http.HandleFunc("GET /api/daily-cloud-question/{year}/{month}/{day}", func(w http.ResponseWriter, r *http.Request) {
 		year, err := strconv.Atoi(r.PathValue("year"))
 		if err != nil {
 			http.Error(w, "invalid year", http.StatusBadRequest)
@@ -46,9 +41,28 @@ func main() {
 			http.Error(w, `cannot get future question`, http.StatusBadRequest)
 			return
 		}
-		url := dailycloudquestion.Date(t)
-		_, _ = w.Write([]byte(url))
+		q := question.Date(t)
+		w.Header().Set("Content-Type", "application/json")
+		err = json.NewEncoder(w).Encode(q)
+		if err != nil {
+			http.Error(w, `internal server error`, http.StatusInternalServerError)
+			return
+		}
 	})
+
+	// routes
+	http.HandleFunc("/404", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/404.html")
+	})
+	http.HandleFunc("/question", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/question.html")
+	})
+
+	// static files
+	fs := http.FileServer(http.Dir("./static"))
+	http.Handle("/", fs)
+
+	slog.Info("web server started", "port", 8080)
 	err := http.ListenAndServe(":8080", nil)
 	slog.Error("web server error", "error", err)
 }
