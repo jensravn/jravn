@@ -63,6 +63,7 @@ jobs:
           context: ./go
           platforms: linux/amd64
           push: true
+          build-args: "PROJECT_ID=${{ vars.PROJECT_ID }}"
           tags: europe-west1-docker.pkg.dev/jensravn/cloud-run/jravn:${{ steps.vars.outputs.label }},europe-west1-docker.pkg.dev/jensravn/cloud-run/jravn:latest
 
   terraform-apply:

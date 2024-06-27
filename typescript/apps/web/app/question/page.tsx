@@ -37,7 +37,21 @@ function Inner() {
   const { year, month, day } = yearMonthDay(d);
   const { data, error, isLoading } = useSWR<ApiQuestion>(
     `/api/daily-cloud-question/${year}/${month}/${day}`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
+    }
+  );
+  const note = useSWR(
+    `/api/daily-cloud-question/note/${year}/${month}/${day}`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      shouldRetryOnError: false,
+    }
   );
 
   const handleBack = () => {
@@ -54,37 +68,88 @@ function Inner() {
     push(`/question?date=${year}-${month}-${day}`);
   };
 
+  const handleOurAnswer = (ourAnswer: string) => {
+    fetch(`/api/daily-cloud-question/note/our-answer/${year}/${month}/${day}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ourAnswer }),
+    }).then(() => note.mutate());
+  };
+
+  const handleMostVoted = (mostVoted: string) => {
+    fetch(`/api/daily-cloud-question/note/most-voted/${year}/${month}/${day}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mostVoted }),
+    }).then(() => note.mutate());
+  };
+
   if (error) return `Error: ${error.status} ${error.info}`;
   if (isLoading) return "Loading...";
   if (data)
     return (
       <div className={styles.inner}>
-        <h1>{data.date}</h1>
+        <div className={styles.date}>
+          <Button onClick={handleBack}>⬅</Button>
+          <h1>&nbsp;{data.date}&nbsp;</h1>
+          <Button disabled={isAfterYesterday(date)} onClick={handleForward}>
+            ➡
+          </Button>
+        </div>
         <h2>
           <a
             href={`https://www.examtopics.com/exams/google/${data.exam}/view/${data.page}`}
+            target="_blank"
           >
             {data.exam} #{data.question}
           </a>
         </h2>
+
+        <br />
         <div>
-          <Button onClick={handleBack}>👈</Button>
-          &nbsp;
-          {
-            <Button disabled={isAfterYesterday(date)} onClick={handleForward}>
-              👉
-            </Button>
-          }
+          Our answer:{" "}
+          <select
+            onChange={(e) => handleOurAnswer(e.target.value)}
+            value={note.data?.ourAnswer ?? ""}
+            disabled={note.data?.ourAnswer || !isAfterYesterday(date)}
+          >
+            <option> </option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+            <option>D</option>
+          </select>{" "}
+          - Most voted:{" "}
+          <select
+            onChange={(e) => handleMostVoted(e.target.value)}
+            value={note.data?.mostVoted ?? ""}
+            disabled={note.data?.mostVoted || !isAfterYesterday(date)}
+          >
+            <option> </option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
+            <option>D</option>
+          </select>
         </div>
+        <br />
+        <input
+          type="checkbox"
+          checked={
+            note.data?.ourAnswer &&
+            note.data?.ourAnswer === note.data?.mostVoted
+          }
+          disabled
+        />
       </div>
     );
 }
 
 function yearMonthDay(date: Date) {
   return {
-    year: date.getFullYear(),
-    month: date.getMonth() + 1,
-    day: date.getDate(),
+    year: String(date.getFullYear()).padStart(2, "0"),
+    month: String(date.getMonth() + 1).padStart(2, "0"),
+    day: String(date.getDate()).padStart(2, "0"),
   };
 }
 

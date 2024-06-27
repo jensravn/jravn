@@ -6,9 +6,8 @@ const nextConfig = {
     return [
       {
         // rewrite all requests to /api to the API server
-        source: "/api/daily-cloud-question/:year/:month/:day",
-        destination:
-          "http://localhost:8080/api/daily-cloud-question/:year/:month/:day",
+        source: "/api/:path*",
+        destination: "http://localhost:8080/api/:path*", // Proxy to Backend
       },
     ];
   },

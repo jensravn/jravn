@@ -24,14 +24,19 @@ var exams = []struct {
 	{Exam: "professional-machine-learning-engineer", Questions: 285},
 }
 
-type Question struct {
+type Date struct {
 	Date     string `json:"date"`
 	Exam     string `json:"exam"`
 	Page     int    `json:"page"`
 	Question int    `json:"question"`
 }
 
-func Date(t time.Time) Question {
+type Note struct {
+	MostVoted string `json:"mostVoted"`
+	OurAnswer string `json:"ourAnswer"`
+}
+
+func GetDate(t time.Time) Date {
 	seed := t.UnixNano()
 	r := rand.New(rand.NewPCG(uint64(seed), 2))
 	n := r.IntN(len(exams))
@@ -39,7 +44,7 @@ func Date(t time.Time) Question {
 	q := r.IntN(e.Questions) + 1
 	page := getPage(q, e.PageSize)
 	date := t.Format(time.DateOnly)
-	return Question{
+	return Date{
 		Date:     date,
 		Exam:     e.Exam,
 		Page:     page,

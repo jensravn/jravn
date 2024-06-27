@@ -14,3 +14,8 @@
   display: grid;
   justify-items: center;
 }
+
+.date {
+  display: flex;
+  align-items: center;
+}

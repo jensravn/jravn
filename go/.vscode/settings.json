@@ -3,6 +3,8 @@
   "go.lintTool": "golangci-lint",
   "cSpell.words": [
     "dailycloud",
+    "docsnap",
+    "firestore",
     "jensravn"
   ]
 }

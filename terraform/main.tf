@@ -61,3 +61,10 @@ resource "google_cloud_run_service_iam_binding" "jravn_iam_binding" {
     "allUsers"
   ]
 }
+
+resource "google_firestore_database" "database" {
+  project     = var.project_id
+  name        = "(default)"
+  location_id = local.region
+  type        = "FIRESTORE_NATIVE"
+}
