@@ -5,7 +5,7 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "4.57.0"
+      version = "5.35.0"
     }
   }
 }
@@ -13,98 +13,58 @@ terraform {
 locals {
   region = "europe-west1"
   zone   = "europe-west1-b"
-  google_apis = [
-    "cloudbuild.googleapis.com",
-    "run.googleapis.com"
-  ]
 }
 
 provider "google" {
-  project = var.project
+  project = var.project_id
   region  = local.region
   zone    = local.zone
 }
 
-resource "google_project_service" "enable_google_apis" {
-  count                      = length(local.google_apis)
-  service                    = local.google_apis[count.index]
-  disable_dependent_services = false
-  disable_on_destroy         = false
-}
-
-data "google_iam_policy" "noauth" {
-  binding {
-    role = "roles/run.invoker"
-    members = [
-      "allUsers",
-    ]
-  }
-}
-
-resource "google_cloud_run_service" "go_cmd_pubsub_processor" {
-  name     = "${var.image_version_tag}-go-cmd-pubsub-processor"
-  location = local.region
-
-  template {
-    spec {
-      containers {
-        image = "eu.gcr.io/${var.project}/go-cmd-pubsub-processor:${var.image_version_tag}"
-      }
+resource "google_artifact_registry_repository" "cloud_run" {
+  format                 = "DOCKER"
+  location               = local.region
+  repository_id          = "cloud-run"
+  cleanup_policy_dry_run = false
+  // Cleanup policies. Keep policies will take precedence over delete policies.
+  cleanup_policies {
+    id     = "delete-if-older-than-30-days"
+    action = "DELETE"
+    condition {
+      older_than = "2592000s" // 30 days
     }
   }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
-}
-
-resource "google_cloud_run_service_iam_policy" "noauth_go_cmd_web" {
-  location    = google_cloud_run_service.go_cmd_web.location
-  project     = google_cloud_run_service.go_cmd_web.project
-  service     = google_cloud_run_service.go_cmd_web.name
-  policy_data = data.google_iam_policy.noauth.policy_data
-}
-
-resource "google_cloud_run_service" "go_cmd_web" {
-  name     = "${var.image_version_tag}-go-cmd-web"
-  location = local.region
-
-  template {
-    spec {
-      containers {
-        image = "eu.gcr.io/${var.project}/go-cmd-web:${var.image_version_tag}"
-      }
+  cleanup_policies {
+    id     = "keep-minimum-versions"
+    action = "KEEP"
+    most_recent_versions {
+      keep_count = 5
     }
   }
-
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
 }
 
-resource "google_cloud_run_service_iam_policy" "noauth_nextjs" {
-  location    = google_cloud_run_service.nextjs.location
-  project     = google_cloud_run_service.nextjs.project
-  service     = google_cloud_run_service.nextjs.name
-  policy_data = data.google_iam_policy.noauth.policy_data
-}
-
-resource "google_cloud_run_service" "nextjs" {
-  name     = "${var.image_version_tag}-nextjs"
+resource "google_cloud_run_v2_service" "jravn" {
+  name     = "jravn"
   location = local.region
-
+  ingress  = "INGRESS_TRAFFIC_ALL"
   template {
-    spec {
-      containers {
-        image = "eu.gcr.io/${var.project}/nextjs:${var.image_version_tag}"
-      }
+    containers {
+      image = "europe-west1-docker.pkg.dev/jensravn/cloud-run/jravn:${var.label}"
     }
   }
+}
+resource "google_cloud_run_service_iam_binding" "jravn_iam_binding" {
+  location = google_cloud_run_v2_service.jravn.location
+  service  = google_cloud_run_v2_service.jravn.name
+  role     = "roles/run.invoker"
+  members = [
+    "allUsers"
+  ]
+}
 
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
+resource "google_firestore_database" "database" {
+  project     = var.project_id
+  name        = "(default)"
+  location_id = local.region
+  type        = "FIRESTORE_NATIVE"
 }

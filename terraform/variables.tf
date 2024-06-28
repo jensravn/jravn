@@ -1,7 +1,6 @@
-variable "project" {
+variable "project_id" {
   type = string
 }
-
-variable "image_version_tag" {
+variable "label" {
   type = string
 }

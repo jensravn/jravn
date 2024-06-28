@@ -1,12 +1,11 @@
-# gcp-playground-jens
+# jravn
 
-[![Deploy](https://github.com/jensravn/gcp-playground-jens/actions/workflows/deploy.yml/badge.svg)](https://github.com/jensravn/gcp-playground-jens/actions/workflows/deploy.yml)
+## Bootstrap environment in Google Cloud project
 
-## Links
-
-- [nextjs](https://nextjs-cg7lqxhiua-ew.a.run.app)
-- [go-cmd-web/product](https://go-cmd-web-cg7lqxhiua-ew.a.run.app/product)
-
-## Architecture
-
-![Architecture diagram](architecture.drawio.svg)
+- Create a google cloud project
+- Run `bootstrap.sh`
+- Create a service account to use with github actions
+- [Make the service account owner of the domain](https://search.google.com/search-console/users)
+- Create a bucket for the terraform backend-config
+- Set the variables for terraform
+- Run the workflow `deploy.yml`

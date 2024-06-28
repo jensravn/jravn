@@ -1,0 +1,21 @@
+.page {
+  display: grid;
+  grid-template-rows: 20px 1fr 20px;
+  align-items: center;
+  justify-items: center;
+  min-height: 100svh;
+}
+
+.main {
+  grid-row-start: 2;
+}
+
+.inner {
+  display: grid;
+  justify-items: center;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+}

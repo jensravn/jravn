@@ -1,9 +1,0 @@
-.row {
-  display: flex;
-  width: 500px;
-  border: 1px solid;
-}
-
-.row div {
-  flex-grow: 1;
-}

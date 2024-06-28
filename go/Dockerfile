@@ -1,23 +1,28 @@
-FROM golang:1.20 AS builder
+FROM golang:1.22.4 AS builder
 
-ARG CMD
+ARG PROJECT_ID
 
 WORKDIR /src/app/
 
-COPY . .
+RUN mkdir static
 
-COPY /cmd/web/product-form.html /app/resources/
+COPY go.* ./
+
+RUN go mod download
+
+COPY . .
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     go build \
-    -ldflags='-w -s -extldflags "-static"' \
-    -a \
     -o /app/cmd \
-    ./cmd/${CMD}
+    ./cmd/jravn
 
 FROM gcr.io/distroless/static-debian11:latest
 
-COPY --from=builder /app/resources/ /app/resources/
+ARG PROJECT_ID
+ENV PROJECT_ID=${PROJECT_ID}
+
+COPY --from=builder /src/app/static /app/static
 COPY --from=builder /app/cmd /app/cmd
 
 WORKDIR /app
