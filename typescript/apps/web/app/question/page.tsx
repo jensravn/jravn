@@ -84,72 +84,76 @@ function Inner() {
     }).then(() => note.mutate());
   };
   const today = yearMonthDay(new Date());
-  if (error) return `Error: ${error.status} ${error.info}`;
-  if (isLoading) return "Loading...";
-  if (data)
-    return (
-      <div className={styles.inner}>
-        <div className={styles.date}>
-          <Button onClick={handleBack}>←</Button>
-          &nbsp;
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => push(`/question?date=${e.target.value}`)}
-            max={`${today.year}-${today.month}-${today.day}`}
-          />
-          &nbsp;
-          <Button disabled={isAfterYesterday(date)} onClick={handleForward}>
-            →
-          </Button>
-        </div>
-        <h2>
+  return (
+    <div className={styles.inner}>
+      <div className={styles.date}>
+        <Button onClick={handleBack}>←</Button>
+        &nbsp;
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => push(`/question?date=${e.target.value}`)}
+          max={`${today.year}-${today.month}-${today.day}`}
+        />
+        &nbsp;
+        <Button disabled={isAfterYesterday(date)} onClick={handleForward}>
+          →
+        </Button>
+      </div>
+      <h2>
+        {isLoading ? (
+          <a>&nbsp;</a>
+        ) : error ? (
+          error?.info ?? "error"
+        ) : data ? (
           <a
             href={`https://www.examtopics.com/exams/google/${data.exam}/view/${data.page}`}
             target="_blank"
           >
             {data.exam} #{data.question}
           </a>
-        </h2>
+        ) : (
+          "no data"
+        )}
+      </h2>
 
-        <br />
-        <div>
-          Our answer:{" "}
-          <select
-            onChange={(e) => handleOurAnswer(e.target.value)}
-            value={note.data?.ourAnswer ?? ""}
-            disabled={note.data?.ourAnswer || !isAfterYesterday(date)}
-          >
-            <option> </option>
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-            <option>D</option>
-          </select>{" "}
-          - Most voted:{" "}
-          <select
-            onChange={(e) => handleMostVoted(e.target.value)}
-            value={note.data?.mostVoted ?? ""}
-            disabled={note.data?.mostVoted || !isAfterYesterday(date)}
-          >
-            <option> </option>
-            <option>A</option>
-            <option>B</option>
-            <option>C</option>
-            <option>D</option>
-          </select>
-        </div>
-        <br />
-        <input
-          type="checkbox"
-          checked={
-            note.data?.ourAnswer &&
-            note.data?.ourAnswer === note.data?.mostVoted
-          }
-          disabled
-        />
+      <br />
+      <div>
+        Our answer:{" "}
+        <select
+          onChange={(e) => handleOurAnswer(e.target.value)}
+          value={note.data?.ourAnswer ?? ""}
+          disabled={note.data?.ourAnswer || !isAfterYesterday(date)}
+        >
+          <option> </option>
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+          <option>D</option>
+        </select>{" "}
+        - Most voted:{" "}
+        <select
+          onChange={(e) => handleMostVoted(e.target.value)}
+          value={note.data?.mostVoted ?? ""}
+          disabled={note.data?.mostVoted || !isAfterYesterday(date)}
+        >
+          <option> </option>
+          <option>A</option>
+          <option>B</option>
+          <option>C</option>
+          <option>D</option>
+        </select>
       </div>
-    );
+      <br />
+      <input
+        type="checkbox"
+        checked={
+          note.data?.ourAnswer && note.data?.ourAnswer === note.data?.mostVoted
+        }
+        disabled
+      />
+    </div>
+  );
 }
 
 function yearMonthDay(date: Date) {
