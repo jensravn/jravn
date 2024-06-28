@@ -83,17 +83,24 @@ function Inner() {
       body: JSON.stringify({ mostVoted }),
     }).then(() => note.mutate());
   };
-
+  const today = yearMonthDay(new Date());
   if (error) return `Error: ${error.status} ${error.info}`;
   if (isLoading) return "Loading...";
   if (data)
     return (
       <div className={styles.inner}>
         <div className={styles.date}>
-          <Button onClick={handleBack}>⬅</Button>
-          <h1>&nbsp;{data.date}&nbsp;</h1>
+          <Button onClick={handleBack}>←</Button>
+          &nbsp;
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => push(`/question?date=${e.target.value}`)}
+            max={`${today.year}-${today.month}-${today.day}`}
+          />
+          &nbsp;
           <Button disabled={isAfterYesterday(date)} onClick={handleForward}>
-            ➡
+            →
           </Button>
         </div>
         <h2>
