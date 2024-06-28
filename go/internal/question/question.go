@@ -10,7 +10,7 @@ var exams = []struct {
 	Questions int
 	PageSize  int
 }{
-	{Exam: "associate-cloud-engineer", Questions: 266},
+	{Exam: "associate-cloud-engineer", Questions: 65},
 	{Exam: "cloud-digital-leader", Questions: 70},
 	{Exam: "professional-cloud-architect", Questions: 276},
 	{Exam: "professional-cloud-database-engineer", Questions: 132, PageSize: 4},
