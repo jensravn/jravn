@@ -51,6 +51,7 @@ resource "google_cloud_run_v2_service" "jravn" {
     containers {
       image = "europe-west1-docker.pkg.dev/jensravn/cloud-run/jravn:${var.label}"
     }
+    service_account = google_service_account.cloud_run_jravn_sa.email
   }
 }
 resource "google_cloud_run_service_iam_binding" "jravn_iam_binding" {
@@ -67,4 +68,23 @@ resource "google_firestore_database" "database" {
   name        = "(default)"
   location_id = local.region
   type        = "FIRESTORE_NATIVE"
+}
+
+resource "google_service_account" "cloud_run_jravn_sa" {
+  account_id   = "cloud-run-jravn-sa"
+  display_name = "service account for cloud run service jravn"
+}
+
+module "service_account-iam-bindings" {
+  source = "terraform-google-modules/iam/google//modules/service_accounts_iam"
+  service_accounts = [
+    google_service_account.cloud_run_jravn_sa.email
+  ]
+  project = var.project_id
+  mode    = "additive"
+  bindings = {
+    "roles/datastore.user" = [
+      "serviceAccount:${google_service_account.cloud_run_jravn_sa.email}",
+    ]
+  }
 }
