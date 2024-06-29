@@ -6,23 +6,13 @@ import styles from "./page.module.css";
 import { Suspense } from "react";
 import useSWR from "swr";
 import { Button } from "@repo/ui/button";
-
-type ApiQuestion = {
-  exam: string;
-  question: number;
-  date: string;
-  page: number;
-};
+import View, { QuestionData } from "./view";
 
 export default function Question() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Suspense>
-          <Inner />
-        </Suspense>
-      </main>
-    </div>
+    <Suspense>
+      <Inner />
+    </Suspense>
   );
 }
 
@@ -36,7 +26,7 @@ function Inner() {
   }
   const d = new Date(date);
   const { year, month, day } = yearMonthDay(d);
-  const { data, error, isLoading } = useSWR<ApiQuestion>(
+  const question = useSWR<QuestionData>(
     `/api/daily-cloud-question/${year}/${month}/${day}`,
     fetcher,
     {
@@ -86,81 +76,76 @@ function Inner() {
   };
   const today = yearMonthDay(new Date());
   return (
-    <div className={styles.inner}>
-      <div className={styles.date}>
-        <Button onClick={handleBack}>←</Button>
-        &nbsp;
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => push(`/question?date=${e.target.value}`)}
-          max={`${today.year}-${today.month}-${today.day}`}
-        />
-        &nbsp;
-        <Button disabled={isAfterYesterday(date)} onClick={handleForward}>
-          →
-        </Button>
-      </div>
-      <h2>
-        {isLoading ? (
-          <a>&nbsp;</a>
-        ) : error ? (
-          error?.info ?? "error"
-        ) : data ? (
-          <a
-            href={`https://www.examtopics.com/exams/google/${data.exam}/view/${data.page}`}
-            target="_blank"
-          >
-            {data.exam} #{data.question}
-          </a>
-        ) : (
-          "no data"
-        )}
-      </h2>
+    <div className={styles.page}>
+      <main className={styles.main}>
+        <div className={styles.inner}>
+          <div className={styles.date}>
+            <Button onClick={handleBack}>←</Button>
+            &nbsp;
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => push(`/question?date=${e.target.value}`)}
+              max={`${today.year}-${today.month}-${today.day}`}
+            />
+            &nbsp;
+            <Button disabled={isAfterYesterday(date)} onClick={handleForward}>
+              →
+            </Button>
+          </div>
+          <View question={question} />
 
-      <br />
-      <div>
-        Our answer:{" "}
-        <select
-          onChange={(e) => handleOurAnswer(e.target.value)}
-          value={note.data?.ourAnswer ?? ""}
-          disabled={note.data?.ourAnswer || !isAfterYesterday(date)}
-        >
-          <option> </option>
-          <option>A</option>
-          <option>B</option>
-          <option>C</option>
-          <option>D</option>
-        </select>{" "}
-        - Most voted:{" "}
-        <select
-          onChange={(e) => handleMostVoted(e.target.value)}
-          value={note.data?.mostVoted ?? ""}
-          disabled={note.data?.mostVoted || !isAfterYesterday(date)}
-        >
-          <option> </option>
-          <option>A</option>
-          <option>B</option>
-          <option>C</option>
-          <option>D</option>
-        </select>
-      </div>
-      <br />
-      <input
-        type="checkbox"
-        checked={
-          note.data?.ourAnswer && note.data?.ourAnswer === note.data?.mostVoted
-        }
-        disabled
-      />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <a href="https://github.com/jensravn/jravn">
-        <Image src={`/github-mark.svg`} alt="GitHub" width="24" height="24" />
-      </a>
+          <br />
+          <div>
+            Our answer:{" "}
+            <select
+              onChange={(e) => handleOurAnswer(e.target.value)}
+              value={note.data?.ourAnswer ?? ""}
+              disabled={note.data?.ourAnswer || !isAfterYesterday(date)}
+            >
+              <option> </option>
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+              <option>D</option>
+            </select>{" "}
+            - Most voted:{" "}
+            <select
+              onChange={(e) => handleMostVoted(e.target.value)}
+              value={note.data?.mostVoted ?? ""}
+              disabled={note.data?.mostVoted || !isAfterYesterday(date)}
+            >
+              <option> </option>
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+              <option>D</option>
+            </select>
+          </div>
+          <br />
+          <input
+            type="checkbox"
+            checked={
+              note.data?.ourAnswer &&
+              note.data?.ourAnswer === note.data?.mostVoted
+            }
+            disabled
+          />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <a href="https://github.com/jensravn/jravn">
+            <Image
+              src={`/github-mark.svg`}
+              alt="GitHub"
+              width="24"
+              height="24"
+            />
+          </a>
+        </div>
+      </main>
     </div>
   );
 }
