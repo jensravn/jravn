@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useSearchParams, redirect, useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import { Suspense } from "react";
@@ -152,6 +153,14 @@ function Inner() {
         }
         disabled
       />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <a href="https://github.com/jensravn/jravn">
+        <Image src={`/github-mark.svg`} alt="GitHub" width="24" height="24" />
+      </a>
     </div>
   );
 }
