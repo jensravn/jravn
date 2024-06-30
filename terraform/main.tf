@@ -75,16 +75,3 @@ resource "google_service_account" "cloud_run_jravn_sa" {
   display_name = "service account for cloud run service jravn"
 }
 
-module "service_account-iam-bindings" {
-  source = "terraform-google-modules/iam/google//modules/service_accounts_iam"
-  service_accounts = [
-    google_service_account.cloud_run_jravn_sa.email
-  ]
-  project = var.project_id
-  mode    = "additive"
-  bindings = {
-    "roles/datastore.user" = [
-      "serviceAccount:${google_service_account.cloud_run_jravn_sa.email}",
-    ]
-  }
-}
