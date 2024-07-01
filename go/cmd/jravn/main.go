@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/jensravn/net/internal/firestore"
-	"github.com/jensravn/net/internal/question"
+	"github.com/jensravn/jravn/internal/firestore"
+	"github.com/jensravn/jravn/internal/question"
 )
 
 func main() {
@@ -237,6 +237,67 @@ func main() {
 			return
 		}
 		n.MostVoted = note.MostVoted
+		err = repo.Put(t, n)
+		if err != nil {
+			http.Error(w, `internal server error`, http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusNoContent)
+	})
+
+	type comment struct {
+		Comment string `json:"comment"`
+	}
+
+	http.HandleFunc("POST /api/daily-cloud-question/note/comment/{year}/{month}/{day}", func(w http.ResponseWriter, r *http.Request) {
+		year, err := strconv.Atoi(r.PathValue("year"))
+		if err != nil {
+			http.Error(w, "invalid year", http.StatusBadRequest)
+			return
+		}
+		month, err := strconv.Atoi(r.PathValue("month"))
+		if err != nil {
+			http.Error(w, "invalid month", http.StatusBadRequest)
+			return
+		}
+		day, err := strconv.Atoi(r.PathValue("day"))
+		if err != nil {
+			http.Error(w, "invalid day", http.StatusBadRequest)
+			return
+		}
+		dateString := fmt.Sprintf("%04d-%02d-%02d", year, month, day)
+		t, err := time.Parse(time.DateOnly, dateString)
+		if err != nil {
+			msg := fmt.Sprintf("invalid date: %s", dateString)
+			http.Error(w, msg, http.StatusBadRequest)
+			return
+		}
+		if t.After(time.Now()) {
+			http.Error(w, `cannot save comment for future question`, http.StatusBadRequest)
+			return
+		}
+		c, err := firestore.NewClient(projectID)
+		if err != nil {
+			http.Error(w, `internal server error`, http.StatusInternalServerError)
+			return
+		}
+		repo := firestore.NewQuestionNoteRepo(c)
+		n, err := repo.Get(t)
+		if err != nil {
+			if errors.Is(err, firestore.ErrNotFound) {
+				n = &question.Note{}
+			} else {
+				http.Error(w, `internal server error`, http.StatusInternalServerError)
+				return
+			}
+		}
+		comment := comment{}
+		err = json.NewDecoder(r.Body).Decode(&comment)
+		if err != nil {
+			http.Error(w, `invalid request body`, http.StatusBadRequest)
+			return
+		}
+		n.Comments = append(n.Comments, question.Comment{Text: comment.Comment, TimeStamp: time.Now()})
 		err = repo.Put(t, n)
 		if err != nil {
 			http.Error(w, `internal server error`, http.StatusInternalServerError)

@@ -32,8 +32,14 @@ type Date struct {
 }
 
 type Note struct {
-	MostVoted string `json:"mostVoted"`
-	OurAnswer string `json:"ourAnswer"`
+	MostVoted string    `json:"mostVoted"`
+	OurAnswer string    `json:"ourAnswer"`
+	Comments  []Comment `json:"comments"`
+}
+
+type Comment struct {
+	Text      string    `json:"text"`
+	TimeStamp time.Time `json:"timeStamp"`
 }
 
 func GetDate(t time.Time) Date {

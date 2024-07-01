@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
-	"github.com/jensravn/net/internal/question"
+	"github.com/jensravn/jravn/internal/question"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

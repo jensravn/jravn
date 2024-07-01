@@ -17,6 +17,7 @@ const meta = {
   args: {
     gitHubLogo: <img src={GitHubLogo} alt="GitHub" width="24" height="24" />,
     onBack: fn(),
+    onComment: fn(),
     onDateChange: fn(),
     onForward: fn(),
     onMostVoted: fn(),
@@ -35,6 +36,7 @@ export const Default: Story = {
       data: {
         mostVoted: "B",
         ourAnswer: "A",
+        comments: [{ text: "comment 1", timeStamp: "2022-01-01" }],
       },
       error: undefined,
       isLoading: false,
