@@ -51,6 +51,14 @@ function Inner() {
     push(`/question?date=${date}`);
   };
 
+  const handleComment = (comment: string) => {
+    fetch(`/api/daily-cloud-question/note/comment/${year}/${month}/${day}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ comment }),
+    }).then(() => note.mutate());
+  };
+
   const handleBack = () => {
     const d = new Date(date);
     d.setDate(d.getDate() - 1);
@@ -89,6 +97,7 @@ function Inner() {
       date={date}
       note={note}
       onBack={handleBack}
+      onComment={handleComment}
       onDateChange={handleDateChange}
       onForward={handleForward}
       onMostVoted={handleMostVoted}

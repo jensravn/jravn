@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./styles.css";
 
 interface Props {
@@ -5,6 +6,7 @@ interface Props {
   gitHubLogo: JSX.Element;
   note: Req<NoteData>;
   onBack: () => void;
+  onComment: (comment: string) => void;
   onDateChange: (date: ISOdateString) => void;
   onForward: () => void;
   onMostVoted: (mostVoted: string) => void;
@@ -17,6 +19,7 @@ export default function PageQuestionDaily({
   date,
   gitHubLogo,
   note,
+  onComment,
   onBack,
   onDateChange,
   onForward,
@@ -25,6 +28,7 @@ export default function PageQuestionDaily({
   question,
   today,
 }: Props) {
+  const [comment, setComment] = useState("");
   return (
     <div className="page">
       <main className="main">
@@ -59,7 +63,15 @@ export default function PageQuestionDaily({
               "no data"
             )}
           </h2>
-
+          <br />
+          <input
+            type="checkbox"
+            checked={
+              !!note.data?.ourAnswer &&
+              note.data?.ourAnswer === note.data?.mostVoted
+            }
+            disabled
+          />
           <br />
           <div>
             Our answer:{" "}
@@ -88,15 +100,22 @@ export default function PageQuestionDaily({
             </select>
           </div>
           <br />
-          <input
-            type="checkbox"
-            checked={
-              !!note.data?.ourAnswer &&
-              note.data?.ourAnswer === note.data?.mostVoted
-            }
-            disabled
-          />
-          <br />
+          <span>
+            <input
+              onChange={(e) => setComment(e.target.value)}
+              type="text"
+              value={comment}
+            />{" "}
+            <button
+              onClick={() => {
+                onComment(comment);
+                setComment("");
+              }}
+            >
+              Add comment
+            </button>
+          </span>
+          {note.data?.comments?.map((comment) => <p>{comment.text}</p>)}
           <br />
           <br />
           <br />
@@ -128,6 +147,12 @@ export type QuestionData = {
 type NoteData = {
   ourAnswer?: string;
   mostVoted?: string;
+  comments?: NoteComment[];
+};
+
+type NoteComment = {
+  text: string;
+  timeStamp: string;
 };
 
 type Err = {

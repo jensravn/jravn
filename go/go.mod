@@ -1,4 +1,4 @@
-module github.com/jensravn/net
+module github.com/jensravn/jravn
 
 go 1.22.4
 

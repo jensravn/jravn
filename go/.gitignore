@@ -1,1 +1,5 @@
 cmd/jravn/static
+
+.env.local
+
+__debug_bin*
