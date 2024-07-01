@@ -1,9 +1,14 @@
 "use client";
 
+import PageQuestionDaily, {
+  ISOdateString,
+  QuestionData,
+  YearMonthDay,
+} from "@repo/ui/page-question-daily";
+import Image from "next/image";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import useSWR from "swr";
-import View, { ISOdateString, QuestionData, YearMonthDay } from "./view";
 
 export default function Question() {
   return (
@@ -76,7 +81,10 @@ function Inner() {
   };
   const today = yearMonthDay(new Date());
   return (
-    <View
+    <PageQuestionDaily
+      gitHubLogo={
+        <Image src="/github-logo.svg" alt="GitHub" width="24" height="24" />
+      }
       date={date}
       note={note}
       onBack={handleBack}
