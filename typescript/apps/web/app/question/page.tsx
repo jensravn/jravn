@@ -1,12 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import { useSearchParams, redirect, useRouter } from "next/navigation";
-import styles from "./page.module.css";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import useSWR from "swr";
-import { Button } from "@repo/ui/button";
-import View, { QuestionData } from "./view";
+import View, { ISOdateString, QuestionData, YearMonthDay } from "./view";
 
 export default function Question() {
   return (
@@ -45,6 +42,9 @@ function Inner() {
     }
   );
 
+  const handleDateChange = (date: ISOdateString) =>
+    push(`/question?date=${date}}`);
+
   const handleBack = () => {
     const d = new Date(date);
     d.setDate(d.getDate() - 1);
@@ -76,81 +76,21 @@ function Inner() {
   };
   const today = yearMonthDay(new Date());
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <div className={styles.inner}>
-          <div className={styles.date}>
-            <Button onClick={handleBack}>←</Button>
-            &nbsp;
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => push(`/question?date=${e.target.value}`)}
-              max={`${today.year}-${today.month}-${today.day}`}
-            />
-            &nbsp;
-            <Button disabled={isAfterYesterday(date)} onClick={handleForward}>
-              →
-            </Button>
-          </div>
-          <View question={question} />
-
-          <br />
-          <div>
-            Our answer:{" "}
-            <select
-              onChange={(e) => handleOurAnswer(e.target.value)}
-              value={note.data?.ourAnswer ?? ""}
-              disabled={note.data?.ourAnswer || !isAfterYesterday(date)}
-            >
-              <option> </option>
-              <option>A</option>
-              <option>B</option>
-              <option>C</option>
-              <option>D</option>
-            </select>{" "}
-            - Most voted:{" "}
-            <select
-              onChange={(e) => handleMostVoted(e.target.value)}
-              value={note.data?.mostVoted ?? ""}
-              disabled={note.data?.mostVoted || !isAfterYesterday(date)}
-            >
-              <option> </option>
-              <option>A</option>
-              <option>B</option>
-              <option>C</option>
-              <option>D</option>
-            </select>
-          </div>
-          <br />
-          <input
-            type="checkbox"
-            checked={
-              note.data?.ourAnswer &&
-              note.data?.ourAnswer === note.data?.mostVoted
-            }
-            disabled
-          />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <a href="https://github.com/jensravn/jravn">
-            <Image
-              src={`/github-mark.svg`}
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
-        </div>
-      </main>
-    </div>
+    <View
+      date={date}
+      note={note}
+      onBack={handleBack}
+      onDateChange={handleDateChange}
+      onForward={handleForward}
+      onMostVoted={handleMostVoted}
+      onOurAnswer={handleOurAnswer}
+      question={question}
+      today={today}
+    />
   );
 }
 
-function yearMonthDay(date: Date) {
+function yearMonthDay(date: Date): YearMonthDay {
   return {
     year: String(date.getFullYear()).padStart(2, "0"),
     month: String(date.getMonth() + 1).padStart(2, "0"),
@@ -168,7 +108,3 @@ const fetcher = async (url: any) => {
   }
   return res.json();
 };
-
-function isAfterYesterday(date: string) {
-  return new Date(date) >= new Date(new Date().toDateString());
-}

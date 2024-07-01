@@ -7,7 +7,8 @@ const nextConfig = {
       {
         // rewrite all requests to /api to the API server
         source: "/api/:path*",
-        destination: "http://localhost:8080/api/:path*", // Proxy to Backend
+        // destination: "http://localhost:8080/api/:path*",
+        destination: "https://jravn.com/api/:path*",
       },
     ];
   },
