@@ -47,8 +47,9 @@ function Inner() {
     }
   );
 
-  const handleDateChange = (date: ISOdateString) =>
-    push(`/question?date=${date}}`);
+  const handleDateChange = (date: ISOdateString) => {
+    push(`/question?date=${date}`);
+  };
 
   const handleBack = () => {
     const d = new Date(date);
