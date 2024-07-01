@@ -1,21 +1,21 @@
-import { Button } from "@repo/ui/button";
-import Image from "next/image";
-import styles from "./page.module.css";
+import "./styles.css";
 
 interface Props {
   date: string;
-  note: Request<NoteData>;
+  gitHubLogo: JSX.Element;
+  note: Req<NoteData>;
   onBack: () => void;
   onDateChange: (date: ISOdateString) => void;
   onForward: () => void;
   onMostVoted: (mostVoted: string) => void;
   onOurAnswer: (ourAnswer: string) => void;
-  question: Request<QuestionData>;
+  question: Req<QuestionData>;
   today: YearMonthDay;
 }
 
-export default function View({
+export default function PageQuestionDaily({
   date,
+  gitHubLogo,
   note,
   onBack,
   onDateChange,
@@ -26,11 +26,11 @@ export default function View({
   today,
 }: Props) {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <div className={styles.inner}>
-          <div className={styles.date}>
-            <Button onClick={onBack}>←</Button>
+    <div className="page">
+      <main className="main">
+        <div className="inner">
+          <div className="date">
+            <button onClick={onBack}>←</button>
             &nbsp;
             <input
               type="date"
@@ -39,9 +39,9 @@ export default function View({
               max={`${today.year}-${today.month}-${today.day}`}
             />
             &nbsp;
-            <Button disabled={isAfterYesterday(date)} onClick={onForward}>
+            <button disabled={isAfterYesterday(date)} onClick={onForward}>
               →
-            </Button>
+            </button>
           </div>
           <h2>
             {question.isLoading ? (
@@ -101,14 +101,7 @@ export default function View({
           <br />
           <br />
           <br />
-          <a href="https://github.com/jensravn/jravn">
-            <Image
-              src={`/github-mark.svg`}
-              alt="GitHub"
-              width="24"
-              height="24"
-            />
-          </a>
+          <a href="https://github.com/jensravn/jravn">{gitHubLogo}</a>
         </div>
       </main>
     </div>
@@ -119,9 +112,9 @@ function isAfterYesterday(date: string) {
   return new Date(date) >= new Date(new Date().toDateString());
 }
 
-type Request<Data> = {
+type Req<Data> = {
   data?: Data;
-  error?: Error;
+  error?: Err;
   isLoading: boolean;
 };
 
@@ -137,7 +130,7 @@ type NoteData = {
   mostVoted?: string;
 };
 
-type Error = {
+type Err = {
   info?: string;
 };
 
