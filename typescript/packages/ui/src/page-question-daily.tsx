@@ -29,6 +29,7 @@ export default function PageQuestionDaily({
   today,
 }: Props) {
   const [comment, setComment] = useState("");
+
   return (
     <div className="page">
       <main className="main">
@@ -64,17 +65,9 @@ export default function PageQuestionDaily({
             )}
           </h2>
           <br />
-          <input
-            type="checkbox"
-            checked={
-              !!note.data?.ourAnswer &&
-              note.data?.ourAnswer === note.data?.mostVoted
-            }
-            disabled
-          />
           <br />
           <div>
-            Our answer:{" "}
+            Our answer{" "}
             <select
               onChange={(e) => onOurAnswer(e.target.value)}
               value={note.data?.ourAnswer ?? ""}
@@ -86,7 +79,14 @@ export default function PageQuestionDaily({
               <option>C</option>
               <option>D</option>
             </select>{" "}
-            - Most voted:{" "}
+            <input
+              type="checkbox"
+              checked={
+                !!note.data?.ourAnswer &&
+                note.data?.ourAnswer === note.data?.mostVoted
+              }
+              disabled
+            />{" "}
             <select
               onChange={(e) => onMostVoted(e.target.value)}
               value={note.data?.mostVoted ?? ""}
@@ -97,8 +97,9 @@ export default function PageQuestionDaily({
               <option>B</option>
               <option>C</option>
               <option>D</option>
-            </select>
-          </div>
+            </select>{" "}
+            Most voted
+          </div>{" "}
           <br />
           <span>
             <input
@@ -117,6 +118,9 @@ export default function PageQuestionDaily({
           </span>
           {note.data?.comments?.map((comment) => <p>{comment.text}</p>)}
           <br />
+          {new Date(date).getDay() === 5 ? (
+            <a href={`/question/review?date=${date}`}>Weekly review</a>
+          ) : null}
           <br />
           <br />
           <br />
@@ -131,7 +135,7 @@ function isAfterYesterday(date: string) {
   return new Date(date) >= new Date(new Date().toDateString());
 }
 
-type Req<Data> = {
+export type Req<Data> = {
   data?: Data;
   error?: Err;
   isLoading: boolean;
@@ -144,7 +148,7 @@ export type QuestionData = {
   page: number;
 };
 
-type NoteData = {
+export type NoteData = {
   ourAnswer?: string;
   mostVoted?: string;
   comments?: NoteComment[];

@@ -24,7 +24,7 @@ function Inner() {
   if (!date) {
     const d = new Date();
     const { year, month, day } = yearMonthDay(d);
-    redirect(`/question?date=${year}-${month}-${day}`);
+    redirect(`?date=${year}-${month}-${day}`);
   }
   const d = new Date(date);
   const { year, month, day } = yearMonthDay(d);
@@ -48,7 +48,7 @@ function Inner() {
   );
 
   const handleDateChange = (date: ISOdateString) => {
-    push(`/question?date=${date}`);
+    push(`?date=${date}`);
   };
 
   const handleComment = (comment: string) => {
@@ -63,14 +63,14 @@ function Inner() {
     const d = new Date(date);
     d.setDate(d.getDate() - 1);
     const { year, month, day } = yearMonthDay(d);
-    push(`/question?date=${year}-${month}-${day}`);
+    push(`?date=${year}-${month}-${day}`);
   };
 
   const handleForward = () => {
     const d = new Date(date);
     d.setDate(d.getDate() + 1);
     const { year, month, day } = yearMonthDay(d);
-    push(`/question?date=${year}-${month}-${day}`);
+    push(`?date=${year}-${month}-${day}`);
   };
 
   const handleOurAnswer = (ourAnswer: string) => {
@@ -88,7 +88,9 @@ function Inner() {
       body: JSON.stringify({ mostVoted }),
     }).then(() => note.mutate());
   };
+
   const today = yearMonthDay(new Date());
+
   return (
     <PageQuestionDaily
       gitHubLogo={
