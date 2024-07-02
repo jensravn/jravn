@@ -313,6 +313,9 @@ func main() {
 	http.HandleFunc("/question", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./static/question.html")
 	})
+	http.HandleFunc("/question/review", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./static/question/review.html")
+	})
 
 	// static files
 	fs := http.FileServer(http.Dir("./static"))
