@@ -34,6 +34,7 @@ export default function PageQuestionDaily({
     <div className="page">
       <main className="main">
         <div className="inner">
+          <h2>Daily cloud question</h2>
           <div className="date">
             <button onClick={onBack}>←</button>
             &nbsp;
@@ -52,7 +53,7 @@ export default function PageQuestionDaily({
             {question.isLoading ? (
               <a>&nbsp;</a>
             ) : question.error ? (
-              question.error?.info ?? "error"
+              (question.error?.info ?? "error")
             ) : question.data ? (
               <a
                 href={`https://www.examtopics.com/exams/google/${question.data.exam}/view/${question.data.page}`}

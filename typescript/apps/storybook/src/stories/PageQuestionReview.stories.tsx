@@ -15,6 +15,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    weekYear: "01, 2022",
     thursdayNote: {
       data: {
         comments: [

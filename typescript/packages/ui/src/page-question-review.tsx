@@ -2,6 +2,9 @@ import { NoteData, QuestionData, Req } from "./page-question-daily";
 import "./styles.css";
 
 interface Props {
+  weekYear: string;
+  onBack: () => void;
+  onForward: () => void;
   mondayQuestion: Req<QuestionData>;
   mondayNote: Req<NoteData>;
   tuesdayQuestion: Req<QuestionData>;
@@ -16,6 +19,9 @@ interface Props {
 }
 
 export default function PageQuestionReview({
+  weekYear,
+  onBack,
+  onForward,
   mondayQuestion,
   mondayNote,
   tuesdayQuestion,
@@ -32,6 +38,14 @@ export default function PageQuestionReview({
     <div className="page">
       <main className="main">
         <div className="inner">
+          <h2>Weekly cloud question review</h2>
+          <div className="date">
+            <button onClick={onBack}>←</button>&nbsp;
+            <code>Week {weekYear}</code>
+            &nbsp;
+            <button onClick={onForward}>→</button>
+          </div>
+          <hr />
           <Day weekday="Monday" question={mondayQuestion} note={mondayNote} />
           <Day
             weekday="Tuesday"
@@ -70,7 +84,6 @@ function Day({ question, note, weekday }: DayProps) {
       : "🍅";
   return (
     <>
-      <hr style={{ width: "400px" }} />
       <b>
         {weekday}: {correctEmoji}{" "}
       </b>
@@ -81,6 +94,7 @@ function Day({ question, note, weekday }: DayProps) {
         {question?.data?.exam} #{question?.data?.question}
       </a>
       {note?.data?.comments?.map((comment) => <p>{comment.text}</p>)}
+      <hr />
     </>
   );
 }
