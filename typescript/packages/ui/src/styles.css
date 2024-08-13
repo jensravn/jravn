@@ -1,9 +1,7 @@
 .page {
   display: grid;
   grid-template-rows: 20px 1fr 20px;
-  align-items: center;
   justify-items: center;
-  min-height: 100svh;
 }
 
 .main {
@@ -13,9 +11,14 @@
 .inner {
   display: grid;
   justify-items: center;
+  text-align: center;
 }
 
 .date {
   display: flex;
   align-items: center;
+}
+
+hr {
+  width: 220px;
 }

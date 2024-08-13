@@ -44,7 +44,7 @@ export const Default: Story = {
     question: {
       data: {
         date: "2022-01-01",
-        exam: "2022-01-01",
+        exam: "professional-machine-learning-engineer",
         page: 10,
         question: 5,
       },
