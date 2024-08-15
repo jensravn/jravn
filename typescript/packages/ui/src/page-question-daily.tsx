@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Button from "./button";
 import "./styles.css";
 
 interface Props {
@@ -108,14 +109,14 @@ export default function PageQuestionDaily({
               type="text"
               value={comment}
             />{" "}
-            <button
+            <Button
               onClick={() => {
                 onComment(comment);
                 setComment("");
               }}
             >
               Add comment
-            </button>
+            </Button>
           </span>
           {note.data?.comments?.map((comment) => <p>{comment.text}</p>)}
           <br />
