@@ -7,6 +7,7 @@
     "./card": "./src/card.tsx",
     "./page-question-daily": "./src/page-question-daily.tsx",
     "./page-question-review": "./src/page-question-review.tsx",
+    "./textarea": "./src/textarea.tsx",
     "./styles.css": "./dist/index.css"
   },
   "scripts": {

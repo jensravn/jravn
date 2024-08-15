@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Button from "./button";
 import "./styles.css";
+import Textarea from "./textarea";
 
 interface Props {
   date: string;
@@ -103,12 +104,17 @@ export default function PageQuestionDaily({
             Most voted
           </div>{" "}
           <br />
-          <span>
-            <input
+          {note.data?.comments?.map((comment) => <p>{comment.text}</p>)}
+          <br />
+          {new Date(date).getDay() === 5 ? (
+            <a href={`/question/review?date=${date}`}>Weekly review</a>
+          ) : null}
+          <div>
+            <Textarea
               onChange={(e) => setComment(e.target.value)}
-              type="text"
               value={comment}
             />{" "}
+            <div className="mt-2 flex justify-end">
               <Button
                 onClick={() => {
                   onComment(comment);
@@ -117,12 +123,8 @@ export default function PageQuestionDaily({
               >
                 Add comment
               </Button>
-          </span>
-          {note.data?.comments?.map((comment) => <p>{comment.text}</p>)}
-          <br />
-          {new Date(date).getDay() === 5 ? (
-            <a href={`/question/review?date=${date}`}>Weekly review</a>
-          ) : null}
+            </div>
+          </div>
           <br />
           <br />
           <br />
