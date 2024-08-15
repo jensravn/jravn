@@ -1,3 +1,4 @@
+import Button from "./button";
 import { NoteData, QuestionData, Req } from "./page-question-daily";
 import "./styles.css";
 
@@ -40,10 +41,10 @@ export default function PageQuestionReview({
         <div className="inner">
           <h2>Weekly cloud question review</h2>
           <div className="date">
-            <button onClick={onBack}>←</button>&nbsp;
+            <Button onClick={onBack}>←</Button>&nbsp;
             <code>Week {weekYear}</code>
             &nbsp;
-            <button onClick={onForward}>→</button>
+            <Button onClick={onForward}>→</Button>
           </div>
           <hr />
           <Day weekday="Monday" question={mondayQuestion} note={mondayNote} />

@@ -37,7 +37,7 @@ export default function PageQuestionDaily({
         <div className="inner">
           <h2>Daily cloud question</h2>
           <div className="date">
-            <button onClick={onBack}>←</button>
+            <Button onClick={onBack}>←</Button>
             &nbsp;
             <input
               type="date"
@@ -46,9 +46,9 @@ export default function PageQuestionDaily({
               max={`${today.year}-${today.month}-${today.day}`}
             />
             &nbsp;
-            <button disabled={isAfterYesterday(date)} onClick={onForward}>
+            <Button disabled={isAfterYesterday(date)} onClick={onForward}>
               →
-            </button>
+            </Button>
           </div>
           <h2>
             {question.isLoading ? (
@@ -109,14 +109,14 @@ export default function PageQuestionDaily({
               type="text"
               value={comment}
             />{" "}
-            <Button
-              onClick={() => {
-                onComment(comment);
-                setComment("");
-              }}
-            >
-              Add comment
-            </Button>
+              <Button
+                onClick={() => {
+                  onComment(comment);
+                  setComment("");
+                }}
+              >
+                Add comment
+              </Button>
           </span>
           {note.data?.comments?.map((comment) => <p>{comment.text}</p>)}
           <br />
