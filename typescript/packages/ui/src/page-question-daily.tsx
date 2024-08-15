@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Button from "./button";
+import Select from "./select";
 import "./styles.css";
 import Textarea from "./textarea";
 
@@ -71,7 +72,7 @@ export default function PageQuestionDaily({
           <br />
           <div>
             Our answer{" "}
-            <select
+            <Select
               onChange={(e) => onOurAnswer(e.target.value)}
               value={note.data?.ourAnswer ?? ""}
               disabled={!!note.data?.ourAnswer || !isAfterYesterday(date)}
@@ -81,7 +82,7 @@ export default function PageQuestionDaily({
               <option>B</option>
               <option>C</option>
               <option>D</option>
-            </select>{" "}
+            </Select>{" "}
             <input
               type="checkbox"
               checked={
@@ -90,7 +91,7 @@ export default function PageQuestionDaily({
               }
               disabled
             />{" "}
-            <select
+            <Select
               onChange={(e) => onMostVoted(e.target.value)}
               value={note.data?.mostVoted ?? ""}
               disabled={!!note.data?.mostVoted || !isAfterYesterday(date)}
@@ -100,7 +101,7 @@ export default function PageQuestionDaily({
               <option>B</option>
               <option>C</option>
               <option>D</option>
-            </select>{" "}
+            </Select>{" "}
             Most voted
           </div>{" "}
           <br />

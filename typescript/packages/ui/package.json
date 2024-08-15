@@ -7,6 +7,7 @@
     "./card": "./src/card.tsx",
     "./page-question-daily": "./src/page-question-daily.tsx",
     "./page-question-review": "./src/page-question-review.tsx",
+    "./select": "./src/select.tsx",
     "./textarea": "./src/textarea.tsx",
     "./styles.css": "./dist/index.css"
   },
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@tailwindcss/forms": "^0.5.7",
     "@turbo/gen": "^2.0.0",
     "@types/eslint": "^8.56.5",
     "@types/node": "^20.11.24",
