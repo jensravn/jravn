@@ -1,14 +1,14 @@
-import { Strong, Text, TextLink } from "@repo/ui/components/text";
+import { Paragraph, Strong, TextLink } from "@repo/ui/components/text";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  component: Text,
+  component: Paragraph,
   parameters: {
     layout: "centered",
   },
   argTypes: {},
   args: {},
-} satisfies Meta<typeof Text>;
+} satisfies Meta<typeof Paragraph>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
