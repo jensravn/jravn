@@ -26,3 +26,12 @@
 hr {
   width: 220px;
 }
+
+a {
+  color: rgb(2, 156, 253);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

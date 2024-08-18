@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Button from "./button";
-import Select from "./select";
-import "./styles.css";
-import Textarea from "./textarea";
+import { Button } from "../components/button";
+import { Heading } from "../components/heading";
+import { Textarea } from "../components/textarea";
 
 interface Props {
   date: string;
@@ -18,7 +17,7 @@ interface Props {
   today: YearMonthDay;
 }
 
-export default function PageQuestionDaily({
+export function DailyCloudQuestionPage({
   date,
   gitHubLogo,
   note,
@@ -37,7 +36,8 @@ export default function PageQuestionDaily({
     <div className="page">
       <main className="main">
         <div className="inner">
-          <h2>Daily cloud question</h2>
+          <Heading>Daily cloud question</Heading>
+          <br />
           <div className="date">
             <Button onClick={onBack}>←</Button>
             &nbsp;
@@ -52,6 +52,7 @@ export default function PageQuestionDaily({
               →
             </Button>
           </div>
+          <br />
           <h2>
             {question.isLoading ? (
               <a>&nbsp;</a>
@@ -72,8 +73,8 @@ export default function PageQuestionDaily({
           <br />
           <div>
             Our answer{" "}
-            <Select
-              onChange={(e) => onOurAnswer(e.target.value)}
+            <select
+              onChange={(e: any) => onOurAnswer(e.target.value)}
               value={note.data?.ourAnswer ?? ""}
               disabled={!!note.data?.ourAnswer || !isAfterYesterday(date)}
             >
@@ -82,7 +83,7 @@ export default function PageQuestionDaily({
               <option>B</option>
               <option>C</option>
               <option>D</option>
-            </Select>{" "}
+            </select>{" "}
             <input
               type="checkbox"
               checked={
@@ -91,8 +92,8 @@ export default function PageQuestionDaily({
               }
               disabled
             />{" "}
-            <Select
-              onChange={(e) => onMostVoted(e.target.value)}
+            <select
+              onChange={(e: any) => onMostVoted(e.target.value)}
               value={note.data?.mostVoted ?? ""}
               disabled={!!note.data?.mostVoted || !isAfterYesterday(date)}
             >
@@ -101,7 +102,7 @@ export default function PageQuestionDaily({
               <option>B</option>
               <option>C</option>
               <option>D</option>
-            </Select>{" "}
+            </select>{" "}
             Most voted
           </div>{" "}
           <br />

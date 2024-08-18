@@ -1,7 +1,10 @@
 "use client";
 
-import { QuestionData, YearMonthDay } from "@repo/ui/page-question-daily";
-import PageQuestionReview from "@repo/ui/page-question-review";
+import {
+  QuestionData,
+  YearMonthDay,
+} from "@repo/ui/pages/daily-cloud-question-page";
+import { WeeklyCloudQuestionReviewPage } from "@repo/ui/pages/weekly-cloud-question-review-page";
 import { getWeek, getYear, isFriday, previousFriday, subDays } from "date-fns";
 import Image from "next/image";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
@@ -65,7 +68,7 @@ function Inner() {
 
   return (
     <>
-      <PageQuestionReview
+      <WeeklyCloudQuestionReviewPage
         weekYear={weekYear}
         onBack={handleBack}
         onForward={handleForward}

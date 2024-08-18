@@ -7,5 +7,14 @@
       "mode": "auto"
     }
   ],
-  "cSpell.words": ["headlessui", "heroicons", "jravn", "tailwindcss"]
+  "cSpell.words": [
+    "clsx",
+    "fieldset",
+    "headlessui",
+    "heroicons",
+    "jravn",
+    "listbox",
+    "tailwindcss",
+    "webp"
+  ]
 }

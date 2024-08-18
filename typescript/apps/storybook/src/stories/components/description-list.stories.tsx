@@ -1,22 +1,18 @@
-import Card from "@repo/ui/card";
+import { DescriptionList } from "@repo/ui/components/description-list";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  component: Card,
+  component: DescriptionList,
   parameters: {
     layout: "centered",
   },
   argTypes: {},
   args: {},
-} satisfies Meta<typeof Card>;
+} satisfies Meta<typeof DescriptionList>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    children: "This is the content of the card",
-    href: "https://example.com",
-    title: "Card title",
-  },
+  args: {},
 };

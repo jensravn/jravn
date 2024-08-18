@@ -1,20 +1,18 @@
-import Select from "@repo/ui/select";
+import { Navbar } from "@repo/ui/components/navbar";
 import type { Meta, StoryObj } from "@storybook/react";
 
 const meta = {
-  component: Select,
+  component: Navbar,
   parameters: {
     layout: "centered",
   },
   argTypes: {},
   args: {},
-} satisfies Meta<typeof Select>;
+} satisfies Meta<typeof Navbar>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    children: "Click me",
-  },
+  args: {},
 };
