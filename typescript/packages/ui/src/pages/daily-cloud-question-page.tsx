@@ -109,7 +109,9 @@ export function DailyCloudQuestionPage({
           {note.data?.comments?.map((comment) => <p>{comment.text}</p>)}
           <br />
           {new Date(date).getDay() === 5 ? (
-            <a href={`/question/review?date=${date}`}>Weekly review</a>
+            <a href={`/question/review?date=${date}`}>
+              Weekly cloud question review
+            </a>
           ) : null}
           <div>
             <Textarea
