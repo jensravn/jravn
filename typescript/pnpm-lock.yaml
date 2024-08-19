@@ -192,7 +192,7 @@ importers:
         version: link:../typescript-config
       '@tailwindcss/forms':
         specifier: ^0.5.7
-        version: 0.5.7(tailwindcss@3.4.10(ts-node@10.9.2(@types/node@20.16.0)(typescript@5.5.4)))
+        version: 0.5.7(tailwindcss@3.4.10(ts-node@10.9.2(@types/node@20.16.1)(typescript@5.5.4)))
       '@turbo/gen':
         specifier: ^2.0.0
         version: 2.0.14(@types/node@20.16.1)(typescript@5.5.4)
@@ -219,7 +219,7 @@ importers:
         version: 8.4.41
       tailwindcss:
         specifier: ^3.4.10
-        version: 3.4.10(ts-node@10.9.2(@types/node@20.16.0)(typescript@5.5.4))
+        version: 3.4.10(ts-node@10.9.2(@types/node@20.16.1)(typescript@5.5.4))
       typescript:
         specifier: ^5.3.3
         version: 5.5.4
@@ -7037,10 +7037,10 @@ snapshots:
     dependencies:
       tslib: 2.6.3
 
-  '@tailwindcss/forms@0.5.7(tailwindcss@3.4.10(ts-node@10.9.2(@types/node@20.16.0)(typescript@5.5.4)))':
+  '@tailwindcss/forms@0.5.7(tailwindcss@3.4.10(ts-node@10.9.2(@types/node@20.16.1)(typescript@5.5.4)))':
     dependencies:
       mini-svg-data-uri: 1.4.4
-      tailwindcss: 3.4.10(ts-node@10.9.2(@types/node@20.16.0)(typescript@5.5.4))
+      tailwindcss: 3.4.10(ts-node@10.9.2(@types/node@20.16.1)(typescript@5.5.4))
 
   '@tanstack/react-virtual@3.9.0(react-dom@19.0.0-rc-fb9a90fa48-20240614(react@18.3.1))(react@18.3.1)':
     dependencies:
@@ -10078,13 +10078,13 @@ snapshots:
       camelcase-css: 2.0.1
       postcss: 8.4.41
 
-  postcss-load-config@4.0.2(postcss@8.4.41)(ts-node@10.9.2(@types/node@20.16.0)(typescript@5.5.4)):
+  postcss-load-config@4.0.2(postcss@8.4.41)(ts-node@10.9.2(@types/node@20.16.1)(typescript@5.5.4)):
     dependencies:
       lilconfig: 3.1.2
       yaml: 2.5.0
     optionalDependencies:
       postcss: 8.4.41
-      ts-node: 10.9.2(@types/node@20.16.0)(typescript@5.5.4)
+      ts-node: 10.9.2(@types/node@20.16.1)(typescript@5.5.4)
 
   postcss-nested@6.2.0(postcss@8.4.41):
     dependencies:
@@ -10814,7 +10814,7 @@ snapshots:
 
   tabbable@6.2.0: {}
 
-  tailwindcss@3.4.10(ts-node@10.9.2(@types/node@20.16.0)(typescript@5.5.4)):
+  tailwindcss@3.4.10(ts-node@10.9.2(@types/node@20.16.1)(typescript@5.5.4)):
     dependencies:
       '@alloc/quick-lru': 5.2.0
       arg: 5.0.2
@@ -10833,7 +10833,7 @@ snapshots:
       postcss: 8.4.41
       postcss-import: 15.1.0(postcss@8.4.41)
       postcss-js: 4.0.1(postcss@8.4.41)
-      postcss-load-config: 4.0.2(postcss@8.4.41)(ts-node@10.9.2(@types/node@20.16.0)(typescript@5.5.4))
+      postcss-load-config: 4.0.2(postcss@8.4.41)(ts-node@10.9.2(@types/node@20.16.1)(typescript@5.5.4))
       postcss-nested: 6.2.0(postcss@8.4.41)
       postcss-selector-parser: 6.1.2
       resolve: 1.22.8
@@ -10914,6 +10914,8 @@ snapshots:
       typescript: 5.5.4
 
   ts-dedent@2.2.0: {}
+
+  ts-interface-checker@0.1.13: {}
 
   ts-node@10.9.2(@types/node@20.16.1)(typescript@5.5.4):
     dependencies:
