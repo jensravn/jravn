@@ -1,5 +1,7 @@
 import { useState } from "react";
-import "./styles.css";
+import { Button } from "../components/button";
+import { Heading } from "../components/heading";
+import { Textarea } from "../components/textarea";
 
 interface Props {
   date: string;
@@ -15,7 +17,7 @@ interface Props {
   today: YearMonthDay;
 }
 
-export default function PageQuestionDaily({
+export function DailyCloudQuestionPage({
   date,
   gitHubLogo,
   note,
@@ -34,9 +36,10 @@ export default function PageQuestionDaily({
     <div className="page">
       <main className="main">
         <div className="inner">
-          <h2>Daily cloud question</h2>
+          <Heading>Daily cloud question</Heading>
+          <br />
           <div className="date">
-            <button onClick={onBack}>←</button>
+            <Button onClick={onBack}>←</Button>
             &nbsp;
             <input
               type="date"
@@ -45,10 +48,11 @@ export default function PageQuestionDaily({
               max={`${today.year}-${today.month}-${today.day}`}
             />
             &nbsp;
-            <button disabled={isAfterYesterday(date)} onClick={onForward}>
+            <Button disabled={isAfterYesterday(date)} onClick={onForward}>
               →
-            </button>
+            </Button>
           </div>
+          <br />
           <h2>
             {question.isLoading ? (
               <a>&nbsp;</a>
@@ -70,7 +74,7 @@ export default function PageQuestionDaily({
           <div>
             Our answer{" "}
             <select
-              onChange={(e) => onOurAnswer(e.target.value)}
+              onChange={(e: any) => onOurAnswer(e.target.value)}
               value={note.data?.ourAnswer ?? ""}
               disabled={!!note.data?.ourAnswer || !isAfterYesterday(date)}
             >
@@ -89,7 +93,7 @@ export default function PageQuestionDaily({
               disabled
             />{" "}
             <select
-              onChange={(e) => onMostVoted(e.target.value)}
+              onChange={(e: any) => onMostVoted(e.target.value)}
               value={note.data?.mostVoted ?? ""}
               disabled={!!note.data?.mostVoted || !isAfterYesterday(date)}
             >
@@ -102,26 +106,29 @@ export default function PageQuestionDaily({
             Most voted
           </div>{" "}
           <br />
-          <span>
-            <input
-              onChange={(e) => setComment(e.target.value)}
-              type="text"
-              value={comment}
-            />{" "}
-            <button
-              onClick={() => {
-                onComment(comment);
-                setComment("");
-              }}
-            >
-              Add comment
-            </button>
-          </span>
           {note.data?.comments?.map((comment) => <p>{comment.text}</p>)}
           <br />
           {new Date(date).getDay() === 5 ? (
-            <a href={`/question/review?date=${date}`}>Weekly review</a>
+            <a href={`/question/review?date=${date}`}>
+              Weekly cloud question review
+            </a>
           ) : null}
+          <div>
+            <Textarea
+              onChange={(e) => setComment(e.target.value)}
+              value={comment}
+            />{" "}
+            <div className="mt-2 flex justify-end">
+              <Button
+                onClick={() => {
+                  onComment(comment);
+                  setComment("");
+                }}
+              >
+                Add comment
+              </Button>
+            </div>
+          </div>
           <br />
           <br />
           <br />

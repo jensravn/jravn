@@ -1,14 +1,17 @@
-import PageQuestionReview from "@repo/ui/page-question-review";
+import { WeeklyCloudQuestionReviewPage } from "@repo/ui/pages/weekly-cloud-question-review-page";
 import type { Meta, StoryObj } from "@storybook/react";
-import GitHubLogo from "./assets/github-logo.svg";
+import { fn } from "@storybook/test";
+import GitHubLogo from "../assets/github-logo.svg";
 
 const meta = {
-  component: PageQuestionReview,
+  component: WeeklyCloudQuestionReviewPage,
   parameters: {},
   args: {
     gitHubLogo: <img src={GitHubLogo} alt="GitHub" width="24" height="24" />,
+    onBack: fn(),
+    onForward: fn(),
   },
-} satisfies Meta<typeof PageQuestionReview>;
+} satisfies Meta<typeof WeeklyCloudQuestionReviewPage>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -16,6 +19,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     weekYear: "01, 2022",
+    mondayNote: { isLoading: true },
+    mondayQuestion: { isLoading: true },
+    tuesdayNote: { isLoading: true },
+    tuesdayQuestion: { isLoading: true },
+    wednesdayNote: { isLoading: true },
+    wednesdayQuestion: { isLoading: true },
     thursdayNote: {
       data: {
         comments: [

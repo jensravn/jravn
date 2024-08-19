@@ -3,25 +3,61 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./page-question-daily": "./src/page-question-daily.tsx",
-    "./page-question-review": "./src/page-question-review.tsx"
+    "./components/alert": "./src/components/alert.tsx",
+    "./components/avatar": "./src/components/avatar.tsx",
+    "./components/badge": "./src/components/badge.tsx",
+    "./components/button": "./src/components/button.tsx",
+    "./components/checkbox": "./src/components/checkbox.tsx",
+    "./components/description-list": "./src/components/description-list.tsx",
+    "./components/dialog": "./src/components/dialog.tsx",
+    "./components/divider": "./src/components/divider.tsx",
+    "./components/dropdown": "./src/components/dropdown.tsx",
+    "./components/fieldset": "./src/components/fieldset.tsx",
+    "./components/heading": "./src/components/heading.tsx",
+    "./components/input": "./src/components/input.tsx",
+    "./components/link": "./src/components/link.tsx",
+    "./components/listbox": "./src/components/listbox.tsx",
+    "./components/navbar": "./src/components/navbar.tsx",
+    "./components/pagination": "./src/components/pagination.tsx",
+    "./components/radio": "./src/components/radio.tsx",
+    "./components/select": "./src/components/select.tsx",
+    "./components/sidebar": "./src/components/sidebar.tsx",
+    "./components/switch": "./src/components/switch.tsx",
+    "./components/table": "./src/components/table.tsx",
+    "./components/text": "./src/components/text.tsx",
+    "./components/textarea": "./src/components/textarea.tsx",
+    "./layouts/sidebar-layout": "./src/layouts/sidebar-layout.tsx",
+    "./layouts/stacked-layout": "./src/layouts/stacked-layout.tsx",
+    "./pages/daily-cloud-question-page": "./src/pages/daily-cloud-question-page.tsx",
+    "./pages/weekly-cloud-question-review-page": "./src/pages/weekly-cloud-question-review-page.tsx",
+    "./styles.css": "./dist/index.css"
   },
   "scripts": {
-    "lint": "eslint . --max-warnings 0",
-    "generate:component": "turbo gen react-component"
+    "build": "tailwindcss -i ./src/styles.css -o ./dist/index.css",
+    "lint": "eslint src/ --max-warnings 0",
+    "dev": "tailwindcss -i ./src/styles.css -o ./dist/index.css --watch",
+    "type-check": "tsc --noEmit"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
+    "@tailwindcss/forms": "^0.5.7",
     "@turbo/gen": "^2.0.0",
-    "@types/node": "^20.11.24",
     "@types/eslint": "^8.56.5",
+    "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
+    "postcss": "^8.4.41",
+    "tailwindcss": "^3.4.10",
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.2",
+    "@heroicons/react": "^2.1.5",
+    "clsx": "^2.1.1",
+    "framer-motion": "^11.3.28",
     "react": "^18.2.0"
   }
 }

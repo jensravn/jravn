@@ -1,10 +1,10 @@
-import PageQuestionDaily from "@repo/ui/page-question-daily";
+import { DailyCloudQuestionPage } from "@repo/ui/pages/daily-cloud-question-page";
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
-import GitHubLogo from "./assets/github-logo.svg";
+import GitHubLogo from "../assets/github-logo.svg";
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  component: PageQuestionDaily,
+  component: DailyCloudQuestionPage,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: "centered",
@@ -23,7 +23,7 @@ const meta = {
     onMostVoted: fn(),
     onOurAnswer: fn(),
   },
-} satisfies Meta<typeof PageQuestionDaily>;
+} satisfies Meta<typeof DailyCloudQuestionPage>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -31,10 +31,9 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    date: "2022-01-01",
+    date: "2072-01-01",
     note: {
       data: {
-        mostVoted: "B",
         ourAnswer: "A",
         comments: [{ text: "comment 1", timeStamp: "2022-01-01" }],
       },
@@ -43,7 +42,7 @@ export const Default: Story = {
     },
     question: {
       data: {
-        date: "2022-01-01",
+        date: "2072-01-01",
         exam: "professional-machine-learning-engineer",
         page: 10,
         question: 5,

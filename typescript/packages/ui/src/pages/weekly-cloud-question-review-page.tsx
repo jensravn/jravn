@@ -1,5 +1,6 @@
-import { NoteData, QuestionData, Req } from "./page-question-daily";
-import "./styles.css";
+import { Button } from "../components/button";
+import { Heading } from "../components/heading";
+import { NoteData, QuestionData, Req } from "./daily-cloud-question-page";
 
 interface Props {
   weekYear: string;
@@ -18,7 +19,7 @@ interface Props {
   gitHubLogo: JSX.Element;
 }
 
-export default function PageQuestionReview({
+export function WeeklyCloudQuestionReviewPage({
   weekYear,
   onBack,
   onForward,
@@ -38,13 +39,15 @@ export default function PageQuestionReview({
     <div className="page">
       <main className="main">
         <div className="inner">
-          <h2>Weekly cloud question review</h2>
+          <Heading>Weekly cloud question review</Heading>
+          <br />
           <div className="date">
-            <button onClick={onBack}>←</button>&nbsp;
+            <Button onClick={onBack}>←</Button>&nbsp;&nbsp;
             <code>Week {weekYear}</code>
-            &nbsp;
-            <button onClick={onForward}>→</button>
+            &nbsp;&nbsp;
+            <Button onClick={onForward}>→</Button>
           </div>
+          <br />
           <hr />
           <Day weekday="Monday" question={mondayQuestion} note={mondayNote} />
           <Day
@@ -63,6 +66,7 @@ export default function PageQuestionReview({
             note={thursdayNote}
           />
           <Day weekday="Friday" question={fridayQuestion} note={fridayNote} />
+          <br />
           <a href="https://github.com/jensravn/jravn">{gitHubLogo}</a>
         </div>
       </main>
@@ -84,6 +88,7 @@ function Day({ question, note, weekday }: DayProps) {
       : "🍅";
   return (
     <>
+      <br />
       <b>
         {weekday}: {correctEmoji}{" "}
       </b>
@@ -94,6 +99,7 @@ function Day({ question, note, weekday }: DayProps) {
         {question?.data?.exam} #{question?.data?.question}
       </a>
       {note?.data?.comments?.map((comment) => <p>{comment.text}</p>)}
+      <br />
       <hr />
     </>
   );

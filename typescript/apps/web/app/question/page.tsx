@@ -1,10 +1,11 @@
 "use client";
 
-import PageQuestionDaily, {
+import {
+  DailyCloudQuestionPage,
   ISOdateString,
   QuestionData,
   YearMonthDay,
-} from "@repo/ui/page-question-daily";
+} from "@repo/ui/pages/daily-cloud-question-page";
 import Image from "next/image";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
@@ -92,7 +93,7 @@ function Inner() {
   const today = yearMonthDay(new Date());
 
   return (
-    <PageQuestionDaily
+    <DailyCloudQuestionPage
       gitHubLogo={
         <Image src="/github-logo.svg" alt="GitHub" width="24" height="24" />
       }
