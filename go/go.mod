@@ -4,7 +4,7 @@ go 1.22.5
 
 require (
 	cloud.google.com/go/firestore v1.16.0
-	google.golang.org/grpc v1.65.0
+	google.golang.org/grpc v1.66.0
 )
 
 require (
