@@ -1,6 +1,6 @@
 module github.com/jensravn/jravn
 
-go 1.22.5
+go 1.23.1
 
 require (
 	cloud.google.com/go/firestore v1.16.0
