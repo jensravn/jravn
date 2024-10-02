@@ -7,6 +7,7 @@
     "./components/avatar": "./src/components/avatar.tsx",
     "./components/badge": "./src/components/badge.tsx",
     "./components/button": "./src/components/button.tsx",
+    "./components/calendar-month": "./src/components/calendar-month.tsx",
     "./components/checkbox": "./src/components/checkbox.tsx",
     "./components/description-list": "./src/components/description-list.tsx",
     "./components/dialog": "./src/components/dialog.tsx",
