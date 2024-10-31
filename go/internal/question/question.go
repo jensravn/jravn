@@ -54,6 +54,9 @@ func getExams(t time.Time) []exam {
 	if t.Before(time.Date(2024, 8, 1, 0, 0, 0, 0, time.UTC)) {
 		return examsUntil2024_08_01
 	}
+	if t.Before(time.Date(2024, 10, 30, 0, 0, 0, 0, time.UTC)) {
+		return examsUntil2024_10_30
+	}
 	return exams
 }
 
@@ -64,6 +67,19 @@ type exam struct {
 }
 
 var exams = []exam{
+	{Exam: "associate-cloud-engineer", Questions: 65},
+	{Exam: "cloud-digital-leader", Questions: 70},
+	{Exam: "professional-cloud-architect", Questions: 197},
+	{Exam: "professional-cloud-database-engineer", Questions: 132, PageSize: 4},
+	{Exam: "professional-cloud-developer", Questions: 279},
+	{Exam: "professional-cloud-devops-engineer", Questions: 166, PageSize: 4},
+	{Exam: "professional-cloud-network-engineer", Questions: 172, PageSize: 4},
+	{Exam: "professional-cloud-security-engineer", Questions: 244},
+	{Exam: "professional-data-engineer", Questions: 311, PageSize: 10},
+	{Exam: "professional-machine-learning-engineer", Questions: 285},
+}
+
+var examsUntil2024_10_30 = []exam{
 	{Exam: "associate-cloud-engineer", Questions: 65},
 	{Exam: "cloud-digital-leader", Questions: 70},
 	{Exam: "professional-cloud-architect", Questions: 197},
