@@ -44,7 +44,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@turbo/gen": "^2.0.0",
     "@types/eslint": "^8.56.5",
-    "@types/node": "22.10.3",
+    "@types/node": "22.10.4",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "autoprefixer": "^10.4.20",
