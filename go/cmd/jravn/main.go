@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -10,8 +9,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/jensravn/jravn/internal/firestore"
-	"github.com/jensravn/jravn/internal/question"
+	"github.com/jensravn/jravn/adapters/firestore"
+	"github.com/jensravn/jravn/domain/question"
 )
 
 func main() {
@@ -93,7 +92,7 @@ func main() {
 			return
 		}
 		repo := firestore.NewQuestionNoteRepo(c)
-		q, err := repo.Get(t)
+		q, _, err := repo.Get(t)
 		if err != nil {
 			http.Error(w, `internal server error`, http.StatusInternalServerError)
 			return
@@ -143,9 +142,9 @@ func main() {
 			return
 		}
 		repo := firestore.NewQuestionNoteRepo(c)
-		n, err := repo.Get(t)
+		n, exist, err := repo.Get(t)
 		if err != nil {
-			if errors.Is(err, firestore.ErrNotFound) {
+			if !exist {
 				n = &question.Note{}
 			} else {
 				http.Error(w, `internal server error`, http.StatusInternalServerError)
@@ -212,12 +211,11 @@ func main() {
 			return
 		}
 		repo := firestore.NewQuestionNoteRepo(c)
-		n, err := repo.Get(t)
+		n, exist, err := repo.Get(t)
 		if err != nil {
-			if errors.Is(err, firestore.ErrNotFound) {
+			if !exist {
 				n = &question.Note{}
 			} else {
-
 				http.Error(w, `internal server error`, http.StatusInternalServerError)
 				return
 			}
@@ -282,9 +280,9 @@ func main() {
 			return
 		}
 		repo := firestore.NewQuestionNoteRepo(c)
-		n, err := repo.Get(t)
+		n, exist, err := repo.Get(t)
 		if err != nil {
-			if errors.Is(err, firestore.ErrNotFound) {
+			if !exist {
 				n = &question.Note{}
 			} else {
 				http.Error(w, `internal server error`, http.StatusInternalServerError)
