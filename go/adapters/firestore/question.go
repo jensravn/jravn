@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/firestore"
-	"github.com/jensravn/jravn/internal/question"
+	"github.com/jensravn/jravn/domain/question"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -19,21 +19,21 @@ func NewQuestionNoteRepo(c *Client) *QuestionNoteRepo {
 	return &QuestionNoteRepo{c: c.fs.Collection("question-notes")}
 }
 
-func (r *QuestionNoteRepo) Get(date time.Time) (*question.Note, error) {
+func (r *QuestionNoteRepo) Get(date time.Time) (note *question.Note, exist bool, err error) {
 	docID := date.Format(time.DateOnly)
 	docsnap, err := r.c.Doc(docID).Get(context.TODO())
 	if err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, ErrNotFound
+			return nil, false, nil
 		}
-		return nil, fmt.Errorf("doc.Get: %w", err)
+		return nil, false, fmt.Errorf("doc.Get: %w", err)
 	}
 	q := question.Note{}
 	err = docsnap.DataTo(&q)
 	if err != nil {
-		return nil, fmt.Errorf("docsnap.DataTo: %w", err)
+		return nil, false, fmt.Errorf("docsnap.DataTo: %w", err)
 	}
-	return &q, nil
+	return &q, true, nil
 }
 
 func (r *QuestionNoteRepo) Put(date time.Time, note *question.Note) error {
