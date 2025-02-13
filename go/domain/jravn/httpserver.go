@@ -7,19 +7,18 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/jensravn/jravn/adapters/firestore"
 	"github.com/jensravn/jravn/domain/question"
 )
 
-func NewHTTPServer(projectID string) *http.Server {
+func NewHTTPServer(questionNoteRepo question.NoteRepo) *http.Server {
 	router := http.NewServeMux()
 
 	// routes - api
 	router.HandleFunc("GET /api/daily-cloud-question/{year}/{month}/{day}", getApiDailyCloudQuestion)
-	router.HandleFunc("GET /api/daily-cloud-question/note/{year}/{month}/{day}", getApiDailyCloudQuestionNote(projectID))
-	router.HandleFunc("POST /api/daily-cloud-question/note/comment/{year}/{month}/{day}", postApiDailyCloudQuestionNoteComment(projectID))
-	router.HandleFunc("PUT /api/daily-cloud-question/note/most-voted/{year}/{month}/{day}", putApiDailyCloudQuestionNoteMostVoted(projectID))
-	router.HandleFunc("PUT /api/daily-cloud-question/note/our-answer/{year}/{month}/{day}", putApiDailyCloudQuestionNoteOurAnswer(projectID))
+	router.HandleFunc("GET /api/daily-cloud-question/note/{year}/{month}/{day}", getApiDailyCloudQuestionNote(questionNoteRepo))
+	router.HandleFunc("POST /api/daily-cloud-question/note/comment/{year}/{month}/{day}", postApiDailyCloudQuestionNoteComment(questionNoteRepo))
+	router.HandleFunc("PUT /api/daily-cloud-question/note/most-voted/{year}/{month}/{day}", putApiDailyCloudQuestionNoteMostVoted(questionNoteRepo))
+	router.HandleFunc("PUT /api/daily-cloud-question/note/our-answer/{year}/{month}/{day}", putApiDailyCloudQuestionNoteOurAnswer(questionNoteRepo))
 
 	// routes - html
 	router.HandleFunc("GET /404", get404)
@@ -84,7 +83,7 @@ func getApiDailyCloudQuestion(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func getApiDailyCloudQuestionNote(projectID string) http.HandlerFunc {
+func getApiDailyCloudQuestionNote(questionNoteRepo question.NoteRepo) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		year, err := strconv.Atoi(r.PathValue("year"))
 		if err != nil {
@@ -112,13 +111,7 @@ func getApiDailyCloudQuestionNote(projectID string) http.HandlerFunc {
 			http.Error(w, `cannot get future question`, http.StatusBadRequest)
 			return
 		}
-		c, err := firestore.NewClient(projectID)
-		if err != nil {
-			http.Error(w, `internal server error`, http.StatusInternalServerError)
-			return
-		}
-		repo := firestore.NewQuestionNoteRepo(c)
-		q, _, err := repo.Get(t)
+		q, _, err := questionNoteRepo.Get(t)
 		if err != nil {
 			http.Error(w, `internal server error`, http.StatusInternalServerError)
 			return
@@ -132,7 +125,7 @@ func getApiDailyCloudQuestionNote(projectID string) http.HandlerFunc {
 	}
 }
 
-func postApiDailyCloudQuestionNoteComment(projectID string) http.HandlerFunc {
+func postApiDailyCloudQuestionNoteComment(questionNoteRepo question.NoteRepo) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		year, err := strconv.Atoi(r.PathValue("year"))
 		if err != nil {
@@ -160,13 +153,7 @@ func postApiDailyCloudQuestionNoteComment(projectID string) http.HandlerFunc {
 			http.Error(w, `cannot save comment for future question`, http.StatusBadRequest)
 			return
 		}
-		c, err := firestore.NewClient(projectID)
-		if err != nil {
-			http.Error(w, `internal server error`, http.StatusInternalServerError)
-			return
-		}
-		repo := firestore.NewQuestionNoteRepo(c)
-		n, exist, err := repo.Get(t)
+		n, exist, err := questionNoteRepo.Get(t)
 		if err != nil {
 			if !exist {
 				n = &question.Note{}
@@ -185,7 +172,7 @@ func postApiDailyCloudQuestionNoteComment(projectID string) http.HandlerFunc {
 			return
 		}
 		n.Comments = append(n.Comments, question.Comment{Text: cmt.Comment, TimeStamp: time.Now()})
-		err = repo.Put(t, n)
+		err = questionNoteRepo.Put(t, n)
 		if err != nil {
 			http.Error(w, `internal server error`, http.StatusInternalServerError)
 			return
@@ -194,7 +181,7 @@ func postApiDailyCloudQuestionNoteComment(projectID string) http.HandlerFunc {
 	}
 }
 
-func putApiDailyCloudQuestionNoteMostVoted(projectID string) http.HandlerFunc {
+func putApiDailyCloudQuestionNoteMostVoted(questionNoteRepo question.NoteRepo) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		year, err := strconv.Atoi(r.PathValue("year"))
 		if err != nil {
@@ -226,13 +213,7 @@ func putApiDailyCloudQuestionNoteMostVoted(projectID string) http.HandlerFunc {
 			http.Error(w, `cannot save most voted for past question`, http.StatusBadRequest)
 			return
 		}
-		c, err := firestore.NewClient(projectID)
-		if err != nil {
-			http.Error(w, `internal server error`, http.StatusInternalServerError)
-			return
-		}
-		repo := firestore.NewQuestionNoteRepo(c)
-		n, exist, err := repo.Get(t)
+		n, exist, err := questionNoteRepo.Get(t)
 		if err != nil {
 			if !exist {
 				n = &question.Note{}
@@ -256,7 +237,7 @@ func putApiDailyCloudQuestionNoteMostVoted(projectID string) http.HandlerFunc {
 			return
 		}
 		n.MostVoted = note.MostVoted
-		err = repo.Put(t, n)
+		err = questionNoteRepo.Put(t, n)
 		if err != nil {
 			http.Error(w, `internal server error`, http.StatusInternalServerError)
 			return
@@ -265,7 +246,7 @@ func putApiDailyCloudQuestionNoteMostVoted(projectID string) http.HandlerFunc {
 	}
 }
 
-func putApiDailyCloudQuestionNoteOurAnswer(projectID string) http.HandlerFunc {
+func putApiDailyCloudQuestionNoteOurAnswer(questionNoteRepo question.NoteRepo) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		year, err := strconv.Atoi(r.PathValue("year"))
 		if err != nil {
@@ -297,13 +278,7 @@ func putApiDailyCloudQuestionNoteOurAnswer(projectID string) http.HandlerFunc {
 			http.Error(w, `cannot save answer for past question`, http.StatusBadRequest)
 			return
 		}
-		c, err := firestore.NewClient(projectID)
-		if err != nil {
-			http.Error(w, `internal server error`, http.StatusInternalServerError)
-			return
-		}
-		repo := firestore.NewQuestionNoteRepo(c)
-		n, exist, err := repo.Get(t)
+		n, exist, err := questionNoteRepo.Get(t)
 		if err != nil {
 			if !exist {
 				n = &question.Note{}
@@ -327,7 +302,7 @@ func putApiDailyCloudQuestionNoteOurAnswer(projectID string) http.HandlerFunc {
 			return
 		}
 		n.OurAnswer = note.OurAnswer
-		err = repo.Put(t, n)
+		err = questionNoteRepo.Put(t, n)
 		if err != nil {
 			http.Error(w, `internal server error`, http.StatusInternalServerError)
 			return
