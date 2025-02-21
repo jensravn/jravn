@@ -111,10 +111,13 @@ func getApiDailyCloudQuestionNote(questionNoteRepo question.NoteRepo) http.Handl
 			http.Error(w, `cannot get future question`, http.StatusBadRequest)
 			return
 		}
-		q, _, err := questionNoteRepo.Get(t)
+		q, exist, err := questionNoteRepo.Get(t)
 		if err != nil {
 			http.Error(w, `internal server error`, http.StatusInternalServerError)
 			return
+		}
+		if !exist {
+			q = &question.Note{}
 		}
 		w.Header().Set("Content-Type", "application/json")
 		err = json.NewEncoder(w).Encode(q)
@@ -155,12 +158,11 @@ func postApiDailyCloudQuestionNoteComment(questionNoteRepo question.NoteRepo) ht
 		}
 		n, exist, err := questionNoteRepo.Get(t)
 		if err != nil {
-			if !exist {
-				n = &question.Note{}
-			} else {
-				http.Error(w, `internal server error`, http.StatusInternalServerError)
-				return
-			}
+			http.Error(w, `internal server error`, http.StatusInternalServerError)
+			return
+		}
+		if !exist {
+			n = &question.Note{}
 		}
 		type comment struct {
 			Comment string `json:"comment"`
@@ -215,12 +217,11 @@ func putApiDailyCloudQuestionNoteMostVoted(questionNoteRepo question.NoteRepo) h
 		}
 		n, exist, err := questionNoteRepo.Get(t)
 		if err != nil {
-			if !exist {
-				n = &question.Note{}
-			} else {
-				http.Error(w, `internal server error`, http.StatusInternalServerError)
-				return
-			}
+			http.Error(w, `internal server error`, http.StatusInternalServerError)
+			return
+		}
+		if !exist {
+			n = &question.Note{}
 		}
 		if n.MostVoted != "" {
 			http.Error(w, `most voted already saved`, http.StatusBadRequest)
@@ -280,12 +281,11 @@ func putApiDailyCloudQuestionNoteOurAnswer(questionNoteRepo question.NoteRepo) h
 		}
 		n, exist, err := questionNoteRepo.Get(t)
 		if err != nil {
-			if !exist {
-				n = &question.Note{}
-			} else {
-				http.Error(w, `internal server error`, http.StatusInternalServerError)
-				return
-			}
+			http.Error(w, `internal server error`, http.StatusInternalServerError)
+			return
+		}
+		if !exist {
+			n = &question.Note{}
 		}
 		if n.OurAnswer != "" {
 			http.Error(w, `answer already saved`, http.StatusBadRequest)
