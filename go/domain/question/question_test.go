@@ -1,6 +1,9 @@
 package question
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func Test_getPage(t *testing.T) {
 	type args struct {
@@ -25,6 +28,33 @@ func Test_getPage(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if got := getPage(tt.args.n, tt.args.pageSize); got != tt.want {
 				t.Errorf("getPageNumber() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestGetDate(t *testing.T) {
+	tests := []struct {
+		name string
+		t    time.Time
+		want Date
+	}{
+		{
+			name: "2025-09-16",
+			t:    time.Date(2025, 9, 16, 0, 0, 0, 0, time.UTC),
+			want: Date{
+				Date:     "2025-09-16",
+				Exam:     "professional-cloud-devops-engineer",
+				Page:     13,
+				Question: 184,
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := GetDate(tt.t)
+			if got != tt.want {
+				t.Errorf("GetDate() = %v, want %v", got, tt.want)
 			}
 		})
 	}
