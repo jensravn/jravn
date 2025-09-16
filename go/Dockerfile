@@ -1,4 +1,4 @@
-FROM golang:1.24.2 AS builder
+FROM golang:1.25.1 AS builder
 
 ARG PROJECT_ID
 
@@ -17,7 +17,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
     -o /app/cmd \
     ./cmd/jravn
 
-FROM gcr.io/distroless/static-debian11:latest
+FROM gcr.io/distroless/static-debian12:latest
 
 ARG PROJECT_ID
 ENV PROJECT_ID=${PROJECT_ID}
