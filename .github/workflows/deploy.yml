@@ -13,7 +13,7 @@ jobs:
       run:
         working-directory: typescript
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
         with:
           package_json_file: "typescript/package.json"
@@ -33,7 +33,7 @@ jobs:
     env:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -76,7 +76,7 @@ jobs:
       BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CLOUD_GITHUB_ACTION_SERVICE_ACCOUNT }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: hashicorp/setup-terraform@v3
 
