@@ -67,7 +67,7 @@ type exam struct {
 }
 
 var exams = []exam{
-	{Exam: "professional-cloud-devops-engineer", Questions: 201, PageSize: 15},
+	{Exam: "professional-cloud-devops-engineer", Questions: 201, PageSize: 5},
 }
 
 var examsUntil2025_09_15 = []exam{
